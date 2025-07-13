@@ -2480,7 +2480,9 @@ section.pros {
   vertical-align: middle;
   line-height: 1;
 }
-
+#yandex-pay-button {
+  margin: 0 auto;
+}
 /* Add Card Modal Styles */
 .add-card-modal {
   position: fixed;

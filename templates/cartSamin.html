@@ -51,7 +51,6 @@
       </div>
     </section>
 
-    <div class="common__button" id="yandex-pay-button">Yandex Pay</div>
     <section class="cardCart">
       <div class="cardCart__container common__container">
         <div class="cart__wrapper">
@@ -373,7 +372,7 @@
     </section>
     <!-- Coding choosing address for the cart page -->
 
-      <section class="payment">
+    <section class="payment">
         <div class="payment__container">
           <div class="payment__delivery-methods">
             <div
@@ -527,11 +526,12 @@
               <span>Ещё 3 платежа раз в 2 недели</span>
             </div>
           </div> -->
-          <button id="yandex-pay-button" class="payment__pay-btn">
+          <!-- <button id="yandex-pay-button" class="payment__pay-btn">
             Оплатить онлайн
           </button>
           
-          <div id="yandex-pay-button-container" style="display: none;"></div>
+          <div id="yandex-pay-button-container" style="display: none;"></div> -->
+          <div id="yandex-pay-button"></div>
           
           
           <!-- <div class="payment__secure">
@@ -543,8 +543,7 @@
             /> -->
           </div>
         </div>
-      </section>
-
+    </section>
     <!-- Coding for the footer of the website  -->
     <footer class="footer">
       <div class="footer__container common__container">
@@ -705,11 +704,14 @@
 
 
 
+
     <!-- Connecting the Yandex Maps API Key -->
     <script
       src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=8891bddc-5383-4ef2-a49e-5ff720368e7b"
       type="text/javascript"
     ></script>
+
+    <!-- my scripts -->
     <script src="{{ url_for('static', filename='js/yandexPayInit.js') }}"></script>
     <script src="{{ url_for('static', filename='js/commonScript.js') }}"></script>
     <script src="{{ url_for('static', filename='js/saminCartScript.js') }}"></script>
