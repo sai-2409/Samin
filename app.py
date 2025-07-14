@@ -122,31 +122,35 @@ def create_yandex_pay_order():
     item_total = float(amount_value) * quantity
 
     payload = {
-        "merchantId": YANDEX_PAY_MERCHANT_ID,
-        "orderId": "ORDER12345",
-        "amount": {
-            "value": 15980.00,
-            "currency": "RUB"
-        },
-        "currencyCode": "RUB",
-        "cart": {
-            "items": [
-                {
-                    "productId": "sku-1",
-                    "name": "Product Name",
-                    "quantity": quantity,         # integer!
-                    "price": 15980.00,          # string
-                    "total": item_total           # float!
-                }
-            ],
-            "total": item_total                  # float!
-        },
-        "description": "Order from Samin Shop",
-        "confirmation": {
-            "type": "redirect",
-            "returnUrl": "https://d86ba314afda.ngrok-free.app/payment-success"
-        }
+    "merchantId": YANDEX_PAY_MERCHANT_ID,
+    "orderId": "ORDER12345",
+    "amount": {
+        "value": 15980.00,
+        "currency": "RUB"
+    },
+    "currencyCode": "RUB",
+    "cart": {
+        "items": [
+            {
+                "productId": "sku-1",
+                "name": "Product Name",
+                "quantity": quantity,
+                "price": {
+                    "amount": 15980.00,
+                    "currency": "RUB"
+                },
+                "total": item_total
+            }
+        ],
+        "total": item_total
+    },
+    "description": "Order from Samin Shop",
+    "confirmation": {
+        "type": "redirect",
+        "returnUrl": return_url  # ✅ используем уже рассчитанный выше
     }
+}
+
 
     # Debug: print types of cart fields
     item = payload["cart"]["items"][0]
@@ -186,6 +190,4 @@ if __name__ == '__main__':
 #     "login": user_info["login"],
 #     "avatar": user_info.get("default_avatar_id")
 # }
-    
 
-print('Тут что то вроде того', request.json)
