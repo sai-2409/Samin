@@ -117,15 +117,16 @@ def create_yandex_pay_order():
     
     print("Return URL:", return_url)
 
-    amount_value = order_data["amount"]
     quantity = 1
-    item_total = float(amount_value) * quantity
+    amount_value = float(order_data["amount"])
+
+    item_total = f"{amount_value * quantity:.2f}"  # строка с двумя знаками после запятой
 
     payload = {
     "merchantId": YANDEX_PAY_MERCHANT_ID,
     "orderId": "ORDER12345",
     "amount": {
-        "value": 15980.00,
+        "value": item_total,  # ✅ строка
         "currency": "RUB"
     },
     "currencyCode": "RUB",
@@ -134,22 +135,30 @@ def create_yandex_pay_order():
             {
                 "productId": "sku-1",
                 "name": "Product Name",
-                "quantity": quantity,
+                "quantity": quantity,  # ✅ int
                 "price": {
-                    "amount": 15980.00,
+                    "amount": item_total,  # ✅ строка
                     "currency": "RUB"
                 },
-                "total": item_total
+                "total": {
+                    "amount": item_total,  # ✅ строка
+                    "currency": "RUB"
+                }
             }
         ],
-        "total": item_total
+        "total": {
+            "amount": item_total,  # ✅ строка
+            "currency": "RUB"
+        }
     },
     "description": "Order from Samin Shop",
     "confirmation": {
         "type": "redirect",
-        "returnUrl": return_url  # ✅ используем уже рассчитанный выше
+        "returnUrl": return_url
     }
 }
+
+
 
 
     # Debug: print types of cart fields
@@ -191,3 +200,4 @@ if __name__ == '__main__':
 #     "avatar": user_info.get("default_avatar_id")
 # }
 
+print('item_total: сколько там ::', item_total)
