@@ -286,6 +286,17 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCardItemCounters();
 });
 
+// Almond animated background scroll effect for main section
+// const mainSection = document.querySelector(".main");
+// const almondBgScrollThreshold = 100; // px
+// window.addEventListener("scroll", () => {
+//   if (window.scrollY > almondBgScrollThreshold) {
+//     mainSection.classList.add("show-almond-bg");
+//   } else {
+//     mainSection.classList.remove("show-almond-bg");
+//   }
+// });
+
 // Making the sideBar menu
 const toggleBtn = document.getElementById("toggleBtn");
 const closeBtn = document.getElementById("closeBtn");

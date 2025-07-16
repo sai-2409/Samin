@@ -366,9 +366,62 @@ p {
 /* Coding styles for the header */
 
 /* Coding styles for the main page */
+body {
+  position: relative;
+  background-image: url("../images/main__bg-almond1\ 1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+/* body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/main__bg-almond1\ 1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5; 
+  z-index: -1;
+  pointer-events: none;
+  background-size: 100% auto;
+} */
+.main__bg-almond {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+}
 .main {
   margin-top: 5%;
+  /* background-image: url('../images/main__bg-almond1\ 1.png'); */
 }
+
+/* .main.show-almond-bg {
+  background-image: url('../images/main__bg-almond1.jpg');
+  background-repeat: repeat;
+  background-size: 600px auto;
+  animation: almondBgScroll 40s linear infinite;
+}
+
+@keyframes almondBgScroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
+} */
+
 .main__content {
   display: flex;
   justify-content: space-between;
@@ -1280,7 +1333,7 @@ section.pros {
   animation: fadeOutSlide 300ms forwards;
 }
 .wall {
-  background-color: var(--ligherGray);
+  /* background-color: var(--ligherGray); */
   border-radius: 25px;
   padding: 15px;
   width: 100%;
