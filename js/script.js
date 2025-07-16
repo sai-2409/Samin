@@ -179,11 +179,89 @@ function setupCardSizeSwitching() {
 
       if (newPrice) priceElement.textContent = newPrice;
 
-      // Replace the visible image
+      // Replace the visible image with slide-in-from-left animation
       if (newImageSrc && imageElements.length > 0) {
+        const currentActiveImage = imageElements[0];
+        const parent = currentActiveImage.parentNode;
+
+        // Track last direction for each card
+        if (!parent.dataset.lastDirection) {
+          parent.dataset.lastDirection = "left"; // default
+        }
+
+        // Determine direction
+        let direction;
+        if (button.classList.contains("cardM__size-1000")) {
+          direction = "left"; // 1000 slides in from left
+        } else {
+          direction = "right"; // 500 slides in from right
+        }
+
+        // Clean up any temp images
+        parent
+          .querySelectorAll(".temp-animation-img")
+          .forEach((img) => img.remove());
+
+        // Create new image for animation
+        const tempImg = currentActiveImage.cloneNode();
+        tempImg.src = newImageSrc;
+        tempImg.classList.add("temp-animation-img");
+        tempImg.style.position = "absolute";
+        tempImg.style.left = 0;
+        tempImg.style.top = 0;
+        tempImg.style.width = "100%";
+        tempImg.style.height = "100%";
+        tempImg.style.zIndex = 2;
+        tempImg.style.pointerEvents = "none";
+        tempImg.style.opacity = 1;
+        tempImg.style.transform = `translateX(${
+          direction === "left" ? "-100%" : "100%"
+        })`;
+        parent.appendChild(tempImg);
+
+        // Make sure parent is positioned
+        parent.style.position = "relative";
+        currentActiveImage.style.position = "absolute";
+        currentActiveImage.style.left = 0;
+        currentActiveImage.style.top = 0;
+        currentActiveImage.style.width = "100%";
+        currentActiveImage.style.height = "100%";
+        currentActiveImage.style.zIndex = 1;
+
+        // Step 1: Slide in new image on top
+        gsap.to(tempImg, {
+          x: "0%",
+          duration: 0.5,
+          ease: "power2.inOut",
+          onComplete: () => {
+            // Step 2: Slide out old image underneath
+            currentActiveImage.style.zIndex = 0;
+            tempImg.style.zIndex = 1;
+            gsap.to(currentActiveImage, {
+              x: direction === "left" ? "100%" : "-100%",
+              duration: 0.1, // much faster
+              ease: "power2.in",
+              onComplete: () => {
+                // After animation, set main image to new src and reset styles
+                currentActiveImage.src = newImageSrc;
+                currentActiveImage.style.position = "";
+                currentActiveImage.style.left = "";
+                currentActiveImage.style.top = "";
+                currentActiveImage.style.width = "";
+                currentActiveImage.style.height = "";
+                currentActiveImage.style.zIndex = "";
+                currentActiveImage.style.transform = "";
+                tempImg.remove();
+                // Update last direction for this card
+                parent.dataset.lastDirection = direction;
+              },
+            });
+          },
+        });
+
+        // Update active class
         imageElements.forEach((img) => img.classList.remove("active"));
-        imageElements[0].src = newImageSrc;
-        imageElements[0].classList.add("active");
+        currentActiveImage.classList.add("active");
       }
       // Recalculating the total certain item in the cart
       updateCardItemCounters();
