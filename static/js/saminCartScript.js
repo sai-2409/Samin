@@ -1181,6 +1181,14 @@ document.addEventListener("DOMContentLoaded", renderDeliveryDateOptions);
   });
 })();
 
+// Saving cart to local storage
+function saveCart(cartArray) {
+  localStorage.setItem("cart", JSON.stringify(cartArray));
+  const total = cartArray.reduce((sum, item) => {
+    return sum + parseFloat(item.price) * parseInt(item.quantity);
+  }, 0);
+  localStorage.setItem("cartTotal", total.toFixed(2));
+}
 
 // Showing success payment modal when payment is successful
 // const paymentButton = document.querySelector(".payment__pay-btn");
@@ -1188,11 +1196,8 @@ document.addEventListener("DOMContentLoaded", renderDeliveryDateOptions);
 //   const modalSuccess = document.querySelector(".modal-success")
 
 //   modalSuccess.style.display = "flex";
-  
+
 //   setTimeout(() => {
 //     modalSuccess.style.display = "none";
 //   }, 2000);
 // });
-
-
-
