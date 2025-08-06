@@ -86,11 +86,12 @@ p {
   font-size: 20px;
   font-weight: 700;
   border-radius: 14px;
-  border: 2px solid var(--main-orange);
+  border: none;
+  /* border: 2px solid var(--main-orange); */
   background: var(--main-orange);
   color: var(--white);
-  box-shadow: 0 2px 12px rgba(255, 195, 56, 0.18),
-    0 1.5px 6px rgba(0, 0, 0, 0.07);
+  /* box-shadow: 0 2px 12px rgba(255, 195, 56, 0.18),
+    0 1.5px 6px rgba(0, 0, 0, 0.07); */
   transition: all 0.25s cubic-bezier(0.23, 1.01, 0.32, 1);
   cursor: pointer;
   outline: none;
@@ -506,9 +507,62 @@ p {
 /* Coding styles for the header */
 
 /* Coding styles for the main page */
+body {
+  position: relative;
+  background-image: url("../images/main__bg-almond1\ 1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+/* body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/main__bg-almond1\ 1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5; 
+  z-index: -1;
+  pointer-events: none;
+  background-size: 100% auto;
+} */
+.main__bg-almond {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+}
 .main {
   margin-top: 5%;
+  /* background-image: url('../images/main__bg-almond1\ 1.png'); */
 }
+
+/* .main.show-almond-bg {
+  background-image: url('../images/main__bg-almond1.jpg');
+  background-repeat: repeat;
+  background-size: 600px auto;
+  animation: almondBgScroll 40s linear infinite;
+}
+
+@keyframes almondBgScroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
+} */
+
 .main__content {
   display: flex;
   justify-content: space-between;
@@ -639,7 +693,7 @@ p {
 }
 .commitment__text {
   color: var(--text-color);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 400;
   max-width: 520px;
 }
@@ -1467,7 +1521,7 @@ section.pros {
   animation: fadeOutSlide 300ms forwards;
 }
 .wall {
-  background-color: var(--ligherGray);
+  /* background-color: var(--ligherGray); */
   border-radius: 25px;
   padding: 15px;
   width: 100%;
@@ -1832,11 +1886,16 @@ section.pros {
 
 .yamap__right {
   flex: 1;
+  margin-top: 8rem;
 }
 
 .yamap__map {
   width: 100%;
   height: 600px;
+  border-radius: 20px;
+  border: 1px solid var(--gray);
+  background-color: var(--ligherGray);
+  padding: 15px;
   /* border-radius: 20px; */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
@@ -2009,6 +2068,8 @@ section.pros {
 .saved-address__button:hover {
   background-color: #f8f8f8;
   border-color: #888;
+  color: var(--text-color);
+  transition: all 0.3s ease;
 }
 
 /* Styles for selected address button */
@@ -2751,8 +2812,8 @@ section.pros {
   box-shadow: 0 2px 8px rgba(255, 179, 0, 0.13);
 }
 .samin-checkbox input[type="checkbox"]:checked + .checkmark {
-  background: #ffe600;
-  border-color: #1dbf73;
+  background: var(--ligherGray);
+  border-color: var(--main-orange);
   box-shadow: 0 2px 8px rgba(29, 191, 115, 0.13);
 }
 .samin-checkbox .checkmark::after {
@@ -2766,7 +2827,7 @@ section.pros {
   top: 3px;
   width: 7px;
   height: 13px;
-  border: solid #1dbf73;
+  border: solid var(--main-orange);
   border-width: 0 3px 3px 0;
   border-radius: 2px;
   transform: rotate(45deg);

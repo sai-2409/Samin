@@ -1,5 +1,6 @@
 # Ignore Python virtual environment
 venv/
+venv
 
 # Python cache files
 __pycache__/
@@ -16,3 +17,6 @@ config.py
 
 # Ignore the orders.json file
 static/data/orders.json
+
+# Node modules
+node_modules
