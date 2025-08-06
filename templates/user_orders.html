@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мои Заказы - Samin</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/order_status.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
+    />
+  </head>
+  <body>
+    <div class="common__container" style="padding: 40px 20px">
+      <div class="head">
+        <img
+          src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+          alt="Logotype"
+        />
+        <h1 class="common__header">Мои Заказы</h1>
+        <img
+          src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+          alt="Logotype"
+        />
+      </div>
+
+      {% if orders %}
+      <div class="orders-container" style="margin-top: 40px">
+        {% for order in orders %}
+        <div
+          class="order-card"
+          style="
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+          "
+        >
+          <div
+            class="order-header"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 16px;
+              padding-bottom: 16px;
+              border-bottom: 1px solid #f0f0f0;
+            "
+          >
+            <div>
+              <h3
+                style="
+                  font-size: 18px;
+                  font-weight: 600;
+                  color: #333;
+                  margin: 0;
+                "
+              >
+                Заказ #{{ order.order_id[:8] if order.order_id else 'N/A' }}
+              </h3>
+              <p style="color: #666; margin: 4px 0 0 0; font-size: 14px">
+                {% if order.timestamp %} {{ order.timestamp.split('T')[0] if 'T'
+                in order.timestamp else order.timestamp }} {% else %} N/A {%
+                endif %}
+              </p>
+            </div>
+            <div
+              class="order-status-badge {% if order.status == 'Оформлен' %}order-status-ordered {% elif order.status == 'Собран' %}order-status-collected {% elif order.status == 'Отправлен' %}order-status-shipped {% elif order.status == 'Доставлен' %}order-status-delivered {% else %}order-status-default{% endif %}"
+            >
+              {{ order.status if order.status else 'Оформлен' }}
+            </div>
+          </div>
+
+          <div class="order-details" style="margin-bottom: 16px">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+              "
+            >
+              <div>
+                <strong style="color: #333">Сумма:</strong>
+                <span style="color: #666"
+                  >₽{{ order.total if order.total else '0' }}</span
+                >
+              </div>
+              <div>
+                <strong style="color: #333">Доставка:</strong>
+                <span style="color: #666"
+                  >{{ order.delivery_date if order.delivery_date else 'Не
+                  выбрана' }}</span
+                >
+              </div>
+            </div>
+
+            {% if order.customer_info and order.customer_info.address %}
+            <div style="margin-bottom: 12px">
+              <strong style="color: #333">Адрес:</strong>
+              <span style="color: #666">{{ order.customer_info.address }}</span>
+            </div>
+            {% endif %}
+          </div>
+
+          {% if order.cart_items %}
+          <div class="order-items" style="margin-bottom: 16px">
+            <h4
+              style="
+                font-size: 16px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 12px;
+              "
+            >
+              Товары:
+            </h4>
+            <div style="max-height: 120px; overflow-y: auto">
+              {% for item in order.cart_items %}
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid #f0f0f0;
+                "
+              >
+                <span style="color: #333"
+                  >{{ item.productName if item.productName else (item.name if
+                  item.name else 'Товар') }} x{{ item.quantity if item.quantity
+                  else 1 }}</span
+                >
+                <span style="color: #666"
+                  >₽{{ (item.price * item.quantity) if item.price and
+                  item.quantity else (item.price if item.price else 0) }}</span
+                >
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="order-actions" style="text-align: right">
+            <a
+              href="/order-tracking?order_id={{ order.order_id }}"
+              style="
+                display: inline-block;
+                padding: 8px 16px;
+                background: var(--main-orange);
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+              "
+            >
+              Отследить заказ
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="text-align: center; padding: 60px 20px; color: #666">
+        <h3 style="font-size: 20px; margin-bottom: 12px; color: #333">
+          У вас пока нет заказов
+        </h3>
+        <p style="margin-bottom: 24px">
+          Сделайте свой первый заказ и он появится здесь
+        </p>
+        <a
+          href="/"
+          style="
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--main-orange);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+          "
+        >
+          Перейти к покупкам
+        </a>
+      </div>
+      {% endif %}
+
+      <div style="text-align: center; margin-top: 40px">
+        <a
+          href="/"
+          style="
+            display: inline-block;
+            padding: 12px 24px;
+            background: #f3f4f6;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+          "
+        >
+          ← Вернуться на главную
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

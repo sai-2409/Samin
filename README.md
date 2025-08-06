@@ -49,7 +49,7 @@ A modern e-commerce platform built with Flask, featuring Yandex Pay integration,
    # Yandex OAuth
    CLIENT_ID=your_yandex_client_id
    CLIENT_SECRET=your_yandex_client_secret
-   REDIRECT_URI=http://localhost:5000/auth/callback
+   REDIRECT_URI=http://localhost:5001/auth/callback
 
    # Yandex Pay
    YANDEX_MERCHANT_ID=your_merchant_id
@@ -73,8 +73,8 @@ A modern e-commerce platform built with Flask, featuring Yandex Pay integration,
    ```
 
 7. **Access the application**
-   - Main site: http://localhost:5000
-   - Admin dashboard: http://localhost:5000/admin
+   - Main site: http://localhost:5001
+   - Admin dashboard: http://localhost:5001/admin
 
 ## Security Notes
 

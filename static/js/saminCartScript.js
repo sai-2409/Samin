@@ -578,6 +578,13 @@ function initYandexMap() {
     return;
   }
 
+  // Check if Yandex Maps API key is available
+  if (!window.yandexMapsKey) {
+    mapElement.innerHTML =
+      '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; text-align: center; padding: 20px;">Yandex Maps API key not configured. Please set YANDEX_MAPS_API_KEY in your .env file.</div>';
+    return;
+  }
+
   const map = new ymaps.Map("yamap", {
     center: [55.751574, 37.573856],
     zoom: 10,
@@ -653,6 +660,14 @@ if (addressInput) {
       return;
     }
 
+    // Check if API key is available
+    if (!window.dadataToken) {
+      suggestBox.innerHTML =
+        '<div style="padding: 8px 10px; color: #666;">DaData API key not configured. Please set DADATA_API_TOKEN in your .env file.</div>';
+      suggestBox.style.display = "block";
+      return;
+    }
+
     try {
       const response = await fetch(
         "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address",
@@ -702,6 +717,9 @@ if (addressInput) {
       suggestBox.style.display = "block";
     } catch (error) {
       console.warn("Error fetching address suggestions:", error);
+      suggestBox.innerHTML =
+        '<div style="padding: 8px 10px; color: #666;">Error loading address suggestions. Please check your API key.</div>';
+      suggestBox.style.display = "block";
     }
   });
 

@@ -1,0 +1,31 @@
+.order-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.order-status-ordered {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.order-status-collected {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.order-status-shipped {
+  background: #fed7aa;
+  color: #ea580c;
+}
+
+.order-status-delivered {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.order-status-default {
+  background: #f3f4f6;
+  color: #6b7280;
+}

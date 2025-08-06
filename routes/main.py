@@ -224,10 +224,11 @@ def update_order_status():
 @main_bp.route('/api/get-api-keys')
 def get_api_keys():
     """Safely provide API keys to frontend"""
-    from config import DADATA_API_TOKEN, YANDEX_MAPS_API_KEY
+    from config import DADATA_API_TOKEN, YANDEX_MAPS_API_KEY, YANDEX_MERCHANT_ID
     return jsonify({
         'dadata_token': DADATA_API_TOKEN,
-        'yandex_maps_key': YANDEX_MAPS_API_KEY
+        'yandex_maps_key': YANDEX_MAPS_API_KEY,
+        'yandex_merchant_id': YANDEX_MERCHANT_ID
     })
 
 @main_bp.context_processor
@@ -235,3 +236,22 @@ def inject_config():
     """Make config variables available in templates"""
     from config import YANDEX_MAPS_API_KEY
     return dict(config={'YANDEX_MAPS_API_KEY': YANDEX_MAPS_API_KEY})
+
+@main_bp.route('/user_orders')
+def user_orders():
+    """User orders page - requires login"""
+    user = session.get("user")
+    if not user:
+        return redirect("/login")
+    
+    try:
+        with open('static/data/orders.json', 'r') as f:
+            orders = json.load(f)
+        
+        # Filter orders for current user
+        user_orders = [order for order in orders if order.get("user_id") == user["login"]]
+        
+    except (FileNotFoundError, json.JSONDecodeError):
+        user_orders = []
+    
+    return render_template('user_orders.html', orders=user_orders, user=user)
