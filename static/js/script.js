@@ -325,3 +325,178 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2500); // Match the animation duration
   }
 });
+
+// User Reviews Functionality
+function loadUserReviews() {
+  const container = document.getElementById("userReviewsContainer");
+  if (!container) return;
+
+  // Show loading state
+  container.innerHTML = `
+    <div class="user-reviews-loading">
+      <div style="margin-bottom: 20px; font-size: 20px; font-weight: 600;">Загрузка отзывов...</div>
+      <div style="font-size: 16px; opacity: 0.8;">Находим лучшие отзывы наших покупателей</div>
+    </div>
+  `;
+
+  // Fetch all reviews from the API
+  fetch("/api/get-all-reviews")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.reviews && data.reviews.length > 0) {
+        displayUserReviews(data.reviews);
+      } else {
+        showEmptyReviews();
+      }
+    })
+    .catch((error) => {
+      console.error("Error loading reviews:", error);
+      showEmptyReviews();
+    });
+}
+
+function displayUserReviews(reviews) {
+  const container = document.getElementById("userReviewsContainer");
+  if (!container) return;
+
+  // Sort reviews by date (newest first)
+  const sortedReviews = reviews.sort(
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+  );
+
+  // Take only the first 6 reviews for display
+  const displayReviews = sortedReviews.slice(0, 6);
+
+  container.innerHTML = displayReviews
+    .map(
+      (review, index) => `
+    <div class="user-review-card" style="animation-delay: ${index * 0.1}s">
+      <div class="user-review-header">
+        <div class="user-review-avatar">
+          ${
+            review.user_avatar
+              ? `<img src="https://avatars.yandex.net/get-yapic/${review.user_avatar}/islands-retina-50" alt="Avatar">`
+              : `<span>${getInitials(review.user_name)}</span>`
+          }
+        </div>
+        <div class="user-review-info">
+          <div class="user-review-name">${review.user_name}</div>
+          <div class="user-review-date">${formatDate(review.timestamp)}</div>
+        </div>
+      </div>
+      <div class="user-review-rating">
+        ${generateStars(review.rating)}
+      </div>
+      <div class="user-review-text">${review.review_text}</div>
+      ${
+        review.image_filename
+          ? `
+      <div class="mt-2">
+        <img src="/static/uploads/reviews/${review.image_filename}" 
+             alt="Review image" 
+             class="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+             onclick="openImageModal('/static/uploads/reviews/${review.image_filename}')"
+             title="Click to enlarge">
+      </div>
+      `
+          : ""
+      }
+              <div class="user-review-product">
+          <span style="font-weight: 600; color: var(--primary-color);">🏪</span> Отзыв о магазине Samin
+        </div>
+    </div>
+  `
+    )
+    .join("");
+
+  // Add hover effects and interactions
+  setTimeout(() => {
+    const cards = container.querySelectorAll(".user-review-card");
+    cards.forEach((card) => {
+      card.addEventListener("mouseenter", function () {
+        this.style.transform = "translateY(-8px) scale(1.02)";
+        this.style.boxShadow = "0 30px 60px rgba(0, 0, 0, 0.15)";
+      });
+
+      card.addEventListener("mouseleave", function () {
+        this.style.transform = "translateY(0) scale(1)";
+        this.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.1)";
+      });
+    });
+  }, 100);
+}
+
+function showEmptyReviews() {
+  const container = document.getElementById("userReviewsContainer");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="user-reviews-empty">
+      <div class="user-reviews-empty-icon">🌟</div>
+      <p style="font-size: 18px; margin-bottom: 15px; font-weight: 600;">Пока нет отзывов от покупателей</p>
+      <p style="font-size: 16px; opacity: 0.9;">Будьте первым, кто оставит отзыв и получите скидку!</p>
+      <div style="margin-top: 25px;">
+        <span style="background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500;">
+          🎁 Специальное предложение для первых отзывов
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function getInitials(name) {
+  if (!name) return "А";
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+function generateStars(rating) {
+  let stars = "";
+  for (let i = 1; i <= 5; i++) {
+    stars += `<span class="user-review-star">${i <= rating ? "★" : "☆"}</span>`;
+  }
+  return stars;
+}
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString("ru-RU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+// Image modal functionality
+function openImageModal(imageSrc) {
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50";
+  modal.innerHTML = `
+                <div class="relative max-w-4xl max-h-full p-4">
+                  <button onclick="this.parentElement.parentElement.remove()" 
+                          class="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 z-10">
+                    ✕
+                  </button>
+                  <img src="${imageSrc}" alt="Full size image" 
+                       class="max-w-full max-h-full object-contain rounded-lg">
+                </div>
+              `;
+  document.body.appendChild(modal);
+
+  // Close modal on background click
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
+// Load user reviews when page loads
+document.addEventListener("DOMContentLoaded", function () {
+  loadUserReviews();
+});

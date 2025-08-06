@@ -1,73 +1,110 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Card Slider</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Калькулятор калорий - Samin</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/calc__style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="calc__wrapper">
+      <div class="calc">
+        <h2>Калькулятор калорий</h2>
+        <form id="calculatorForm">
+          <div class="form-group">
+            <label for="name">Имя:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Введите ваше имя"
+              required
+            />
+          </div>
 
-    .card {
-      width: 250px;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      overflow: hidden;
-      position: relative;
-      transition: transform 0.3s;
-    }
-    .slider {
-      width: 100%;
-      height: 250px;
-      overflow: hidden;
-      position: relative;
-    }
-    .slider img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    .slider img.active {
-      opacity: 1;
-    }
-    .card-content {
-      padding: 15px;
-    }
-    .price {
-      font-size: 24px;
-      color: green;
-    }
-    .title {
-      font-weight: bold;
-    }
-    .stars {
-      color: #ffaa00;
-    }
-    .availability {
-      color: #007aff;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <div class="slider" id="slider">
-      <img src="img1.jpg" class="active" alt="Image 1">
-      <img src="img2.jpg" alt="Image 2">
-      <img src="img3.jpg" alt="Image 3">
-    </div>
-    <div class="card-content">
-      <div class="price">603 ₽</div>
-      <div class="title">Миндаль сушёный Walnuts крупный 500 грамм, свежий</div>
-      <div class="stars">★ 4.7 (1819 оценок)</div>
-      <div class="availability">● Завтра, по клику · ПВЗ</div>
-    </div>
-  </div>
+          <div class="form-group">
+            <label>Пол:</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  value="male"
+                  required
+                />
+                Мужской
+              </label>
+              <label>
+                <input type="radio" id="female" name="gender" value="female" />
+                Женский
+              </label>
+            </div>
+          </div>
 
-</body>
+          <div class="form-group">
+            <label for="age">Возраст:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              placeholder="Возраст"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="weight">Вес (кг):</label>
+            <input
+              type="number"
+              id="weight"
+              name="weight"
+              placeholder="Вес"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="height">Рост (см):</label>
+            <input
+              type="number"
+              id="height"
+              name="height"
+              placeholder="Рост"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="product__name">Продукт:</label>
+            <input
+              type="text"
+              id="product__name"
+              name="product__name"
+              placeholder="Например: фисташки"
+              required
+            />
+          </div>
+
+          <button type="button" id="show__btn1" class="calc-button">
+            Посчитать
+          </button>
+        </form>
+      </div>
+
+      <div class="calc__result">
+        <div id="error__calc-result"></div>
+        <div id="result__calc-div"></div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/calc.js') }}"></script>
+  </body>
 </html>

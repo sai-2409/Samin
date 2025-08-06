@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Отслеживание заказа - Samin</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/order_tracking.css') }}"
+    />
+    <!-- Connecting the logo to the browser tab -->
+    <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
+    type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="tracking-container">
+      <div class="tracking-header">
+        <div class="logo">
+          <img
+            src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+            alt="Samin Logo"
+          />
+        </div>
+        <h1>Отслеживание заказа</h1>
+        <p class="order-info">
+          <span class="order-number"
+            >Заказ #<span id="orderId">{{ order_id }}</span></span
+          >
+          <span class="order-date">{{ order_date }}</span>
+        </p>
+      </div>
+
+      <div class="tracking-progress">
+        <div class="progress-tracker">
+          <!-- Progress Percentage -->
+          <div class="progress-percentage">
+            {% if order_status == 'Оформлен' %}50% {% elif order_status ==
+            'Собран' %}60% {% elif order_status == 'Отправлен' %}80% {% elif
+            order_status == 'Доставлен' %}100% {% else %}20%{% endif %}
+            завершено
+          </div>
+
+          <!-- Dynamic Progress Bar -->
+          <div
+            class="progress-fill {% if order_status == 'Оформлен' %}progress-20 {% elif order_status == 'Собран' %}progress-60 {% elif order_status == 'Отправлен' %}progress-80 {% elif order_status == 'Доставлен' %}progress-100 {% else %}progress-20{% endif %}"
+          ></div>
+          <div class="step completed" data-step="1">
+            <div class="step-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </div>
+            <div class="step-label">Заказ оформлен</div>
+            <div class="step-time">{{ order_placed_time }}</div>
+          </div>
+
+          <div class="step completed" data-step="2">
+            <div class="step-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </div>
+            <div class="step-label">Оплачен</div>
+            <div class="step-time">{{ payment_time }}</div>
+          </div>
+
+          <div
+            class="step {% if order_status == 'Собран' or order_status == 'Отправлен' or order_status == 'Доставлен' %}completed {% elif order_status == 'Оформлен' %}current {% else %}pending{% endif %}"
+            data-step="3"
+          >
+            <div class="step-icon">
+              {% if order_status == 'Собран' or order_status == 'Отправлен' or
+              order_status == 'Доставлен' %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+              {% elif order_status == 'Оформлен' %}
+              <div class="loading-spinner"></div>
+              {% else %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              {% endif %}
+            </div>
+            <div class="step-label">Собран</div>
+            <div class="step-time">
+              {% if order_status == 'Собран' or order_status == 'Отправлен' or
+              order_status == 'Доставлен' %} {{ status_updated_at if
+              status_updated_at else 'Завершено' }} {% elif order_status ==
+              'Оформлен' %} В процессе {% else %} Ожидается {% endif %}
+            </div>
+          </div>
+
+          <div
+            class="step {% if order_status == 'Отправлен' or order_status == 'Доставлен' %}completed {% elif order_status == 'Собран' %}current {% else %}pending{% endif %}"
+            data-step="4"
+          >
+            <div class="step-icon">
+              {% if order_status == 'Отправлен' or order_status == 'Доставлен'
+              %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+              {% elif order_status == 'Собран' %}
+              <div class="loading-spinner"></div>
+              {% else %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              {% endif %}
+            </div>
+            <div class="step-label">Отправлен</div>
+            <div class="step-time">
+              {% if order_status == 'Отправлен' or order_status == 'Доставлен'
+              %} {{ status_updated_at if status_updated_at else 'Завершено' }}
+              {% elif order_status == 'Собран' %} В процессе {% else %}
+              Ожидается {% endif %}
+            </div>
+          </div>
+
+          <div
+            class="step {% if order_status == 'Доставлен' %}completed {% elif order_status == 'Отправлен' %}current {% else %}pending{% endif %}"
+            data-step="5"
+          >
+            <div class="step-icon">
+              {% if order_status == 'Доставлен' %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+              {% elif order_status == 'Отправлен' %}
+              <div class="loading-spinner"></div>
+              {% else %}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              {% endif %}
+            </div>
+            <div class="step-label">Доставлен</div>
+            <div class="step-time">
+              {% if order_status == 'Доставлен' %} {{ status_updated_at if
+              status_updated_at else 'Завершено' }} {% elif order_status ==
+              'Отправлен' %} В процессе {% else %} Ожидается {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-details">
+        <div class="details-card">
+          <h3>Детали заказа</h3>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="label">Сумма заказа:</span>
+              <span class="value">₽{{ order_total }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Способ доставки:</span>
+              <span class="value">{{ delivery_method }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Адрес доставки:</span>
+              <span class="value">{{ delivery_address }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Ожидаемая дата:</span>
+              <span class="value">{{ expected_date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section -->
+      {% if cart_items %}
+      <div class="order-products">
+        <div class="products-card">
+          <h3>Товары в заказе</h3>
+          <div class="products-list">
+            {% for item in cart_items %}
+            <div class="product-item">
+              <div class="product-image">
+                <img src="{{ item.image }}" alt="{{ item.productName }}" />
+              </div>
+              <div class="product-info">
+                <h4 class="product-name">{{ item.productName }}</h4>
+                <p class="product-size">{{ item.size }}</p>
+                <div class="product-details">
+                  <span class="product-quantity"
+                    >Количество: {{ item.quantity }}</span
+                  >
+                  <span class="product-price">₽{{ item.price }}</span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Delivery Notes Section -->
+      {% if delivery_notes %}
+      <div class="delivery-notes">
+        <div class="notes-card">
+          <h3>Примечания к доставке</h3>
+          <div class="notes-list">
+            {% for note in delivery_notes %}
+            <div class="note-item">
+              <span class="note-icon">📝</span>
+              <span class="note-text">{{ note }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-secondary">Вернуться в магазин</a>
+        <button class="btn btn-primary" onclick="refreshTracking()">
+          Обновить статус
+        </button>
+      </div>
+
+      <script>
+        // Auto-refresh tracking every 30 seconds
+        setInterval(function () {
+          refreshTracking();
+        }, 30000);
+
+        function refreshTracking() {
+          // Reload the page to get updated status
+          window.location.reload();
+        }
+      </script>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/order_tracking.js') }}"></script>
+  </body>
+</html>

@@ -70,7 +70,10 @@
             <div class="header__profile header__profile-small-screens">
               <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar">
               <span>{{ user.login }}</span>
-              <a href="/logout" class="header__profile-logout">Выйти</a>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
             </div>
             {% else %}
             <a class="header__button-yandexID header__button-yandexID-small-screens" href="/login" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;"><img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">Войти c Яндекс ID</a>
@@ -121,7 +124,10 @@
             <div class="header__profile">
               <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar">
               <span>{{ user.login }}</span>
-              <a href="/logout" class="header__profile-logout">Выйти</a>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
             </div>
             {% else %}
             <a class="header__button-yandexID" href="/login" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;"><img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">Войти c Яндекс ID</a>
@@ -1208,6 +1214,28 @@
           </div>
         </div>
       </div>
+      
+      <!-- User Reviews Section -->
+      <div class="user-reviews-section">
+        <div class="common__container">
+          <h2 class="reviews__title">Отзывы наших покупателей</h2>
+          <div id="userReviewsContainer" class="user-reviews-grid">
+            <!-- User reviews will be loaded here dynamically -->
+          </div>
+          {% if user %}
+          <div class="user-reviews-cta">
+            <p class="cta-text">Оставить свой отзыв</p>
+            <a href="/reviews" class="common__button cta-button">Написать отзыв</a>
+          </div>
+          {% else %}
+          <div class="user-reviews-cta">
+            <p class="cta-text">Войдите, чтобы оставить отзыв</p>
+            <a href="/login" class="common__button cta-button">Войти через Яндекс</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
       <div class="reviewsAll">
         <div class="common__container reviewsAll__container">
           <h1 class="common__header reviewsAll__header">

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мои отзывы - Samin</title>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/animation.css" />
+
+    <!-- Connecting the logo to the browser tab -->
+    <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
+    type="image/x-icon"
+    />
+    <style>
+      .star-rating {
+        display: inline-flex;
+        gap: 2px;
+      }
+      .star {
+        cursor: pointer;
+        font-size: 20px;
+        color: #d1d5db;
+        transition: color 0.2s;
+      }
+      .star.filled {
+        color: #fbbf24;
+      }
+      .star:hover {
+        color: #fbbf24;
+      }
+      .review-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .review-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 font-['Roboto']">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-4">
+            <img
+              src="/static/images/logoWalnuts-welcome-page.svg"
+              alt="Samin Logo"
+              class="h-10 w-10"
+            />
+            <h1 class="text-2xl font-bold text-orange-600">Samin</h1>
+          </div>
+          <nav class="flex items-center space-x-6">
+            <a
+              href="/"
+              class="text-gray-600 hover:text-orange-600 transition-colors"
+              >Главная</a
+            >
+            <a
+              href="/cart"
+              class="text-gray-600 hover:text-orange-600 transition-colors"
+              >Корзина</a
+            >
+            <div class="flex items-center space-x-2">
+              <img
+                src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
+                alt="Avatar"
+                class="w-8 h-8 rounded-full"
+                onerror="this.src='/static/images/avatars/larisa.png'"
+              />
+              <span class="text-gray-700"
+                >{{ user.real_name or user.display_name or user.login }}</span
+              >
+              <a
+                href="/logout"
+                class="text-red-600 hover:text-red-800 transition-colors"
+                >Выйти</a
+              >
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Мои отзывы</h2>
+        <p class="text-gray-600">
+          Управляйте своими отзывами о купленных товарах
+        </p>
+      </div>
+
+      <!-- Review Form Section -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Оставить отзыв</h3>
+
+        <form id="reviewForm" class="space-y-4">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <p class="text-sm text-blue-800">
+              💡 <strong>Простой отзыв:</strong> Оставьте отзыв о нашем магазине
+              и продукции в целом
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Оценка</label
+            >
+            <div class="star-rating" id="starRating">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <input
+              type="hidden"
+              id="ratingInput"
+              name="rating"
+              value="0"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              for="reviewText"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Ваш отзыв
+            </label>
+            <textarea
+              id="reviewText"
+              name="review_text"
+              rows="4"
+              required
+              placeholder="Поделитесь своими впечатлениями о товаре..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Добавить фото (необязательно)
+            </label>
+            <div class="flex items-center space-x-4">
+              <input
+                type="file"
+                id="reviewImage"
+                accept="image/*"
+                class="hidden"
+              />
+              <button
+                type="button"
+                id="uploadImageBtn"
+                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                📷 Выбрать фото
+              </button>
+              <div id="imagePreview" class="hidden">
+                <img
+                  id="previewImg"
+                  src=""
+                  alt="Preview"
+                  class="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                  onclick="openImageModal(this.src)"
+                  title="Click to enlarge"
+                />
+                <button
+                  type="button"
+                  id="removeImageBtn"
+                  class="ml-2 text-red-600 hover:text-red-800"
+                >
+                  ✕ Удалить
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              class="common__button bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-md transition-colors"
+            >
+              Отправить отзыв
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- User Reviews Section -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Мои отзывы</h3>
+        <div id="userReviews" class="space-y-4">
+          <!-- Reviews will be loaded here -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div class="text-center">
+          <div class="text-green-500 text-4xl mb-4">✓</div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            Отзыв отправлен!
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Спасибо за ваш отзыв. Он поможет другим покупателям.
+          </p>
+          <button
+            onclick="closeSuccessModal()"
+            class="common__button bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md"
+          >
+            Закрыть
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let selectedRating = 0;
+      let userOrders = [];
+      let userReviews = [];
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", function () {
+        loadUserReviews();
+        setupStarRating();
+        setupReviewForm();
+        setupImageUpload();
+      });
+
+      // Star rating functionality
+      function setupStarRating() {
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("ratingInput");
+
+        stars.forEach((star) => {
+          star.addEventListener("click", function () {
+            const rating = parseInt(this.dataset.rating);
+            selectedRating = rating;
+            ratingInput.value = rating;
+
+            // Update star display
+            stars.forEach((s, index) => {
+              if (index < rating) {
+                s.classList.add("filled");
+              } else {
+                s.classList.remove("filled");
+              }
+            });
+          });
+
+          star.addEventListener("mouseenter", function () {
+            const rating = parseInt(this.dataset.rating);
+            stars.forEach((s, index) => {
+              if (index < rating) {
+                s.classList.add("filled");
+              } else {
+                s.classList.remove("filled");
+              }
+            });
+          });
+
+          star.addEventListener("mouseleave", function () {
+            stars.forEach((s, index) => {
+              if (index < selectedRating) {
+                s.classList.add("filled");
+              } else {
+                s.classList.remove("filled");
+              }
+            });
+          });
+        });
+      }
+
+      // Simple review system - no order/product selection needed
+
+      // Image modal functionality
+      function openImageModal(imageSrc) {
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50";
+        modal.innerHTML = `
+          <div class="relative max-w-4xl max-h-full p-4">
+            <button onclick="this.parentElement.parentElement.remove()" 
+                    class="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 z-10">
+              ✕
+            </button>
+            <img src="${imageSrc}" alt="Full size image" 
+                 class="max-w-full max-h-full object-contain rounded-lg">
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Close modal on background click
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            modal.remove();
+          }
+        });
+      }
+
+      // Load user's reviews
+      async function loadUserReviews() {
+        try {
+          const response = await fetch("/api/user-reviews");
+          if (response.ok) {
+            const data = await response.json();
+            userReviews = data.reviews || [];
+            displayUserReviews();
+          }
+        } catch (error) {
+          console.error("Error loading reviews:", error);
+        }
+      }
+
+      // Display user reviews
+      function displayUserReviews() {
+        const container = document.getElementById("userReviews");
+
+        if (userReviews.length === 0) {
+          container.innerHTML =
+            '<p class="text-gray-500 text-center py-8">У вас пока нет отзывов</p>';
+          return;
+        }
+
+        container.innerHTML = userReviews
+          .map(
+            (review) => `
+                <div class="review-card bg-gray-50 rounded-lg p-4 border">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center space-x-3">
+                            <img
+                                src="https://avatars.yandex.net/get-yapic/${
+                                  review.user_avatar
+                                }/islands-retina-50"
+                                alt="User Avatar"
+                                class="w-10 h-10 rounded-full"
+                                onerror="this.src='/static/images/avatars/larisa.png'"
+                            />
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${
+                                  review.user_name || "Пользователь"
+                                }</h4>
+                                <p class="text-sm text-gray-600">${new Date(
+                                  review.timestamp
+                                ).toLocaleDateString("ru-RU")}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="star-rating">
+                                ${generateStars(review.rating)}
+                            </div>
+                            <button onclick="deleteReview('${review.id}')" 
+                                    class="text-red-600 hover:text-red-800 text-sm">
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">${review.review_text}</p>
+                    ${
+                      review.image_filename
+                        ? `
+                    <div class="mt-2">
+                        <img src="/static/uploads/reviews/${review.image_filename}" 
+                             alt="Review image" 
+                             class="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                             onclick="openImageModal('/static/uploads/reviews/${review.image_filename}')"
+                             title="Click to enlarge">
+                    </div>
+                    `
+                        : ""
+                    }
+                    <p class="text-xs text-gray-500 mt-2">
+                        ${new Date(review.timestamp).toLocaleDateString(
+                          "ru-RU"
+                        )}
+                    </p>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Generate star HTML
+      function generateStars(rating) {
+        let stars = "";
+        for (let i = 1; i <= 5; i++) {
+          stars += `<span class="star ${i <= rating ? "filled" : ""}">★</span>`;
+        }
+        return stars;
+      }
+
+      // Image upload functionality
+      let selectedImageData = null;
+
+      function setupImageUpload() {
+        const uploadBtn = document.getElementById("uploadImageBtn");
+        const fileInput = document.getElementById("reviewImage");
+        const imagePreview = document.getElementById("imagePreview");
+        const previewImg = document.getElementById("previewImg");
+        const removeBtn = document.getElementById("removeImageBtn");
+
+        uploadBtn.addEventListener("click", () => {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              selectedImageData = e.target.result;
+              previewImg.src = selectedImageData;
+              imagePreview.classList.remove("hidden");
+              uploadBtn.classList.add("hidden");
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        removeBtn.addEventListener("click", () => {
+          selectedImageData = null;
+          fileInput.value = "";
+          imagePreview.classList.add("hidden");
+          uploadBtn.classList.remove("hidden");
+        });
+      }
+
+      // Setup review form
+      function setupReviewForm() {
+        const form = document.getElementById("reviewForm");
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+          const reviewData = {
+            product_id: "general", // General review about the store
+            order_id: "general", // General review
+            rating: parseInt(formData.get("rating")),
+            review_text: formData.get("review_text"),
+            image_data: selectedImageData,
+          };
+
+          try {
+            const response = await fetch("/api/submit-review", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(reviewData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              showSuccessModal();
+              form.reset();
+              selectedRating = 0;
+              selectedImageData = null;
+              document.getElementById("imagePreview").classList.add("hidden");
+              document
+                .getElementById("uploadImageBtn")
+                .classList.remove("hidden");
+              document
+                .querySelectorAll(".star")
+                .forEach((star) => star.classList.remove("filled"));
+              loadUserReviews(); // Refresh reviews
+            } else {
+              alert(result.error || "Ошибка при отправке отзыва");
+            }
+          } catch (error) {
+            console.error("Error submitting review:", error);
+            alert("Ошибка при отправке отзыва");
+          }
+        });
+      }
+
+      // Delete review
+      async function deleteReview(reviewId) {
+        if (!confirm("Вы уверены, что хотите удалить этот отзыв?")) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/delete-review/${reviewId}`, {
+            method: "DELETE",
+          });
+
+          if (response.ok) {
+            loadUserReviews(); // Refresh reviews
+          } else {
+            const result = await response.json();
+            alert(result.error || "Ошибка при удалении отзыва");
+          }
+        } catch (error) {
+          console.error("Error deleting review:", error);
+          alert("Ошибка при удалении отзыва");
+        }
+      }
+
+      // Modal functions
+      function showSuccessModal() {
+        document.getElementById("successModal").classList.remove("hidden");
+        document.getElementById("successModal").classList.add("flex");
+      }
+
+      function closeSuccessModal() {
+        document.getElementById("successModal").classList.add("hidden");
+        document.getElementById("successModal").classList.remove("flex");
+      }
+    </script>
+  </body>
+</html>

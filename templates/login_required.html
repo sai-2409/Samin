@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Требуется авторизация - Samin</title>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/animation.css" />
+  </head>
+  <body
+    class="bg-gray-50 font-['Roboto'] min-h-screen flex items-center justify-center"
+  >
+    <div class="max-w-md w-full mx-4">
+      <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+        <div class="mb-6">
+          <img
+            src="/static/images/logoWalnuts-welcome-page.svg"
+            alt="Samin Logo"
+            class="h-16 w-16 mx-auto mb-4"
+          />
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">
+            Требуется авторизация
+          </h1>
+          <p class="text-gray-600">
+            Для доступа к этой странице необходимо войти в аккаунт
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <a
+            href="/login"
+            class="common__button bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-md transition-colors inline-block"
+          >
+            Войти через Яндекс
+          </a>
+
+          <div class="text-sm text-gray-500">
+            <a
+              href="/"
+              class="text-orange-600 hover:text-orange-700 transition-colors"
+            >
+              ← Вернуться на главную
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

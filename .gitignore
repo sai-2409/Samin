@@ -10,3 +10,9 @@ __pycache__/
 
 # Environment/config files
 .env
+
+# Ignore the config.py file
+config.py
+
+# Ignore the orders.json file
+static/data/orders.json

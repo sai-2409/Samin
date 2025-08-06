@@ -6,6 +6,21 @@ const addressFillForm = document.querySelector(".checkout__block-link-address");
 const addressForm = document.querySelector(".common__container-address-form");
 const checkoutFormButton = document.querySelector(".order__button");
 
+// Load API keys from backend
+async function loadApiKeys() {
+  try {
+    const response = await fetch("/api/get-api-keys");
+    const keys = await response.json();
+    window.dadataToken = keys.dadata_token;
+    window.yandexMapsKey = keys.yandex_maps_key;
+  } catch (error) {
+    console.warn("Failed to load API keys:", error);
+  }
+}
+
+// Load API keys when page loads
+document.addEventListener("DOMContentLoaded", loadApiKeys);
+
 // Writing function for the toggling forms
 const toggleForm = (formName, infoForm) => {
   if (formName && infoForm) {
@@ -647,7 +662,7 @@ if (addressInput) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "Token 955c063e8c0a23970f308ba7658ee1ccb9c0f958",
+            Authorization: `Token ${window.dadataToken}`,
           },
           body: JSON.stringify({ query }),
         }
@@ -919,6 +934,74 @@ function renderCartProductLine() {
 renderCartProductLine();
 window.addEventListener("storage", renderCartProductLine);
 // If you update the cart elsewhere, call renderCartProductLine() after changes.
+
+// --- Delivery Notes Toggle Functionality ---
+function setupDeliveryNotesToggles() {
+  const toggles = document.querySelectorAll(
+    '.payment__toggle input[type="checkbox"]'
+  );
+
+  if (toggles.length === 0) return;
+
+  // Get the specific toggles for "Оставить у двери" and "Передать на руки"
+  const leaveAtDoorToggle = toggles[0]; // First toggle
+  const handToPersonToggle = toggles[1]; // Second toggle
+  const dontCallToggle = toggles[2]; // Third toggle
+
+  // Add CSS class for mutually exclusive toggles
+  if (leaveAtDoorToggle && handToPersonToggle) {
+    leaveAtDoorToggle
+      .closest(".payment__toggle")
+      .classList.add("mutually-exclusive");
+    handToPersonToggle
+      .closest(".payment__toggle")
+      .classList.add("mutually-exclusive");
+  }
+
+  // Function to handle mutual exclusivity
+  function handleToggleChange(changedToggle) {
+    // Only apply mutual exclusivity for "Оставить у двери" and "Передать на руки"
+    if (changedToggle === leaveAtDoorToggle && changedToggle.checked) {
+      // If "Оставить у двери" is checked, uncheck "Передать на руки"
+      handToPersonToggle.checked = false;
+    } else if (changedToggle === handToPersonToggle && changedToggle.checked) {
+      // If "Передать на руки" is checked, uncheck "Оставить у двери"
+      leaveAtDoorToggle.checked = false;
+    }
+
+    // Save the state to localStorage
+    const deliveryNotesState = {
+      leaveAtDoor: leaveAtDoorToggle.checked,
+      handToPerson: handToPersonToggle.checked,
+      dontCall: dontCallToggle.checked,
+    };
+    localStorage.setItem(
+      "deliveryNotesState",
+      JSON.stringify(deliveryNotesState)
+    );
+  }
+
+  // Add event listeners to all toggles
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("change", () => handleToggleChange(toggle));
+  });
+
+  // Load saved state from localStorage
+  const savedState = localStorage.getItem("deliveryNotesState");
+  if (savedState) {
+    try {
+      const state = JSON.parse(savedState);
+      leaveAtDoorToggle.checked = state.leaveAtDoor || false;
+      handToPersonToggle.checked = state.handToPerson || false;
+      dontCallToggle.checked = state.dontCall || false;
+    } catch (e) {
+      console.error("Error loading delivery notes state:", e);
+    }
+  }
+}
+
+// Initialize delivery notes toggles when DOM is loaded
+document.addEventListener("DOMContentLoaded", setupDeliveryNotesToggles);
 
 // --- Delivery Date Block Dynamic Generation and Selection ---
 function renderDeliveryDateOptions() {

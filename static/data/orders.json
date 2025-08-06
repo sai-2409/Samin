@@ -1,295 +1,13 @@
 [
   {
-    "id": 1,
-    "date": "2025-07-07",
-    "items": "Almonds x2",
-    "total": 1400,
-    "status": "Выполнен"
-  },
-  {
-    "id": 2,
-    "date": "2025-07-06",
-    "items": "Walnuts x3",
-    "total": 2100,
-    "status": "В ожидании"
-  },
-  {
-    "order_id": "3d2a80d3-1e5c-4e93-bfa1-f8c87bf18346",
-    "timestamp": "2025-08-05T13:21:08.220351",
+    "order_id": "a9657aed-ad82-473e-94fa-203d190e1daa",
+    "timestamp": "2025-08-06T13:33:59.218032",
     "cart_items": [
-      {
-        "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 999,
-        "quantity": 1
-      },
-      {
-        "productName": "Изюм малаяр сушёные, натуральный и свежий...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/izum__1000.png",
-        "size": "\n                  1000гр\n                ",
-        "price": 599,
-        "quantity": 1
-      },
       {
         "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
         "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
         "size": "\n                  500гр\n                ",
         "price": 949,
-        "quantity": 1
-      },
-      {
-        "productName": "Миндаль сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/almondSamin-1000.jpeg",
-        "size": "\n                  1000гр\n                ",
-        "price": 1289,
-        "quantity": 1
-      },
-      {
-        "productName": "Курага натуральная и сушёная ассорти без косточек",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/kuragaMixWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1019,
-        "quantity": 1
-      },
-      {
-        "productName": "Тыквенные семечки натуральные и крупные...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/%20tikvaWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 899,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1489,
-        "quantity": 1
-      },
-      {
-        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1389,
-        "quantity": 1
-      }
-    ],
-    "total": "8632.00",
-    "yandex_response": {
-      "code": 200,
-      "status": "success",
-      "data": {
-        "paymentUrl": "https://sandbox.pay.ya.ru/l/nnZxfS"
-      }
-    }
-  },
-  {
-    "order_id": "9d9c5136-ea28-45aa-ab8a-ba3e30513fef",
-    "timestamp": "2025-08-05T13:21:32.305804",
-    "cart_items": [
-      {
-        "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 999,
-        "quantity": 1
-      },
-      {
-        "productName": "Изюм малаяр сушёные, натуральный и свежий...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/izum__1000.png",
-        "size": "\n                  1000гр\n                ",
-        "price": 599,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 949,
-        "quantity": 3
-      },
-      {
-        "productName": "Миндаль сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/almondSamin-1000.jpeg",
-        "size": "\n                  1000гр\n                ",
-        "price": 1289,
-        "quantity": 1
-      },
-      {
-        "productName": "Курага натуральная и сушёная ассорти без косточек",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/kuragaMixWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1019,
-        "quantity": 1
-      },
-      {
-        "productName": "Тыквенные семечки натуральные и крупные...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/%20tikvaWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 899,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1489,
-        "quantity": 1
-      },
-      {
-        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1389,
-        "quantity": 1
-      }
-    ],
-    "total": "10530.00",
-    "yandex_response": {
-      "code": 200,
-      "status": "success",
-      "data": {
-        "paymentUrl": "https://sandbox.pay.ya.ru/l/2fbHNA"
-      }
-    }
-  },
-  {
-    "order_id": "42a5fa17-8b71-4b19-bf21-ec9eb48b43ab",
-    "timestamp": "2025-08-05T13:22:34.271027",
-    "cart_items": [
-      {
-        "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 999,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 949,
-        "quantity": 1
-      },
-      {
-        "productName": "Тыквенные семечки натуральные и крупные...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/%20tikvaWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 899,
-        "quantity": 1
-      },
-      {
-        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1389,
-        "quantity": 1
-      }
-    ],
-    "total": "4236.00",
-    "yandex_response": {
-      "code": 200,
-      "status": "success",
-      "data": {
-        "paymentUrl": "https://sandbox.pay.ya.ru/l/xhzbBr"
-      }
-    }
-  },
-  {
-    "order_id": "a8564766-f7fd-47ce-b9ac-a7ceeac9b88e",
-    "timestamp": "2025-08-05T13:25:28.775448",
-    "cart_items": [
-      {
-        "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 999,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 949,
-        "quantity": 1
-      },
-      {
-        "productName": "Тыквенные семечки натуральные и крупные...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/%20tikvaWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 899,
-        "quantity": 1
-      },
-      {
-        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1389,
-        "quantity": 1
-      }
-    ],
-    "subtotal": "4236.00",
-    "delivery": "636.00",
-    "total": "4872.0",
-    "yandex_response": {
-      "code": 200,
-      "status": "success",
-      "data": {
-        "paymentUrl": "https://sandbox.pay.ya.ru/l/WGiZFg"
-      }
-    }
-  },
-  {
-    "order_id": "1fd3953e-2258-4afd-87ba-678df23346e6",
-    "timestamp": "2025-08-05T13:25:56.870814",
-    "cart_items": [
-      {
-        "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 999,
-        "quantity": 1
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
-        "size": "\n                  500гр\n                ",
-        "price": 949,
-        "quantity": 1
-      },
-      {
-        "productName": "Тыквенные семечки натуральные и крупные...",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/%20tikvaWalnuts-1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 899,
-        "quantity": 1
-      },
-      {
-        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1389,
-        "quantity": 2
-      },
-      {
-        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1489,
-        "quantity": 1
-      },
-      {
-        "productName": "Смесь орехов ПРЕМИУМ, крупных и натуральных орехов без\n                сухофруктов",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/smesP1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1589,
-        "quantity": 1
-      },
-      {
-        "productName": "Орехи Макадамия, свежие, натуральные и крупные",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/makad1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1289,
         "quantity": 1
       },
       {
@@ -300,29 +18,143 @@
         "quantity": 1
       },
       {
-        "productName": "Калифорнийские жареные фисташки, натуральные и крупные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisJ1000.webp",
+        "productName": "Натуральная ореховая смесь орехов и сухофруктов...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/smesOreh500.webp",
+        "size": "\n                  500гр\n                ",
+        "price": 459,
+        "quantity": 1
+      },
+      {
+        "productName": "Натуральная ореховая смесь орехов и сухофруктов...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/smesOreh-1000.webp",
         "size": "\n                  1000гр\n                ",
-        "price": 1789,
+        "price": 759,
+        "quantity": 1
+      },
+      {
+        "productName": "Грецкие орехи крупные натуральные и свежие...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/gresSamin1.webp",
+        "size": "\n                  1000гр\n                ",
+        "price": 1249,
+        "quantity": 1
+      },
+      {
+        "productName": "Цукаты сушёные, натуральный и свежий урожай...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/sukati__1000.png",
+        "size": "\n                  1000гр\n                ",
+        "price": 599,
+        "quantity": 1
+      },
+      {
+        "productName": "Кешью сушёный крупный, свежий урожай от производителя",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/keshS1000.webp",
+        "size": "\n                  1000гр\n                ",
+        "price": 1389,
+        "quantity": 1
+      },
+      {
+        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ1000.webp",
+        "size": "\n                  1000гр\n                ",
+        "price": 1489,
         "quantity": 1
       },
       {
         "productName": "Калифорнийские сушёные фисташки, крупные и натуральные от\n                производителя",
-        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS1000.webp",
-        "size": "\n                  1000гр\n                ",
-        "price": 1789,
+        "image": "http://127.0.0.1:5000/static/images/cards__image/fisS500.webp",
+        "size": "\n                  500гр\n                ",
+        "price": 999,
         "quantity": 1
       }
     ],
-    "subtotal": "14369.00",
-    "delivery": "0.00",
-    "total": "14369.0",
+    "subtotal": 8691.0,
+    "delivery": 0.0,
+    "total": 8691.0,
+    "delivery_date": "Завтра, чт 07.081304₽бесплатно✅",
+    "delivery_notes": [
+      "Передать на руки"
+    ],
+    "customer_info": {
+      "name": "Самиджон Самиджонов",
+      "phone": "12137095924",
+      "address": "ул Борисовка, д16, кв324, Pasadena",
+      "zipCode": "91107"
+    },
+    "selected_address_id": "1754425327352",
+    "user_id": "w.nuts",
     "yandex_response": {
       "code": 200,
       "status": "success",
       "data": {
-        "paymentUrl": "https://sandbox.pay.ya.ru/l/XlsQwy"
+        "paymentUrl": "https://sandbox.pay.ya.ru/l/e8gas2"
       }
-    }
+    },
+    "status": "Собран",
+    "status_updated_at": "2025-08-06T14:46:03.441168"
+  },
+  {
+    "order_id": "cac198f8-29e5-459b-a7d0-972326764a82",
+    "timestamp": "2025-08-06T14:37:44.237519",
+    "cart_items": [
+      {
+        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ500.webp",
+        "size": "\n                  500гр\n                ",
+        "price": 949,
+        "quantity": 1
+      },
+      {
+        "productName": "Орехи Макадамия, свежие, натуральные и крупные",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/makad500.webp",
+        "size": "\n                  500гр\n                ",
+        "price": 799,
+        "quantity": 1
+      },
+      {
+        "productName": "Натуральная ореховая смесь орехов и сухофруктов...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/smesOreh500.webp",
+        "size": "\n                  500гр\n                ",
+        "price": 459,
+        "quantity": 1
+      },
+      {
+        "productName": "Цукаты сушёные, натуральный и свежий урожай...",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/sukati__1000.png",
+        "size": "\n                  1000гр\n                ",
+        "price": 599,
+        "quantity": 1
+      },
+      {
+        "productName": "Жареный кешью, с отличной прожаркой, свежий урожай от\n                производителя",
+        "image": "http://127.0.0.1:5000/static/images/cards__image/keshJ1000.webp",
+        "size": "\n                  1000гр\n                ",
+        "price": 1489,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 4295.0,
+    "delivery": 645.0,
+    "total": 4940.0,
+    "delivery_date": "Завтра, чт 07.08645₽",
+    "delivery_notes": [
+      "Передать на руки"
+    ],
+    "customer_info": {
+      "name": "Самиджон Самиджонов",
+      "phone": "12137095924",
+      "address": "ул Борисовка, д16, кв324, Pasadena",
+      "zipCode": "91107"
+    },
+    "selected_address_id": "1754425327352",
+    "user_id": "w.nuts",
+    "yandex_response": {
+      "code": 200,
+      "status": "success",
+      "data": {
+        "paymentUrl": "https://sandbox.pay.ya.ru/l/65ucoI"
+      }
+    },
+    "status": "Отправлен",
+    "status_updated_at": "2025-08-06T14:53:49.119665"
   }
 ]
