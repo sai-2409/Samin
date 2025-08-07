@@ -143,6 +143,213 @@ if (form) {
   });
 }
 
+// Add functionality for the "Доставить сюда" (Deliver here) button
+const deliverHereButton = document.querySelector(
+  ".address-form__button-select"
+);
+if (deliverHereButton) {
+  deliverHereButton.addEventListener("click", function () {
+    // Add loading state
+    this.classList.add("loading");
+    this.textContent = "Выбираем адрес...";
+
+    // Get all form values
+    const fullName = document.getElementById("fullName")?.value || "";
+    const street = document.getElementById("streetAddress")?.value || "";
+    const city = document.getElementById("city")?.value || "";
+    const building = document.getElementById("building")?.value || "";
+    const flat = document.getElementById("flat")?.value || "";
+    const zipCode = document.getElementById("zipCode")?.value || "";
+    const phone = document.getElementById("phone")?.value || "";
+
+    // Validate that required fields are filled
+    if (
+      !fullName ||
+      !street ||
+      !city ||
+      !building ||
+      !flat ||
+      !zipCode ||
+      !phone
+    ) {
+      alert("Пожалуйста, заполните все обязательные поля адреса");
+      // Reset button state
+      this.classList.remove("loading");
+      this.textContent = "Доставить сюда";
+      return;
+    }
+
+    // Create address object
+    const addressData = {
+      id: Date.now(), // Unique ID for this address
+      fullName,
+      street,
+      city,
+      building,
+      flat,
+      zipCode,
+      phone,
+      number: addressCount,
+    };
+
+    // Set this as the selected address
+    selectedAddressId = addressData.id;
+    localStorage.setItem("selectedAddressId", selectedAddressId);
+
+    // Update payment section with the selected address
+    updatePaymentAddressRecipient(addressData);
+
+    // Show success message
+    showAddressSelectionSuccess();
+
+    // Optionally save to saved addresses if not already there
+    const isAlreadySaved = savedAddresses.some(
+      (addr) =>
+        addr.fullName === fullName &&
+        addr.street === street &&
+        addr.city === city &&
+        addr.building === building &&
+        addr.flat === flat &&
+        addr.zipCode === zipCode &&
+        addr.phone === phone
+    );
+
+    if (!isAlreadySaved) {
+      // Add to savedAddresses array
+      savedAddresses.push(addressData);
+      localStorage.setItem("savedAddresses", JSON.stringify(savedAddresses));
+      addressCount++;
+
+      // Add the new card to the display without reloading everything
+      if (savedAddressList) {
+        const cardHTML = `
+          <div class="saved-address__card" width="100%" data-address-id="${
+            addressData.id
+          }">
+            <div class="saved-address__number">${addressData.number}</div>
+            <div class="saved-address__info">
+              <div class="saved-address__name-row" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="saved-address__name">${addressData.fullName}</div>
+                ${
+                  addressData.phone
+                    ? `<span class="saved-address__phone" style="color: #888; font-size: 0.98em; margin-left: 16px;">${addressData.phone}</span>`
+                    : ""
+                }
+              </div>
+              <div class="saved-address__text">${addressData.street}</div>
+              <div class="saved-address__text">${addressData.city}, ${
+          addressData.zipCode
+        }</div>
+              <div class="saved-address__text">д${addressData.building}, кв${
+          addressData.flat
+        }</div>
+            </div>
+            <div class="saved-address__actions">
+              <button class="saved-address__button saved__address-button-select saved__address-button common__button selected">Выбран</button>
+              <button class="saved-address__button saved__address-button-delete saved__address-button common__button">Удалить</button>
+            </div>
+          </div>
+        `;
+        savedAddressList.insertAdjacentHTML("beforeend", cardHTML);
+
+        // Setup event listeners for the new card
+        setupSelectButtons();
+        setupDeleteButtons();
+      }
+    } else {
+      // If address already exists, just select it
+      const existingAddress = savedAddresses.find(
+        (addr) =>
+          addr.fullName === fullName &&
+          addr.street === street &&
+          addr.city === city &&
+          addr.building === building &&
+          addr.flat === flat &&
+          addr.zipCode === zipCode &&
+          addr.phone === phone
+      );
+
+      if (existingAddress) {
+        selectedAddressId = existingAddress.id;
+        localStorage.setItem("selectedAddressId", selectedAddressId);
+
+        // Update the UI to show this address as selected
+        document
+          .querySelectorAll(".saved__address-button-select")
+          .forEach((btn) => {
+            btn.classList.remove("selected");
+            btn.textContent = "Выбрать";
+          });
+
+        // Find and select the existing address card
+        const existingCard = document.querySelector(
+          `[data-address-id="${existingAddress.id}"]`
+        );
+        if (existingCard) {
+          const selectBtn = existingCard.querySelector(
+            ".saved__address-button-select"
+          );
+          if (selectBtn) {
+            selectBtn.classList.add("selected");
+            selectBtn.textContent = "Выбран";
+          }
+        }
+      }
+    }
+
+    // Show success state briefly
+    this.classList.remove("loading");
+    this.classList.add("success");
+    this.textContent = "✅ Выбрано!";
+
+    // Reset button after 2 seconds
+    setTimeout(() => {
+      this.classList.remove("success");
+      this.textContent = "Доставить сюда";
+    }, 2000);
+  });
+}
+
+// Function to show success message when address is selected
+function showAddressSelectionSuccess() {
+  // Create success message element
+  const successMessage = document.createElement("div");
+  successMessage.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  successMessage.textContent = "✅ Адрес доставки выбран!";
+
+  // Add to page
+  document.body.appendChild(successMessage);
+
+  // Animate in
+  setTimeout(() => {
+    successMessage.style.transform = "translateX(0)";
+  }, 100);
+
+  // Remove after 3 seconds
+  setTimeout(() => {
+    successMessage.style.transform = "translateX(100%)";
+    setTimeout(() => {
+      if (successMessage.parentNode) {
+        successMessage.parentNode.removeChild(successMessage);
+      }
+    }, 300);
+  }, 3000);
+}
+
 // Helper to update payment section address/recipient
 function updatePaymentAddressRecipient(addressObj) {
   const addressSpan = document.getElementById("payment-address-value");
@@ -1302,3 +1509,104 @@ function saveCart(cartArray) {
 //     modalSuccess.style.display = "none";
 //   }, 2000);
 // });
+
+// Address Selection Modal Functions
+function showAddressModal() {
+  const modal = document.getElementById("address-modal");
+  if (modal) {
+    modal.style.display = "flex";
+    // Add event listeners for closing modal
+    const overlay = modal.querySelector(".address-modal__overlay");
+    if (overlay) {
+      overlay.addEventListener("click", hideAddressModal);
+    }
+    // Close on Escape key
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        hideAddressModal();
+      }
+    });
+  }
+}
+
+function hideAddressModal() {
+  const modal = document.getElementById("address-modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Function to check if address is selected
+function isAddressSelected() {
+  // First check if a saved address is selected
+  const selectedAddressId = localStorage.getItem("selectedAddressId");
+  const savedAddresses =
+    JSON.parse(localStorage.getItem("savedAddresses")) || [];
+  const selectedAddress = savedAddresses.find(
+    (addr) => addr.id === parseInt(selectedAddressId)
+  );
+
+  if (selectedAddress) {
+    return true; // If a saved address is selected, consider it valid
+  }
+
+  // Check if address form fields are filled
+  const streetAddress = document.getElementById("streetAddress");
+  const building = document.getElementById("building");
+  const flat = document.getElementById("flat");
+  const city = document.getElementById("city");
+
+  if (streetAddress && building && flat && city) {
+    const hasStreet = streetAddress.value.trim().length > 0;
+    const hasBuilding = building.value.trim().length > 0;
+    const hasFlat = flat.value.trim().length > 0;
+    const hasCity = city.value.trim().length > 0;
+
+    return hasStreet && hasBuilding && hasFlat && hasCity;
+  }
+
+  return false;
+}
+
+// Function to check if user is logged in
+function isUserLoggedIn() {
+  // Check if user data exists in the page (from Flask session)
+  const userLoginElement = document.querySelector("body[data-user-login]");
+  return userLoginElement !== null;
+}
+
+// Export functions for use in other scripts
+window.showAddressModal = showAddressModal;
+window.hideAddressModal = hideAddressModal;
+window.isAddressSelected = isAddressSelected;
+
+// Login Modal Functions
+function showLoginModal() {
+  const modal = document.getElementById("login-modal");
+  if (modal) {
+    modal.style.display = "flex";
+    // Add event listeners for closing modal
+    const overlay = modal.querySelector(".login-modal__overlay");
+    if (overlay) {
+      overlay.addEventListener("click", hideLoginModal);
+    }
+    // Close on Escape key
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        hideLoginModal();
+      }
+    });
+  }
+}
+
+function hideLoginModal() {
+  const modal = document.getElementById("login-modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Export login functions for use in other scripts
+window.showLoginModal = showLoginModal;
+window.hideLoginModal = hideLoginModal;
+window.isUserLoggedIn = isUserLoggedIn;

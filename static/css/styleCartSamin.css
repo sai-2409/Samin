@@ -47,3 +47,33 @@ section {
   background: transparent !important;
 }
 
+/* Address form button styles */
+.address-form__button-select {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.address-form__button-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.address-form__button-select:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Success state for the deliver button */
+.address-form__button-select.success {
+  background: linear-gradient(135deg, #4caf50, #45a049) !important;
+  color: white !important;
+  transform: scale(1.05);
+}
+
+/* Loading state for the deliver button */
+.address-form__button-select.loading {
+  background: linear-gradient(135deg, #ff9800, #ff5722) !important;
+  color: white !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}

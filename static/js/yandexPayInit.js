@@ -31,6 +31,28 @@ function onYaPayLoad() {
     };
 
     async function onPayButtonClick() {
+      // Check if user is logged in before proceeding
+      if (typeof isUserLoggedIn === "function") {
+        const userLoggedIn = isUserLoggedIn();
+        if (!userLoggedIn) {
+          if (typeof showLoginModal === "function") {
+            showLoginModal();
+          }
+          return;
+        }
+      }
+
+      // Check if address is selected before proceeding
+      if (typeof isAddressSelected === "function") {
+        const addressSelected = isAddressSelected();
+        if (!addressSelected) {
+          if (typeof showAddressModal === "function") {
+            showAddressModal();
+          }
+          return;
+        }
+      }
+
       // Try to get cart data from both possible sources
       let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
       let cartTotal = localStorage.getItem("cartTotal") || "0.00";

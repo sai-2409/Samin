@@ -20,10 +20,397 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsiveIndex.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/animation.css') }}">
+    
+    <!-- Custom styles for animated main section background -->
+    <style>
+        /* Animated Background for Main Section */
+        .main {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+            backdrop-filter: blur(5px);
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 165, 0, 0.4));
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(69, 160, 73, 0.4));
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.4), rgba(25, 118, 210, 0.4));
+        }
+
+        .shape:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            right: 30%;
+            animation-delay: 1s;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.4), rgba(245, 124, 0, 0.4));
+        }
+
+        .shape:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            top: 40%;
+            left: 60%;
+            animation-delay: 3s;
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.4), rgba(123, 31, 162, 0.4));
+        }
+
+        .shape:nth-child(6) {
+            width: 70px;
+            height: 70px;
+            top: 70%;
+            right: 5%;
+            animation-delay: 5s;
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.4), rgba(255, 152, 0, 0.4));
+        }
+
+        .shape:nth-child(7) {
+            width: 110px;
+            height: 110px;
+            top: 30%;
+            left: 80%;
+            animation-delay: 1.5s;
+            background: linear-gradient(135deg, rgba(233, 30, 99, 0.4), rgba(194, 24, 91, 0.4));
+        }
+
+        .shape:nth-child(8) {
+            width: 60px;
+            height: 60px;
+            top: 90%;
+            left: 40%;
+            animation-delay: 3.5s;
+            background: linear-gradient(135deg, rgba(0, 150, 136, 0.4), rgba(0, 121, 107, 0.4));
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-25px) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translateY(-10px) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translateY(-35px) rotate(270deg) scale(1.05);
+            }
+        }
+
+        /* Enhanced main content styling */
+        .main__content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Add some glow effects to the main content */
+        .mright__header {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .mright__statement {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Enhanced button styling */
+        .common__button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .common__button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .common__button:hover::before {
+            left: 100%;
+        }
+
+        .common__button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Remove unwanted lines and borders */
+        .main {
+            border: none !important;
+            outline: none !important;
+        }
+        
+        .main__content {
+            border: none !important;
+            outline: none !important;
+            margin-bottom: 0 !important;
+        }
+        
+        .content__right {
+            border: none !important;
+            outline: none !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Floating Notification System */
+        .floating-notifications {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-notifications:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FF6B6B, #FF5252);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .notification-icon:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .notification-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .notification-panel {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .notification-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .notification-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f8f8f8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            background: #f8f9fa;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item.unread {
+            background: #fff3cd;
+            border-left: 4px solid #FF9800;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .notification-empty svg {
+            width: 48px;
+            height: 48px;
+            fill: #ddd;
+            margin-bottom: 12px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .shape {
+                animation-duration: 6s;
+            }
+            
+            .shape:nth-child(1) { width: 60px; height: 60px; }
+            .shape:nth-child(2) { width: 80px; height: 80px; }
+            .shape:nth-child(3) { width: 50px; height: 50px; }
+            .shape:nth-child(4) { width: 70px; height: 70px; }
+            .shape:nth-child(5) { width: 55px; height: 55px; }
+            .shape:nth-child(6) { width: 45px; height: 45px; }
+            .shape:nth-child(7) { width: 65px; height: 65px; }
+            .shape:nth-child(8) { width: 40px; height: 40px; }
+            
+            .floating-notifications {
+                bottom: 15px;
+                left: 15px;
+            }
+            
+            .notification-panel {
+                width: 280px;
+                left: 15px;
+                bottom: 85px;
+            }
+        }
+    </style>
+    
     <!-- Title icon for the website -->
     <title>Samin</title>
   </head>
-  <body>
+  <body {% if user %}data-user-login="{{ user.login }}"{% endif %}>
     <!-- Start building -->
 
     <!-- Coding for the header of the website -->
@@ -34,6 +421,27 @@
       <span class="floating__cart-counter">0</span>
     </div>
     <!-- I will put the main cart here for a moment -->
+
+    <!-- Floating Notification System -->
+    <div class="floating-notifications" onclick="toggleNotificationPanel()">
+      <div class="notification-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        <div class="notification-badge" id="notification-count">0</div>
+      </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notification-panel">
+      <div class="notification-header">
+        <h3>Уведомления</h3>
+        <button class="notification-close" onclick="toggleNotificationPanel()">✕</button>
+      </div>
+      <div class="notification-list" id="notification-list">
+        <!-- Notifications will be loaded here -->
+      </div>
+    </div>
 
     <div class="main__bg-almond">
       <img src="{{ url_for('static', filename='images/main__bg-almond3.png') }}" alt="AlmondBackground" />
@@ -86,6 +494,7 @@
               <li><a href="#section__2"><span>🌟</span> Достоинства</a></li>
               <li><a href="#section__3"><span>🥜</span> Меню</a></li>
               <li><a href="#section__4"><span>💬</span> Отзывы</a></li>
+              <li><a href="/cart"><span>🛒</span> Корзина</a></li>
             </ul>
           </div>
           <div class="header__list">
@@ -103,6 +512,9 @@
               </li>
               <li class="header__list-item">
                 <a href="#section__4" class="nav__link nav__btn4">Отзывы</a>
+              </li>
+              <li class="header__list-item">
+                <a href="/cart" class="nav__link">Корзина</a>
               </li>
             </ul>
           </div>
@@ -135,9 +547,35 @@
 
     <!-- Coding for the header of the website -->
 
+    <!-- Login Success Message -->
+    <!-- {% if just_logged_in and user %}
+    <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 15px; text-align: center; margin: 20px auto; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; z-index: 1000;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span style="font-size: 24px;">✅</span>
+            <div>
+                <h3 style="margin: 0 0 5px 0; font-size: 18px;">Добро пожаловать, {{ user.real_name or user.display_name or user.login }}!</h3>
+                <p style="margin: 0; font-size: 14px; opacity: 0.9;">Вы успешно вошли в систему. Добро пожаловать в SAMIN!</p>
+            </div>
+        </div>
+    </div>
+    {% endif %} -->
+
     <!-- Coding main section of the website  -->
 
     <section class="main" id="section__1">
+      <!-- Animated Background -->
+      <div class="animated-bg"></div>
+      <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+      
       <div class="main__content">
         <div class="main__pic">
           <img src="{{ url_for('static', filename='images/mainNewPicAssorti 1.png') }}" alt="Nuts" />
@@ -1346,5 +1784,154 @@
         Добро пожаловать, {{ user.login }}!
       </div>
     {% endif %}
+
+    <!-- Notification System JavaScript -->
+    <script>
+        let notificationPanelVisible = false;
+        let notifications = [];
+
+        // Toggle notification panel
+        function toggleNotificationPanel() {
+            const panel = document.getElementById('notification-panel');
+            notificationPanelVisible = !notificationPanelVisible;
+            
+            if (notificationPanelVisible) {
+                panel.classList.add('show');
+                loadNotifications();
+            } else {
+                panel.classList.remove('show');
+            }
+        }
+
+        // Load notifications from server
+        function loadNotifications() {
+            const user = document.querySelector('[data-user-login]');
+            if (!user) {
+                showEmptyNotifications();
+                return;
+            }
+
+            fetch('/api/get-notifications')
+                .then(response => response.json())
+                .then(data => {
+                    notifications = data.notifications || [];
+                    updateNotificationBadge();
+                    displayNotifications();
+                })
+                .catch(error => {
+                    console.error('Error loading notifications:', error);
+                    showEmptyNotifications();
+                });
+        }
+
+        // Update notification badge count
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notification-count');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            badge.textContent = unreadCount;
+            
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Display notifications in panel
+        function displayNotifications() {
+            const list = document.getElementById('notification-list');
+            
+            if (notifications.length === 0) {
+                showEmptyNotifications();
+                return;
+            }
+
+            list.innerHTML = notifications.map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" 
+                     onclick="markNotificationRead('${notification.id}')">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-time">${formatNotificationTime(notification.timestamp)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Show empty state
+        function showEmptyNotifications() {
+            const list = document.getElementById('notification-list');
+            list.innerHTML = `
+                <div class="notification-empty">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                    </svg>
+                    <p>Нет новых уведомлений</p>
+                </div>
+            `;
+        }
+
+        // Mark notification as read
+        function markNotificationRead(notificationId) {
+            fetch('/api/mark-notification-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    notification_id: notificationId,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update local notifications
+                    notifications = notifications.map(n => 
+                        n.id === notificationId ? { ...n, read: true } : n
+                    );
+                    updateNotificationBadge();
+                    displayNotifications();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+        }
+
+        // Format notification time
+        function formatNotificationTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Только что';
+            if (minutes < 60) return `${minutes} мин назад`;
+            if (hours < 24) return `${hours} ч назад`;
+            if (days < 7) return `${days} дн назад`;
+            
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        // Close panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('notification-panel');
+            const notificationIcon = document.querySelector('.floating-notifications');
+            
+            if (!panel.contains(event.target) && !notificationIcon.contains(event.target)) {
+                panel.classList.remove('show');
+                notificationPanelVisible = false;
+            }
+        });
+
+        // Initialize notifications on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+            
+            // Check for new notifications every 30 seconds
+            setInterval(loadNotifications, 30000);
+        });
+    </script>
   </body>
 </html>

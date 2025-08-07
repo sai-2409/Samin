@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify, render_template, session
 import uuid, requests, json
 from datetime import datetime
 from config import YANDEX_MERCHANT_ID, YANDEX_API_URL
+from services.email_service import email_service
 
 pay_bp = Blueprint("pay", __name__)
 
@@ -123,7 +124,7 @@ def create_yandex_order():
                 
                 # Load existing orders
                 try:
-                    with open('static/data/orders.json', 'r', encoding='utf-8') as f:
+                    with open(os.path.join(DATA_DIR, 'orders.json'), 'r', encoding='utf-8') as f:
                         orders = json.load(f)
                 except (FileNotFoundError, json.JSONDecodeError):
                     orders = []
@@ -132,7 +133,7 @@ def create_yandex_order():
                 orders.append(order_record)
                 
                 # Save back to file
-                with open('static/data/orders.json', 'w', encoding='utf-8') as f:
+                with open(os.path.join(DATA_DIR, 'orders.json'), 'w', encoding='utf-8') as f:
                     json.dump(orders, f, ensure_ascii=False, indent=2)
                     
                 print(f"Order {order_id} saved to orders.json with enhanced information")
@@ -161,4 +162,70 @@ def payment_success():
     # Try to get order ID from session or use timestamp
     order_id = session.get('last_order_id', f"{int(now.timestamp() * 1000)}")
     
+    # Send email notification for the order
+    try:
+        # Load the order data from orders.json
+        with open(os.path.join(DATA_DIR, 'orders.json'), 'r', encoding='utf-8') as f:
+            orders = json.load(f)
+        
+        # Find the order by ID
+        order_data = None
+        for order in orders:
+            if order.get('order_id') == order_id:
+                order_data = order
+                break
+        
+        if order_data:
+            # Send email notification
+            email_sent = email_service.send_order_notification(order_data)
+            if email_sent:
+                print(f"Email notification sent for order {order_id}")
+            else:
+                print(f"Failed to send email notification for order {order_id}")
+        else:
+            print(f"Order {order_id} not found in orders.json")
+            
+    except Exception as e:
+        print(f"Error sending email notification: {e}")
+    
     return render_template('payment_success.html', now=now, order_id=order_id)
+
+@pay_bp.route("/test-email")
+def test_email():
+    """Test route to verify email functionality"""
+    try:
+        # Create test order data
+        test_order = {
+            'order_id': 'test-12345678',
+            'customer_info': {
+                'name': 'Тестовый Клиент',
+                'phone': '+7 (999) 123-45-67',
+                'address': 'г. Москва, ул. Тестовая, д. 1'
+            },
+            'cart_items': [
+                {
+                    'productName': 'Жареный кешью',
+                    'quantity': 2,
+                    'price': 949
+                },
+                {
+                    'productName': 'Орехи Макадамия',
+                    'quantity': 1,
+                    'price': 799
+                }
+            ],
+            'subtotal': 2697,
+            'delivery': 0,
+            'total': 2697
+        }
+        
+        # Send test email
+        email_sent = email_service.send_order_notification(test_order)
+        
+        if email_sent:
+            return jsonify({"success": True, "message": "Test email sent successfully"})
+        else:
+            return jsonify({"success": False, "message": "Failed to send test email"})
+            
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})

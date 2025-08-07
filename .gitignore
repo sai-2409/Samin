@@ -18,5 +18,11 @@ config.py
 # Ignore the orders.json file
 static/data/orders.json
 
+# Ignore notifications file
+static/data/notifications.json
+
 # Node modules
 node_modules
+
+# Private email notifications (contains sensitive order data)
+private/

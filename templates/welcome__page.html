@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Google fonts and icons-->
-
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -21,6 +19,57 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsiveWelcomePage.css') }}">
+    
+    <!-- Custom styles for enhanced welcome page -->
+    <style>
+        .button__welcome-yandexID:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 35px var(--color-primary) !important;
+        }
+        
+        .benefit-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .animate-fade-in-delay-1 {
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+        
+        .animate-fade-in-delay-2 {
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+        
+        .animate-fade-in-delay-3 {
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+    </style>
+    
     <!-- Title icon for the website -->
     <title>Samin</title>
 </head>
@@ -40,24 +89,84 @@
         </div>
         
         <div class="right">
-            <div class="form-container">
-            <h2>Регистрация</h2>
-            <label for="phone">Номер Телефона</label>
-            <input class="input input__welcome" type="text" placeholder="Номер Телефона">
-            <label for="password">Пароль</label>
-            <input class="input input__welcome" type="password" placeholder="Пароль">
-            <p class="login__link">Уже есть аккаунт?</p> 
-            <div class="welcome__buttons-all">
-                <button class="button button__welcome">Зарегистрироваться</button>
-                <button class="button button__welcome" href="#">Войти</button>   
-            </div> 
-            <a class="button__welcome button__welcome-yandexID"
-            href="/login"
-            style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
-                <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">
-                Войти с Яндекс ID
-            </a>
-            </div>
+            {% if user %}
+                <!-- User is logged in -->
+                <div class="form-container">
+                    <h2>Добро пожаловать!</h2>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" 
+                             alt="avatar" 
+                             style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px;">
+                        <h3>{{ user.real_name or user.display_name or user.login }}</h3>
+                        {% if just_logged_in %}
+                            <p style="color: #4CAF50; margin: 10px 0;">✅ Успешный вход в систему!</p>
+                        {% endif %}
+                    </div>
+                    <div class="welcome__buttons-all">
+                        <a href="/" class="button button__welcome" style="text-decoration: none; display: inline-block; text-align: center;">Перейти на главную</a>
+                        <a href="/user_orders" class="button button__welcome" style="text-decoration: none; display: inline-block; text-align: center;">Мои заказы</a>
+                    </div>
+                    <a href="/logout" class="button__welcome button__welcome-yandexID"
+                       style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 15px;">
+                        <span style="font-size: 20px;">🚪</span>
+                        Выйти
+                    </a>
+                </div>
+            {% else %}
+                <!-- User is not logged in - Beautiful Yandex ID only design -->
+                <div class="form-container welcome-card animate-fade-in" style="text-align: center; padding: 40px 20px; border-radius: 20px;">
+                    <div class="animate-fade-in-delay-1" style="margin-bottom: 30px;">
+                        <div class="benefit-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);">
+                            <span style="font-size: 40px;">🥜</span>
+                        </div>
+                        <h2 style="font-size: 28px; color: #333; margin-bottom: 10px; font-weight: 600;">Добро пожаловать в SAMIN</h2>
+                        <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
+                            Войдите в систему, чтобы получить доступ к эксклюзивным ореховым деликатесам
+                        </p>
+                    </div>
+
+                    <!-- Benefits section -->
+                    <div class="animate-fade-in-delay-2" style="display: flex; justify-content: space-around; margin-bottom: 40px; flex-wrap: wrap; gap: 20px;">
+                        <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="benefit-icon" style="width: 50px; height: 50px; background: linear-gradient(135deg, #4CAF50, #45a049); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                                <span style="font-size: 24px;">🚚</span>
+                            </div>
+                            <p style="font-size: 14px; color: #555; font-weight: 500;">Быстрая доставка</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="benefit-icon" style="width: 50px; height: 50px; background: linear-gradient(135deg, #2196F3, #1976D2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);">
+                                <span style="font-size: 24px;">💳</span>
+                            </div>
+                            <p style="font-size: 14px; color: #555; font-weight: 500;">Безопасная оплата</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="benefit-icon" style="width: 50px; height: 50px; background: linear-gradient(135deg, #FF9800, #F57C00); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);">
+                                <span style="font-size: 24px;">⭐</span>
+                            </div>
+                            <p style="font-size: 14px; color: #555; font-weight: 500;">Премиум качество</p>
+                        </div>
+                    </div>
+
+                    <!-- Yandex ID Login Button -->
+                    <div class="animate-fade-in-delay-3" style="margin-bottom: 30px;">
+                        <a class="button__welcome button__welcome-yandexID"
+                           href="/login"
+                           style="display: flex; align-items: center; justify-content: center; gap: 12px; text-decoration: none; background: linear-gradient(135deg, #FF0000, #CC0000); color: white; padding: 16px 32px; border-radius: 12px; font-size: 18px; font-weight: 600; box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3); transition: all 0.3s ease; max-width: 300px; margin: 0 auto;">
+                            <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="32px" height="32px" alt="Yandex ID">
+                            Войти с Яндекс ID
+                        </a>
+                    </div>
+
+                    <!-- Additional info -->
+                    <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 20px; border-radius: 12px; margin-top: 30px; border: 1px solid rgba(0,0,0,0.05);">
+                        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 0;">
+                            <strong>Почему Яндекс ID?</strong><br>
+                            Быстрый и безопасный вход без необходимости запоминать пароли. 
+                            Ваши данные защищены технологиями Яндекса.
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
             <div class="welcome">
             <h1>Добро пожаловать !</h1>
             <div class="welcome__line"></div>

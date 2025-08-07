@@ -4,14 +4,14 @@ from flask import Blueprint, request, jsonify, render_template, session
 import json
 import os
 from datetime import datetime
-from config import SECRET_KEY
+from config import SECRET_KEY, UPLOADS_DIR, ALLOWED_EXTENSIONS, MAX_FILE_SIZE
 from werkzeug.utils import secure_filename
+import uuid
 
 review_bp = Blueprint("review", __name__)
 
-# Configure upload settings
-UPLOAD_FOLDER = 'static/uploads/reviews'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+# Use configuration variables instead of hardcoded values
+UPLOAD_FOLDER = os.path.join(UPLOADS_DIR, 'reviews')
 
 # Create upload directory if it doesn't exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -235,13 +235,12 @@ def reviews_page():
 
 def generate_review_id():
     """Generate a unique review ID"""
-    import uuid
     return str(uuid.uuid4())
 
 def load_reviews():
     """Load reviews from JSON file"""
     try:
-        with open('static/data/reviews.json', 'r', encoding='utf-8') as f:
+        with open(os.path.join(DATA_DIR, 'reviews.json'), 'r', encoding='utf-8') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
@@ -249,7 +248,7 @@ def load_reviews():
 def load_orders():
     """Load orders from JSON file"""
     try:
-        with open('static/data/orders.json', 'r', encoding='utf-8') as f:
+        with open(os.path.join(DATA_DIR, 'orders.json'), 'r', encoding='utf-8') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return []
@@ -262,7 +261,7 @@ def save_review(review):
 
 def save_reviews_to_file(reviews):
     """Save reviews list to JSON file"""
-    with open('static/data/reviews.json', 'w', encoding='utf-8') as f:
+    with open(os.path.join(DATA_DIR, 'reviews.json'), 'w', encoding='utf-8') as f:
         json.dump(reviews, f, ensure_ascii=False, indent=2)
 
 def has_user_purchased_product(user_id, product_id, order_id):

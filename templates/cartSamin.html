@@ -18,35 +18,479 @@
       rel="stylesheet"
     />
     <!-- Better favicon support -->
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo__walnuts-print-version.png') }}" />
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo__walnuts-print-version.png') }}" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo__walnuts-print-version.png') }}"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="{{ url_for('static', filename='images/logo__walnuts-print-version.png') }}"
+    />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsiveCart.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/animation.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleCartSamin.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/responsiveCart.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/animation.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styleCartSamin.css') }}"
+    />
+
+    <!-- Notification System Styles -->
+    <style>
+      /* Floating Notification System */
+      .floating-notifications {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 1000;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .floating-notifications:hover {
+        transform: scale(1.1);
+      }
+
+      .notification-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #ff6b6b, #ff5252);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .notification-icon:hover {
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        transform: translateY(-2px);
+      }
+
+      .notification-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: white;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: linear-gradient(135deg, #ff9800, #ff5722);
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .notification-panel {
+        position: fixed;
+        bottom: 90px;
+        left: 20px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .notification-panel.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .notification-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .notification-header h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .notification-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #666;
+        padding: 4px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .notification-close:hover {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      .notification-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .notification-item {
+        padding: 12px 20px;
+        border-bottom: 1px solid #f8f8f8;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .notification-item:hover {
+        background: #f8f9fa;
+      }
+
+      .notification-item:last-child {
+        border-bottom: none;
+      }
+
+      .notification-item.unread {
+        background: #fff3cd;
+        border-left: 4px solid #ff9800;
+      }
+
+      .notification-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 4px;
+      }
+
+      .notification-message {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.4;
+      }
+
+      .notification-time {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      .notification-empty {
+        padding: 40px 20px;
+        text-align: center;
+        color: #666;
+      }
+
+      .notification-empty svg {
+        width: 48px;
+        height: 48px;
+        fill: #ddd;
+        margin-bottom: 12px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .floating-notifications {
+          bottom: 15px;
+          left: 15px;
+        }
+
+        .notification-panel {
+          width: 280px;
+          left: 15px;
+          bottom: 85px;
+        }
+      }
+    </style>
+
+    <!-- Coding for the header of the website -->
+    <header class="header">
+      <div class="header__container">
+        <nav class="nav">
+          <div class="header__logos">
+            <img
+              src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+              alt="SAMIN логотип"
+              class="header__logo"
+            />
+            <div class="logo__name">
+              <h2 class="header__samin">SAMIN</h2>
+              <p class="header__statement">
+                Открывайте. Побалуйте. Процветайте.
+              </p>
+            </div>
+          </div>
+          <!-- <nav class="nav__small-screens">
+            {% if user %}
+            <div class="header__profile header__profile-small-screens">
+              <img
+                src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
+                alt="avatar"
+              />
+              <span>{{ user.login }}</span>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/user_orders" class="header__profile-logout"
+                  >Мои Заказы</a
+                >
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
+            </div>
+            {% else %}
+            <a
+              class="header__button-yandexID header__button-yandexID-small-screens"
+              href="/login"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                text-decoration: none;
+              "
+              ><img
+                src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}"
+                width="30px"
+                height="30px"
+                alt="Yandex ID"
+              />Войти c Яндекс ID</a
+            >
+            {% endif %}
+            <button id="toggleBtn">☰ Меню</button>
+          </nav> -->
+
+          <!-- Overlay -->
+          <div id="overlay" class="overlay"></div>
+
+          <!-- Sidebar -->
+          <!-- <div id="sidebar" class="sidebar">
+            <button id="closeBtn" class="close-btn">✖</button>
+            <ul>
+              <li>
+                <a href="/"><span>🏡</span> Главная</a>
+              </li>
+              <li>
+                <a href="#section__2"><span>🌟</span> Достоинства</a>
+              </li>
+              <li>
+                <a href="#section__3"><span>🥜</span> Меню</a>
+              </li>
+              <li>
+                <a href="#section__4"><span>💬</span> Отзывы</a>
+              </li>
+              <li>
+                <a href="/cart"><span>🛒</span> Корзина</a>
+              </li>
+            </ul>
+          </div> -->
+          <!-- <div class="header__list">
+            <ul>
+              <li class="header__list-item">
+                <a href="/" class="nav__link nav__btn1">Главная</a>
+              </li>
+              <li class="header__list-item">
+                <a href="#section__2" class="nav__link nav__btn2"
+                  >Достоинства</a
+                >
+              </li>
+              <li class="header__list-item">
+                <a href="#section__3" class="nav__link nav__btn3">Меню</a>
+              </li>
+
+              <li class="header__list-item">
+                <a href="#section__4" class="nav__link nav__btn4">Отзывы</a>
+              </li>
+              <li class="header__list-item">
+                <a
+                  href="/cart"
+                  class="nav__link"
+                  style="color: #4caf50; font-weight: bold"
+                  >Корзина</a
+                >
+              </li>
+            </ul>
+          </div> -->
+          <!-- <div class="header__order">
+            <img
+              src="{{ url_for('static', filename='images/icons/cart__icon.svg') }}"
+              alt="Cart"
+              class="header__cart"
+            /> -->
+            <!-- Puting Yandex Market ID avatar -->
+            {% if user %}
+            <div class="header__profile">
+              <img
+                src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
+                alt="avatar"
+              />
+              <span>{{ user.login }}</span>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/user_orders" class="header__profile-logout"
+                  >Мои Заказы</a
+                >
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
+            </div>
+            {% else %}
+            <a
+              class="header__button-yandexID"
+              href="/login"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                text-decoration: none;
+              "
+              ><img
+                src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}"
+                width="30px"
+                height="30px"
+                alt="Yandex ID"
+              />Войти c Яндекс ID</a
+            >
+            {% endif %}
+            <!-- Puting Yandex Market ID avatar -->
+            <!-- <button class="header__button common__button">Заказать</button> -->
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Coding for the header of the website -->
 
     <!-- Title for the website -->
     <title>Samin</title>
   </head>
-  <body>
-
-
+  <body {% if user %}data-user-login="{{ user.login }}" {% endif %}>
     <!-- I will put the main cart here for a moment --><!-- I will put the main cart here for a moment -->
     <div class="floating-cart home__page-back">
-      <img src="{{ url_for('static', filename='images/icons/House_01.svg') }}" alt="HomePage" />
+      <img
+        src="{{ url_for('static', filename='images/icons/House_01.svg') }}"
+        alt="HomePage"
+      />
     </div>
     <!-- I will put the main cart here for a moment -->
 
+    <!-- Floating Notification System -->
+    <div class="floating-notifications" onclick="toggleNotificationPanel()">
+      <div class="notification-icon">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+          />
+        </svg>
+        <div class="notification-badge" id="notification-count">0</div>
+      </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notification-panel">
+      <div class="notification-header">
+        <h3>Уведомления</h3>
+        <button class="notification-close" onclick="toggleNotificationPanel()">
+          ✕
+        </button>
+      </div>
+      <div class="notification-list" id="notification-list">
+        <!-- Notifications will be loaded here -->
+      </div>
+    </div>
+
     <!-- Start building -->
+
+    <!-- Login Success Message -->
+    {% if just_logged_in and user %}
+    <div
+      style="
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        margin: 20px auto;
+        max-width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        "
+      >
+        <span style="font-size: 24px">✅</span>
+        <div>
+          <h3 style="margin: 0 0 5px 0; font-size: 18px">
+            Добро пожаловать, {{ user.real_name or user.display_name or
+            user.login }}!
+          </h3>
+          <p style="margin: 0; font-size: 14px; opacity: 0.9">
+            Вы успешно вошли в систему. Теперь вы можете оформить заказ.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <section class="items">
       <div class="common__container">
         <div class="head">
-          <img src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}" alt="Logotype" />
+          <!-- <img
+            src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+            alt="Logotype"
+          /> -->
           <h1 class="common__header head__header">Корзина</h1>
-          <img src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}" alt="Logotype" />
+          <!-- <img
+            src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+            alt="Logotype"
+          /> -->
         </div>
       </div>
     </section>
@@ -232,100 +676,95 @@
           ></div> -->
         </div>
       </div>
-
     </section>
     <!-- Coding choosing address for the cart page -->
 
     <section class="payment">
-        <div class="payment__container">
-          <div class="payment__delivery-methods">
-            <div
-              class="payment__delivery-method payment__delivery-method--active"
+      <div class="payment__container">
+        <div class="payment__delivery-methods">
+          <div
+            class="payment__delivery-method payment__delivery-method--active"
+          >
+            <div class="payment__delivery-title">Курьер Samin</div>
+            <div class="payment__delivery-desc">Завтра или позже</div>
+            <div class="payment__delivery-free" id="payment-delivery-cost">
+              99₽
+            </div>
+            <div class="payment__delivery-check"><span>✔</span></div>
+          </div>
+        </div>
+        <div class="payment__date-block">
+          <div class="payment__date-title">
+            Завтра, курьером по клику
+            <span class="payment__date-info">Курьер Samin</span>
+          </div>
+          <div class="payment__date-options">
+            <button class="payment__date-btn payment__date-btn--active">
+              Сегодня<br /><span>0₽</span>
+            </button>
+            <button class="payment__date-btn">
+              Завтра<br /><span>0₽</span>
+            </button>
+            <button class="payment__date-btn">
+              Послезавтра<br /><span>0₽</span>
+            </button>
+            <button class="payment__date-btn">
+              сб, 05.07<br /><span>0₽</span>
+            </button>
+            <button class="payment__date-btn">
+              вс, 06.07<br /><span>0₽</span>
+            </button>
+            <button class="payment__date-btn">
+              пн, 07.07<br /><span>0₽</span>
+            </button>
+          </div>
+        </div>
+        <div class="payment__address-row">
+          <div class="payment__address-info">
+            <span class="payment__address-label">Адрес</span>
+            <span class="payment__address-value" id="payment-address-value"
+              >—</span
             >
-              <div class="payment__delivery-title">Курьер Samin</div>
-              <div class="payment__delivery-desc">Завтра или позже</div>
-              <div class="payment__delivery-free" id="payment-delivery-cost">
-                99₽
-              </div>
-              <div class="payment__delivery-check"><span>✔</span></div>
-            </div>
           </div>
-          <div class="payment__date-block">
-            <div class="payment__date-title">
-              Завтра, курьером по клику
-              <span class="payment__date-info"
-                >Курьер Samin</span
-              >
-            </div>
-            <div class="payment__date-options">
-              <button class="payment__date-btn payment__date-btn--active">
-                Сегодня<br /><span>0₽</span>
-              </button>
-              <button class="payment__date-btn">
-                Завтра<br /><span>0₽</span>
-              </button>
-              <button class="payment__date-btn">
-                Послезавтра<br /><span>0₽</span>
-              </button>
-              <button class="payment__date-btn">
-                сб, 05.07<br /><span>0₽</span>
-              </button>
-              <button class="payment__date-btn">
-                вс, 06.07<br /><span>0₽</span>
-              </button>
-              <button class="payment__date-btn">
-                пн, 07.07<br /><span>0₽</span>
-              </button>
-            </div>
-          </div>
-          <div class="payment__address-row">
-            <div class="payment__address-info">
-              <span class="payment__address-label">Адрес</span>
-              <span class="payment__address-value" id="payment-address-value"
-                >—</span
-              >
-            </div>
-            <div class="payment__recipient-info">
-              <span class="payment__recipient-label">Получатель</span>
-              <span
-                class="payment__recipient-value"
-                id="payment-recipient-value"
-                >—</span
-              >
-              <span
-                class="payment__recipient-phone"
-                id="payment-recipient-phone"
-              ></span>
-            </div>
-          </div>
-          <div class="payment__toggles">
-            <label class="payment__toggle">
-              <input type="checkbox" />
-              <span class="payment__toggle-slider"></span>
-              Оставить у двери
-            </label>
-            <label class="payment__toggle">
-              <input type="checkbox" />
-              <span class="payment__toggle-slider"></span>
-              Передать на руки
-            </label>
-            <label class="payment__toggle">
-              <input type="checkbox" />
-              <span class="payment__toggle-slider"></span>
-              Не звонить
-            </label>
-          </div>
-          <div class="payment__products-row" id="payment-products-row">
-            <!-- JS will render cart items here -->
+          <div class="payment__recipient-info">
+            <span class="payment__recipient-label">Получатель</span>
+            <span class="payment__recipient-value" id="payment-recipient-value"
+              >—</span
+            >
             <span
-              class="payment__products-total"
-              id="payment-products-total"
+              class="payment__recipient-phone"
+              id="payment-recipient-phone"
             ></span>
           </div>
         </div>
-        <div class="payment__summary">
-          <div class="payment__summary-header">
-            <!-- <div class="payment__summary-cards">
+        <div class="payment__toggles">
+          <label class="payment__toggle">
+            <input type="checkbox" />
+            <span class="payment__toggle-slider"></span>
+            Оставить у двери
+          </label>
+          <label class="payment__toggle">
+            <input type="checkbox" />
+            <span class="payment__toggle-slider"></span>
+            Передать на руки
+          </label>
+          <label class="payment__toggle">
+            <input type="checkbox" />
+            <span class="payment__toggle-slider"></span>
+            Не звонить
+          </label>
+        </div>
+        <div class="payment__products-row" id="payment-products-row">
+          <!-- JS will render cart items here -->
+          <span
+            class="payment__products-total"
+            id="payment-products-total"
+          ></span>
+        </div>
+      </div>
+      <div class="payment__summary">
+        <div class="payment__summary-header">
+          <!-- <div class="payment__summary-cards">
               <div
                 id="payment-added-cards"
                 style="display: flex; gap: 8px"
@@ -344,50 +783,47 @@
                 >Добавить карту
               </button>
             </div> -->
-            <!-- <div class="payment__summary-info">
+          <!-- <div class="payment__summary-info">
               <div>1398₽</div>
             </div> -->
-          </div>
-          <div
-            class="payment__summary-products-row"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              font-size: 16px;
-              font-weight: 600;
-              margin-bottom: 8px;
-              color: #222;
-            "
-          >
-            <span id="payment-summary-products-count">2 товара</span>
-            <span id="payment-summary-products-total">1398₽</span>
-          </div>
-          <div class="payment__summary-row">
-            <span>Выгода</span>
-            <span class="payment__summary-discount">-500₽</span>
-          </div>
-          <div class="payment__summary-row">
-            <span>Доставка и сервисы</span>
-            <span id="payment-summary-delivery-cost">0₽</span>
-          </div>
-          <div class="payment__summary-row">
-            <span>Промокод</span>
-            <div class="payment-summary-delivery-cost">без промокода</div>
-          </div>
-          <div class="payment__summary-row payment__summary-row--total">
-            <span>Оплата онлайн</span>
-            <span class="payment__summary-total">657₽</span>
-          </div>
-          
-          <div id="yandex-pay-button-container" style="display: none;"></div>
-          <div id="yandex-pay-button"></div>
-          
-          
-          <div class="payment__secure">
-            Безопасная оплата
-          </div>
         </div>
+        <div
+          class="payment__summary-products-row"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #222;
+          "
+        >
+          <span id="payment-summary-products-count">2 товара</span>
+          <span id="payment-summary-products-total">1398₽</span>
+        </div>
+        <div class="payment__summary-row">
+          <span>Выгода</span>
+          <span class="payment__summary-discount">-500₽</span>
+        </div>
+        <div class="payment__summary-row">
+          <span>Доставка и сервисы</span>
+          <span id="payment-summary-delivery-cost">0₽</span>
+        </div>
+        <div class="payment__summary-row">
+          <span>Промокод</span>
+          <div class="payment-summary-delivery-cost">без промокода</div>
+        </div>
+        <div class="payment__summary-row payment__summary-row--total">
+          <span>Оплата онлайн</span>
+          <span class="payment__summary-total">657₽</span>
+        </div>
+
+        <div id="yandex-pay-button-container" style="display: none"></div>
+        <div id="yandex-pay-button"></div>
+
+        <div class="payment__secure">Безопасная оплата <br />с Яндекс Pay</div>
+      </div>
     </section>
     <!-- Coding for the footer of the website  -->
     <footer class="footer">
@@ -432,13 +868,15 @@
         </div>
         <div class="footer__others footer__company">
           <h2 class="footer__mini-header">О компании</h2>
-          <button class="footer__dropdown-btn" onclick="toggleCompanyInfo()">Юридическое лицо</button>
+          <button class="footer__dropdown-btn" onclick="toggleCompanyInfo()">
+            Юридическое лицо
+          </button>
           <div id="company-info" class="footer__dropdown-content">
-            ИП Самиджонов Сухроб <br>
-            ИНН: 561018294789 <br>
-            Адрес: Калужское шоссе 10, Мамыри, Москва, 129090<br>
-            Телефон: +7 (999) 341-21-51 <br>
-            Email: samin2409@mail.ru <br>
+            ИП Самиджонов Сухроб <br />
+            ИНН: 561018294789 <br />
+            Адрес: Калужское шоссе 10, Мамыри, Москва, 129090<br />
+            Телефон: +7 (999) 341-21-51 <br />
+            Email: samin2409@mail.ru <br />
           </div>
         </div>
         <div class="footer__map">
@@ -462,6 +900,77 @@
     <!-- Coding for the footer of the website  -->
 
     <!-- Writing html structure for the payment modal -->
+
+    <!-- Address Selection Modal -->
+    <div id="address-modal" class="address-modal" style="display: none">
+      <div class="address-modal__overlay"></div>
+      <div class="address-modal__content">
+        <div class="address-modal__header">
+          <h3 class="address-modal__title">Выберите адрес доставки</h3>
+          <button class="address-modal__close" onclick="hideAddressModal()">
+            ×
+          </button>
+        </div>
+        <div class="address-modal__body">
+          <p class="address-modal__message">
+            Выберите пожалуйста адрес доставки чтобы мы смогли привезти ваши
+            орешки
+          </p>
+        </div>
+        <div class="address-modal__footer">
+          <button class="address-modal__btn" onclick="hideAddressModal()">
+            Понятно
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Address Selection Modal -->
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal" style="display: none">
+      <div class="login-modal__overlay"></div>
+      <div class="login-modal__content">
+        <div class="login-modal__header">
+          <h3 class="login-modal__title">Войдите в аккаунт</h3>
+          <button class="login-modal__close" onclick="hideLoginModal()">
+            ×
+          </button>
+        </div>
+        <div class="login-modal__body">
+          <div class="login-modal__logo">
+            <img
+              src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+              alt="Samin Logo"
+              class="login-modal__logo-img"
+            />
+          </div>
+          <p class="login-modal__message">
+            Для оформления заказа необходимо войти в аккаунт
+          </p>
+          <div class="login-modal__benefits">
+            <div class="login-modal__benefit">
+              <span class="login-modal__benefit-icon">📦</span>
+              <span>Отслеживание заказов</span>
+            </div>
+            <div class="login-modal__benefit">
+              <span class="login-modal__benefit-icon">💳</span>
+              <span>Быстрое оформление</span>
+            </div>
+            <div class="login-modal__benefit">
+              <span class="login-modal__benefit-icon">🎁</span>
+              <span>Персональные скидки</span>
+            </div>
+          </div>
+        </div>
+        <div class="login-modal__footer">
+          <a href="/login" class="login-modal__btn">
+            <span class="login-modal__yandex-icon">👤</span>
+            Войти через Яндекс ID
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Login Modal -->
 
     <!-- Card Add Modal -->
     <div id="add-card-modal" class="add-card-modal" style="display: none">
@@ -511,7 +1020,7 @@
     </div>
 
     <!-- Success Payment Modal -->
-    <div class="modal-success" style="display: none;">
+    <div class="modal-success" style="display: none">
       <div class="modal-content">
         <div class="modal-title">Мы получили ваш заказ</div>
         <div class="success-icon">
@@ -535,9 +1044,7 @@
             />
           </svg>
         </div>
-        <div class="modal-btn">
-          Урааааа!
-        </div>
+        <div class="modal-btn">Урааааа!</div>
       </div>
     </div>
     <!-- Success Payment Modal -->
@@ -569,5 +1076,169 @@
         }
       });
     </script> -->
+
+    <!-- Notification System JavaScript -->
+    <script>
+      let notificationPanelVisible = false;
+      let notifications = [];
+
+      // Toggle notification panel
+      function toggleNotificationPanel() {
+        const panel = document.getElementById("notification-panel");
+        notificationPanelVisible = !notificationPanelVisible;
+
+        if (notificationPanelVisible) {
+          panel.classList.add("show");
+          loadNotifications();
+        } else {
+          panel.classList.remove("show");
+        }
+      }
+
+      // Load notifications from server
+      function loadNotifications() {
+        const user = document.querySelector("[data-user-login]");
+        if (!user) {
+          showEmptyNotifications();
+          return;
+        }
+
+        fetch("/api/get-notifications")
+          .then((response) => response.json())
+          .then((data) => {
+            notifications = data.notifications || [];
+            updateNotificationBadge();
+            displayNotifications();
+          })
+          .catch((error) => {
+            console.error("Error loading notifications:", error);
+            showEmptyNotifications();
+          });
+      }
+
+      // Update notification badge count
+      function updateNotificationBadge() {
+        const badge = document.getElementById("notification-count");
+        const unreadCount = notifications.filter((n) => !n.read).length;
+        badge.textContent = unreadCount;
+
+        if (unreadCount > 0) {
+          badge.style.display = "flex";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+
+      // Display notifications in panel
+      function displayNotifications() {
+        const list = document.getElementById("notification-list");
+
+        if (notifications.length === 0) {
+          showEmptyNotifications();
+          return;
+        }
+
+        list.innerHTML = notifications
+          .map(
+            (notification) => `
+                <div class="notification-item ${
+                  notification.read ? "" : "unread"
+                }" 
+                     onclick="markNotificationRead('${notification.id}')">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${
+                      notification.message
+                    }</div>
+                    <div class="notification-time">${formatNotificationTime(
+                      notification.timestamp
+                    )}</div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Show empty state
+      function showEmptyNotifications() {
+        const list = document.getElementById("notification-list");
+        list.innerHTML = `
+                <div class="notification-empty">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                    </svg>
+                    <p>Нет новых уведомлений</p>
+                </div>
+            `;
+      }
+
+      // Mark notification as read
+      function markNotificationRead(notificationId) {
+        fetch("/api/mark-notification-read", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            notification_id: notificationId,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Update local notifications
+              notifications = notifications.map((n) =>
+                n.id === notificationId ? { ...n, read: true } : n
+              );
+              updateNotificationBadge();
+              displayNotifications();
+            }
+          })
+          .catch((error) => {
+            console.error("Error marking notification as read:", error);
+          });
+      }
+
+      // Format notification time
+      function formatNotificationTime(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now - date;
+
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return "Только что";
+        if (minutes < 60) return `${minutes} мин назад`;
+        if (hours < 24) return `${hours} ч назад`;
+        if (days < 7) return `${days} дн назад`;
+
+        return date.toLocaleDateString("ru-RU");
+      }
+
+      // Close panel when clicking outside
+      document.addEventListener("click", function (event) {
+        const panel = document.getElementById("notification-panel");
+        const notificationIcon = document.querySelector(
+          ".floating-notifications"
+        );
+
+        if (
+          !panel.contains(event.target) &&
+          !notificationIcon.contains(event.target)
+        ) {
+          panel.classList.remove("show");
+          notificationPanelVisible = false;
+        }
+      });
+
+      // Initialize notifications on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        loadNotifications();
+
+        // Check for new notifications every 30 seconds
+        setInterval(loadNotifications, 30000);
+      });
+    </script>
   </body>
 </html>

@@ -18,6 +18,9 @@
       rel="stylesheet"
     />
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Connecting the logo to the browser tab -->
     <link
     rel="shortcut icon"
@@ -25,6 +28,62 @@
     type="image/x-icon"
     />
     <title>Dashboard</title>
+    
+    <!-- Custom CSS for animated totals -->
+    <style>
+      @keyframes countUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes glow {
+        0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
+        50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
+      }
+      
+      @keyframes glowGreen {
+        0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.3); }
+        50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); }
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      
+      .animated-total {
+        animation: countUp 1s ease-out, glow 2s ease-in-out infinite;
+      }
+      
+      .animated-total-green {
+        animation: countUp 1s ease-out, glowGreen 2s ease-in-out infinite;
+      }
+      
+      .floating-icon {
+        animation: float 3s ease-in-out infinite;
+      }
+      
+      .gradient-text {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .gradient-text-green {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .gradient-text-orange {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    </style>
   </head>
   <body class="bg-gray-100 font-['Roboto'] min-h-screen">
     <div class="min-h-screen flex flex-col">
@@ -40,169 +99,299 @@
             Samin Admin Dashboard
           </h1>
         </div>
-        <div class="text-gray-600 font-medium">Добро пожаловать, Админ!</div>
+        <div class="flex items-center gap-4">
+          <div class="text-gray-600 font-medium">Добро пожаловать, Самиджонов!</div>
+          <a href="/admin/email-notifications" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
+            📧 Уведомления о заказах
+          </a>
+        </div>
       </header>
 
       <!-- Main Content -->
       <main class="flex-1 p-8 flex flex-col gap-8 max-w-7xl mx-auto w-full">
+        <!-- Total Sales Summary -->
+        <div class="bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 text-center">
+          <h2 class="text-2xl font-bold text-orange-800 mb-2">Общие продажи</h2>
+          <div class="text-5xl font-bold gradient-text-orange mb-2">
+            ₽ {{ (active_orders + delivered_orders) | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+          </div>
+          <p class="text-orange-600 font-medium">{{ (active_orders + delivered_orders)|length }} заказов всего</p>
+        </div>
+
         <!-- Sales Overview -->
-        <section
-          class="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row items-center justify-between gap-6"
-        >
-          <div>
-            <h2 class="text-xl font-semibold text-gray-800 mb-2">
-              Продажи за сегодня
-            </h2>
-            <div class="text-4xl font-bold text-green-600">
-              ₽ {{ orders | selectattr('order_id') | map(attribute='total') |
-              map('float') | sum | default(0) | round(2) }}
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Active Orders Sales -->
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
+            <!-- Animated background elements -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-300 rounded-full opacity-30 animate-bounce"></div>
+            
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-blue-800">
+                  Активные заказы
+                </h2>
+                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center floating-icon">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <div class="text-4xl font-bold gradient-text animated-total mb-2">
+                ₽ {{ active_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+              </div>
+              
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-blue-600 font-medium">{{ active_orders|length }} заказов</span>
+                <span class="text-blue-500">В обработке</span>
+              </div>
             </div>
           </div>
-          <div class="flex items-center gap-4">
-            <span class="text-gray-500">Обновлено:</span>
-            <span class="text-gray-700"
-              >{{ moment().format('HH:mm') if moment else '--:--' }}</span
-            >
+
+          <!-- Delivered Orders Sales -->
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
+            <!-- Animated background elements -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full opacity-20 animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce"></div>
+            
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-green-800">
+                  Доставленные заказы
+                </h2>
+                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center floating-icon">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <div class="text-4xl font-bold gradient-text-green animated-total-green mb-2">
+                ₽ {{ delivered_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+              </div>
+              
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-green-600 font-medium">{{ delivered_orders|length }} заказов</span>
+                <span class="text-green-500">Завершено</span>
+              </div>
+            </div>
           </div>
         </section>
 
-        <!-- Orders Table -->
+        <!-- Daily Orders Chart -->
+        <section class="bg-white rounded-2xl shadow p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-800">
+              📊 Заказы по дням
+            </h2>
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-500">Последние 7 дней</span>
+              <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+          
+          <div class="relative">
+            <canvas id="dailyOrdersChart" width="400" height="200"></canvas>
+          </div>
+          
+          <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+            <div class="bg-blue-50 rounded-lg p-3">
+              <div class="text-2xl font-bold text-blue-600" id="todayOrders">0</div>
+              <div class="text-sm text-blue-500">Сегодня</div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-3">
+              <div class="text-2xl font-bold text-green-600" id="weekOrders">0</div>
+              <div class="text-sm text-green-500">За неделю</div>
+            </div>
+            <div class="bg-orange-50 rounded-lg p-3">
+              <div class="text-2xl font-bold text-orange-600" id="avgOrders">0</div>
+              <div class="text-sm text-orange-500">В среднем</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Active Orders Table -->
         <section class="bg-white rounded-2xl shadow p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            Информация о заказах
+            Активные заказы ({{ active_orders|length }}) 
+            <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
           </h2>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    ID заказа
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Дата заказа
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Клиент
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Адрес доставки
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Дата доставки
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Примечания
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Сумма
-                  </th>
-                  <th
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Статус
-                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Клиент</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес доставки</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата доставки</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Примечания</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Сумма</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-100">
-                {% if orders %} {% for order in orders %} {% if order.order_id
-                %}
-                <tr class="hover:bg-gray-50">
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    {{ order.order_id[:8] }}...
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ order.timestamp.split('T')[0] if order.timestamp else
-                    'N/A' }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <div class="flex flex-col">
-                      <span class="font-medium"
-                        >{{ order.customer_info.name if order.customer_info else
-                        'Не указано' }}</span
-                      >
-                      <span class="text-gray-500"
-                        >{{ order.customer_info.phone if order.customer_info
-                        else 'Не указано' }}</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">
-                    <div class="truncate">
-                      {{ order.customer_info.address if order.customer_info else
-                      'Не указано' }}
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ order.delivery_date if order.delivery_date else 'Не
-                    выбрана' }}
-                  </td>
-                  <td class="px-6 py-4 text-sm text-gray-900">
-                    {% if order.delivery_notes %} {% for note in
-                    order.delivery_notes %}
-                    <span
-                      class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1"
-                    >
-                      {{ note }}
-                    </span>
-                    {% endfor %} {% else %}
-                    <span class="text-gray-400">Нет примечаний</span>
-                    {% endif %}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <div class="flex flex-col">
-                      <span class="font-medium">₽{{ order.total }}</span>
-                      {% if order.delivery and order.delivery != '0.00' %}
-                      <span class="text-xs text-gray-500"
-                        >Доставка: ₽{{ order.delivery }}</span
-                      >
-                      {% endif %}
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center space-x-2">
-                      <span
-                        class="inline-block px-3 py-1 rounded-full text-xs font-semibold
-                        {% if order.status == 'Оформлен' %}bg-blue-100 text-blue-700
-                        {% elif order.status == 'Собран' %}bg-yellow-100 text-yellow-700
-                        {% elif order.status == 'Отправлен' %}bg-orange-100 text-orange-700
-                        {% elif order.status == 'Доставлен' %}bg-green-100 text-green-700
-                        {% else %}bg-gray-100 text-gray-700{% endif %}"
-                      >
-                        {{ order.status if order.status else 'Оформлен' }}
-                      </span>
-                      <select 
-                        class="order-status-select text-xs border border-gray-300 rounded px-2 py-1 bg-white"
-                        data-order-id="{{ order.order_id }}"
-                        onchange="updateOrderStatus('{{ order.order_id }}', this.value)"
-                      >
-                        <option value="Оформлен" {% if order.status == 'Оформлен' %}selected{% endif %}>Оформлен</option>
-                        <option value="Собран" {% if order.status == 'Собран' %}selected{% endif %}>Собран</option>
-                        <option value="Отправлен" {% if order.status == 'Отправлен' %}selected{% endif %}>Отправлен</option>
-                        <option value="Доставлен" {% if order.status == 'Доставлен' %}selected{% endif %}>Доставлен</option>
-                      </select>
-                    </div>
+                {% if active_orders %} 
+                  {% for order in active_orders %} 
+                    {% if order.order_id %}
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ order.order_id[:8] }}...
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.timestamp.split('T')[0] if order.timestamp else 'N/A' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <div class="flex flex-col">
+                          <span class="font-medium">{{ order.customer_info.name if order.customer_info else 'Не указано' }}</span>
+                          <span class="text-gray-500">{{ order.customer_info.phone if order.customer_info else 'Не указано' }}</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">
+                        <div class="truncate">
+                          {{ order.customer_info.address if order.customer_info else 'Не указано' }}
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.delivery_date if order.delivery_date else 'Не выбрана' }}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900">
+                        {% if order.delivery_notes %} 
+                          {% for note in order.delivery_notes %}
+                          <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">
+                            {{ note }}
+                          </span>
+                          {% endfor %} 
+                        {% else %}
+                          <span class="text-gray-400">Нет примечаний</span>
+                        {% endif %}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ₽{{ order.total if order.total else '0' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <div class="flex items-center gap-2">
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                            {% if order.status == 'Оформлен' %}bg-yellow-100 text-yellow-800
+                            {% elif order.status == 'Собран' %}bg-blue-100 text-blue-800
+                            {% elif order.status == 'Отправлен' %}bg-purple-100 text-purple-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ order.status if order.status else 'Оформлен' }}
+                          </span>
+                          <select class="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-orange-500"
+                                  onchange="updateOrderStatus('{{ order.order_id }}', this.value)">
+                            <option value="Оформлен" {% if order.status == 'Оформлен' %}selected{% endif %}>Оформлен</option>
+                            <option value="Собран" {% if order.status == 'Собран' %}selected{% endif %}>Собран</option>
+                            <option value="Отправлен" {% if order.status == 'Отправлен' %}selected{% endif %}>Отправлен</option>
+                            <option value="Доставлен" {% if order.status == 'Доставлен' %}selected{% endif %}>Доставлен</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <button class="delete-order-btn text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded ml-2"
+                                data-order-id="{{ order.order_id }}"
+                                data-customer-name="{{ order.customer_info.name if order.customer_info else 'Клиент' }}"
+                                title="Удалить заказ">
+                          🗑️
+                        </button>
+                      </td>
+                    </tr>
+                    {% endif %} 
+                  {% endfor %} 
+                {% else %}
+                <tr>
+                  <td colspan="9" class="text-center py-6 text-gray-400">
+                    Нет активных заказов
                   </td>
                 </tr>
-                {% endif %} {% endfor %} {% else %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Delivered Orders Table -->
+        <section class="bg-white rounded-2xl shadow p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            Доставленные заказы ({{ delivered_orders|length }})
+            <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
                 <tr>
-                  <td colspan="8" class="text-center py-6 text-gray-400">
-                    Нет заказов
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Клиент</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес доставки</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата доставки</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Примечания</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Сумма</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                {% if delivered_orders %} 
+                  {% for order in delivered_orders %} 
+                    {% if order.order_id %}
+                    <tr class="hover:bg-gray-50 bg-green-50">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ order.order_id[:8] }}...
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.timestamp.split('T')[0] if order.timestamp else 'N/A' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <div class="flex flex-col">
+                          <span class="font-medium">{{ order.customer_info.name if order.customer_info else 'Не указано' }}</span>
+                          <span class="text-gray-500">{{ order.customer_info.phone if order.customer_info else 'Не указано' }}</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">
+                        <div class="truncate">
+                          {{ order.customer_info.address if order.customer_info else 'Не указано' }}
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.delivery_date if order.delivery_date else 'Не выбрана' }}
+                      </td>
+                      <td class="px-6 py-4 text-sm text-gray-900">
+                        {% if order.delivery_notes %} 
+                          {% for note in order.delivery_notes %}
+                          <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">
+                            {{ note }}
+                          </span>
+                          {% endfor %} 
+                        {% else %}
+                          <span class="text-gray-400">Нет примечаний</span>
+                        {% endif %}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ₽{{ order.total if order.total else '0' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Доставлен
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <button class="delete-order-btn text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded ml-2"
+                                data-order-id="{{ order.order_id }}"
+                                data-customer-name="{{ order.customer_info.name if order.customer_info else 'Клиент' }}"
+                                title="Удалить заказ">
+                          🗑️
+                        </button>
+                      </td>
+                    </tr>
+                    {% endif %} 
+                  {% endfor %} 
+                {% else %}
+                <tr>
+                  <td colspan="9" class="text-center py-6 text-gray-400">
+                    Нет доставленных заказов
                   </td>
                 </tr>
                 {% endif %}
@@ -212,13 +401,13 @@
         </section>
 
         <!-- Detailed Order Information -->
-        {% if orders %}
+        {% if active_orders %}
         <section class="bg-white rounded-2xl shadow p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            Детальная информация о заказах
+            Детальная информация о активных заказах
           </h2>
           <div class="grid md:grid-cols-2 gap-6">
-            {% for order in orders %} {% if order.order_id %}
+            {% for order in active_orders %} {% if order.order_id %}
             <div class="bg-gray-50 rounded-xl p-5 shadow">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="font-semibold text-gray-800">
@@ -338,11 +527,83 @@
       </main>
     </div>
 
+    <!-- Delete Order Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Удалить заказ</h3>
+              <button onclick="hideDeleteModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-700 mb-2">Вы собираетесь удалить заказ:</p>
+              <div class="bg-gray-100 p-3 rounded">
+                <p class="font-medium">ID: <span id="deleteOrderId"></span></p>
+                <p class="text-sm text-gray-600">Клиент: <span id="deleteCustomerName"></span></p>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-red-600 text-sm mb-2">⚠️ Внимание: Это действие нельзя отменить!</p>
+              <p class="text-gray-700 text-sm">Клиент получит уведомление об отмене заказа.</p>
+            </div>
+            
+            <div class="mb-4">
+              <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                Введите пароль администратора:
+              </label>
+              <input 
+                type="password" 
+                id="adminPassword" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Пароль администратора"
+              />
+            </div>
+            
+            <div class="mb-4">
+              <label for="deleteReason" class="block text-sm font-medium text-gray-700 mb-2">
+                Причина отмены заказа:
+              </label>
+              <textarea 
+                id="deleteReason" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Укажите причину отмены заказа (обязательно)"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+              <button 
+                onclick="hideDeleteModal()" 
+                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+              >
+                Отмена
+              </button>
+              <button 
+                onclick="deleteOrder()" 
+                class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                id="confirmDeleteBtn"
+              >
+                Удалить заказ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Function to update order status
       function updateOrderStatus(orderId, newStatus) {
-        // Show loading state
-        const selectElement = document.querySelector(`[data-order-id="${orderId}"]`);
+        // Get the select element that triggered this function
+        const selectElement = event.target;
         const originalValue = selectElement.value;
         
         // Send update request
@@ -361,23 +622,30 @@
           if (data.success) {
             // Update the status badge
             const statusBadge = selectElement.parentElement.querySelector('span');
-            statusBadge.textContent = newStatus;
-            
-            // Update badge colors based on status
-            statusBadge.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-              newStatus === 'Оформлен' ? 'bg-blue-100 text-blue-700' :
-              newStatus === 'Собран' ? 'bg-yellow-100 text-yellow-700' :
-              newStatus === 'Отправлен' ? 'bg-orange-100 text-orange-700' :
-              newStatus === 'Доставлен' ? 'bg-green-100 text-green-700' :
-              'bg-gray-100 text-gray-700'
-            }`;
+            if (statusBadge) {
+              statusBadge.textContent = newStatus;
+              
+              // Update badge colors based on status
+              statusBadge.className = `inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                newStatus === 'Оформлен' ? 'bg-yellow-100 text-yellow-800' :
+                newStatus === 'Собран' ? 'bg-blue-100 text-blue-800' :
+                newStatus === 'Отправлен' ? 'bg-purple-100 text-purple-800' :
+                newStatus === 'Доставлен' ? 'bg-green-100 text-green-800' :
+                'bg-gray-100 text-gray-800'
+              }`;
+            }
             
             // Show success message
             showNotification('Статус заказа обновлен успешно!', 'success');
+            
+            // Reload page after a short delay to reflect changes
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
           } else {
             // Revert select to original value
             selectElement.value = originalValue;
-            showNotification('Ошибка при обновлении статуса', 'error');
+            showNotification(data.error || 'Ошибка при обновлении статуса', 'error');
           }
         })
         .catch(error => {
@@ -405,6 +673,237 @@
           notification.remove();
         }, 3000);
       }
+
+      // Global variables for delete modal
+      let currentOrderId = null;
+      let currentCustomerName = null;
+
+      // Function to show delete modal
+      function showDeleteModal(orderId, customerName) {
+        currentOrderId = orderId;
+        currentCustomerName = customerName;
+        
+        document.getElementById('deleteOrderId').textContent = orderId.substring(0, 8) + '...';
+        document.getElementById('deleteCustomerName').textContent = customerName;
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('deleteReason').value = '';
+        
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('adminPassword').focus();
+      }
+
+      // Function to hide delete modal
+      function hideDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        currentOrderId = null;
+        currentCustomerName = null;
+      }
+
+      // Function to delete order
+      function deleteOrder() {
+        const password = document.getElementById('adminPassword').value;
+        const reason = document.getElementById('deleteReason').value.trim();
+        
+        if (!password) {
+          showNotification('Введите пароль администратора', 'error');
+          return;
+        }
+        
+        if (!reason) {
+          showNotification('Укажите причину отмены заказа', 'error');
+          return;
+        }
+
+        // Disable button to prevent double-click
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        const originalText = confirmBtn.textContent;
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Удаление...';
+
+        fetch('/api/delete-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            order_id: currentOrderId,
+            admin_password: password,
+            delete_reason: reason
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showNotification('Заказ удален успешно! Клиент ' + data.customer_name + ' получит уведомление.', 'success');
+            hideDeleteModal();
+            
+            // Reload the page to reflect changes
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } else {
+            showNotification(data.error || 'Ошибка при удалении заказа', 'error');
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = originalText;
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting order:', error);
+          showNotification('Ошибка при удалении заказа', 'error');
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = originalText;
+        });
+      }
+
+      // Handle delete button clicks and Enter key in password field
+      document.addEventListener('DOMContentLoaded', function() {
+        // Handle delete button clicks
+        document.addEventListener('click', function(e) {
+          if (e.target.classList.contains('delete-order-btn')) {
+            const orderId = e.target.getAttribute('data-order-id');
+            const customerName = e.target.getAttribute('data-customer-name');
+            showDeleteModal(orderId, customerName);
+          }
+        });
+
+        // Handle Enter key in password field
+        const passwordInput = document.getElementById('adminPassword');
+        if (passwordInput) {
+          passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              deleteOrder();
+            }
+          });
+        }
+        
+        // Handle Enter key in reason field
+        const reasonInput = document.getElementById('deleteReason');
+        if (reasonInput) {
+          reasonInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+              deleteOrder();
+            }
+          });
+        }
+
+        // Verify sorting is working
+        console.log('Admin dashboard loaded - Sorting by date (newest first)');
+        
+        // Initialize daily orders chart
+        initializeDailyOrdersChart();
+      });
+
+      // Daily Orders Chart
+      let dailyOrdersChart = null;
+
+      function initializeDailyOrdersChart() {
+        fetch('/api/daily-orders-data')
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              console.error('Chart data error:', data.error);
+              return;
+            }
+
+            // Update stats
+            document.getElementById('todayOrders').textContent = data.stats.today;
+            document.getElementById('weekOrders').textContent = data.stats.week;
+            document.getElementById('avgOrders').textContent = data.stats.average;
+
+            // Create chart
+            const ctx = document.getElementById('dailyOrdersChart').getContext('2d');
+            
+            if (dailyOrdersChart) {
+              dailyOrdersChart.destroy();
+            }
+
+            dailyOrdersChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: data.labels,
+                datasets: [{
+                  label: 'Заказы',
+                  data: data.data,
+                  borderColor: 'rgb(59, 130, 246)',
+                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                  pointBackgroundColor: 'rgb(59, 130, 246)',
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  pointRadius: 6,
+                  pointHoverRadius: 8
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false
+                  },
+                  tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: {
+                      label: function(context) {
+                        return `Заказов: ${context.parsed.y}`;
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)',
+                      drawBorder: false
+                    },
+                    ticks: {
+                      color: '#6b7280',
+                      font: {
+                        size: 12
+                      }
+                    }
+                  },
+                  x: {
+                    grid: {
+                      display: false
+                    },
+                    ticks: {
+                      color: '#6b7280',
+                      font: {
+                        size: 12
+                      }
+                    }
+                  }
+                },
+                interaction: {
+                  intersect: false,
+                  mode: 'index'
+                },
+                elements: {
+                  point: {
+                    hoverBackgroundColor: 'rgb(59, 130, 246)',
+                    hoverBorderColor: '#fff'
+                  }
+                }
+              }
+            });
+          })
+          .catch(error => {
+            console.error('Error loading chart data:', error);
+          });
+      }
+
+      // Auto-refresh chart every 5 minutes
+      setInterval(initializeDailyOrdersChart, 300000);
     </script>
   </body>
 </html>

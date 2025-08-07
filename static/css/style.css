@@ -513,7 +513,6 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
 }
 
 /* body::before {
@@ -676,6 +675,7 @@ body {
   height: 25rem;
   background-color: var(--main-orange);
   border-radius: 240px 0;
+  margin-top: 10%;
 }
 .commitment__content {
   display: flex;
@@ -1481,9 +1481,13 @@ section.pros {
 /* Writing styles for the Cart page */
 .head {
   display: flex;
-  justify-content: space-between;
-  align-items: end;
+  justify-content: center;
   margin-bottom: 50px;
+}
+.head__header {
+  margin: 0 auto;
+  font-size: 65px;
+  padding-top: 5%;
 }
 .head h1 {
   /* margin-top: 2rem; */
@@ -3424,5 +3428,370 @@ section.pros {
 
   .user-review-text {
     font-size: 14px;
+  }
+}
+
+/* Address Selection Modal Styles */
+.address-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.address-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.address-modal__content {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 10px 20px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.address-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 32px 0 32px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.address-modal__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.address-modal__close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.address-modal__close:hover {
+  background-color: rgba(156, 163, 175, 0.1);
+  color: #6b7280;
+  transform: scale(1.05);
+}
+
+.address-modal__body {
+  padding: 32px;
+}
+
+.address-modal__message {
+  font-size: 18px;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.6;
+  text-align: center;
+  font-weight: 400;
+}
+
+.address-modal__footer {
+  padding: 24px 32px 32px 32px;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.address-modal__btn {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  min-width: 140px;
+}
+
+.address-modal__btn:hover {
+  background: linear-gradient(135deg, #e55a2b 0%, #e67e22 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.address-modal__btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+/* Responsive design for address modal */
+@media (max-width: 768px) {
+  .address-modal__content {
+    width: 95%;
+    margin: 20px;
+    max-width: 500px;
+  }
+
+  .address-modal__header {
+    padding: 24px 24px 0 24px;
+  }
+
+  .address-modal__title {
+    font-size: 20px;
+  }
+
+  .address-modal__body {
+    padding: 24px;
+  }
+
+  .address-modal__message {
+    font-size: 16px;
+  }
+
+  .address-modal__footer {
+    padding: 20px 24px 24px 24px;
+  }
+
+  .address-modal__btn {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+}
+
+/* Login Modal Styles */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.login-modal__content {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 10px 20px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 32px 0 32px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.login-modal__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.login-modal__close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-modal__close:hover {
+  background-color: rgba(156, 163, 175, 0.1);
+  color: #6b7280;
+  transform: scale(1.05);
+}
+
+.login-modal__body {
+  padding: 32px;
+  text-align: center;
+}
+
+.login-modal__logo {
+  margin-bottom: 24px;
+}
+
+.login-modal__logo-img {
+  height: 60px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.login-modal__message {
+  font-size: 18px;
+  color: #4b5563;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.login-modal__benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.login-modal__benefit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #6b7280;
+  padding: 8px 0;
+}
+
+.login-modal__benefit-icon {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+}
+
+.login-modal__footer {
+  padding: 24px 32px 32px 32px;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.login-modal__btn {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  min-width: 200px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.login-modal__btn:hover {
+  background: linear-gradient(135deg, #e55a2b 0%, #e67e22 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.login-modal__btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.login-modal__yandex-icon {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive design for login modal */
+@media (max-width: 768px) {
+  .login-modal__content {
+    width: 95%;
+    margin: 20px;
+    max-width: 400px;
+  }
+
+  .login-modal__header {
+    padding: 24px 24px 0 24px;
+  }
+
+  .login-modal__title {
+    font-size: 20px;
+  }
+
+  .login-modal__body {
+    padding: 24px;
+  }
+
+  .login-modal__message {
+    font-size: 16px;
+  }
+
+  .login-modal__footer {
+    padding: 20px 24px 24px 24px;
+  }
+
+  .login-modal__btn {
+    padding: 14px 28px;
+    font-size: 16px;
+    min-width: 180px;
+  }
+
+  .login-modal__logo-img {
+    height: 50px;
   }
 }

@@ -1,5 +1,288 @@
 /* Making SaminCart responsive */
 
+/* Responsive Header Styles */
+@media (max-width: 900px) {
+  .header {
+    padding: 1rem 0;
+  }
+  .header__list {
+    display: none;
+  }
+  .header__order {
+    display: none;
+  }
+  .header__container {
+    padding: 0 1rem;
+  }
+  .nav {
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header__logos {
+    display: flex;
+    align-items: center;
+    margin-right: 8rem;
+  }
+  .header__logo {
+    width: 40px;
+    height: 40px;
+  }
+  .logo__name {
+    margin-left: 0.5rem;
+  }
+  .header__samin {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  .header__profile-small-screens {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    position: relative;
+  }
+  .header__profile-small-screens img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  .header__profile-small-screens span {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .header__profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  .header__profile-small-screens:hover .header__profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .header__profile-logout {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+  }
+  .header__profile-logout:hover {
+    background: #f5f5f5;
+  }
+  .header__button-yandexID-small-screens {
+    display: flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+  }
+  .header__button-yandexID-small-screens:hover {
+    background: var(--main-orange);
+  }
+  #toggleBtn {
+    display: block;
+    margin-top: 1.5rem;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1002;
+    font-size: 1.2rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  #toggleBtn:hover {
+    background-color: var(--main-orange);
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+  .overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 60px 20px 20px;
+    transition: right 0.5s ease-in-out;
+    z-index: 1001;
+  }
+  .sidebar.open {
+    right: 0;
+  }
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    background: #fff;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(255, 195, 56, 0.13);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s, color 0.25s, border 0.25s,
+      transform 0.18s cubic-bezier(0.23, 1.01, 0.32, 1);
+    z-index: 1002;
+  }
+  .close-btn:hover {
+    background: var(--main-orange);
+    color: #fff;
+    border: 2px solid var(--primary-color);
+    transform: scale(1.12) rotate(90deg);
+    box-shadow: 0 4px 16px rgba(255, 195, 56, 0.18);
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 2rem;
+  }
+  .sidebar li {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 12px;
+    transition: background 0.25s, box-shadow 0.25s,
+      transform 0.18s cubic-bezier(0.23, 1.01, 0.32, 1);
+    cursor: pointer;
+    position: relative;
+  }
+  .sidebar li:hover {
+    background: linear-gradient(90deg, #fffbe6 0%, #ffe6b3 100%);
+    box-shadow: 0 2px 12px rgba(255, 195, 56, 0.1);
+    transform: translateX(6px) scale(1.03);
+  }
+  .sidebar a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 600;
+    width: 100%;
+    transition: color 0.22s, font-weight 0.22s;
+  }
+  .sidebar li:hover a {
+    color: var(--main-orange);
+    font-weight: 700;
+  }
+  .sidebar a span {
+    font-size: 1.45em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-orange);
+    background: #fffbe6;
+    border-radius: 8px;
+    width: 2.2em;
+    height: 2.2em;
+    margin-right: 6px;
+    box-shadow: 0 1px 4px rgba(255, 195, 56, 0.1);
+    transition: background 0.22s, color 0.22s,
+      transform 0.18s cubic-bezier(0.23, 1.01, 0.32, 1);
+  }
+  .sidebar li:hover a span {
+    background: var(--main-orange);
+    color: #fff;
+    transform: scale(1.18) rotate(-8deg);
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 560px) {
+  .sidebar {
+    width: 280px;
+    right: -280px;
+  }
+  .close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  .sidebar a {
+    font-size: 1rem;
+  }
+  .sidebar a span {
+    font-size: 1.2em;
+    width: 2em;
+    height: 2em;
+  }
+  .sidebar li {
+    padding: 12px 0;
+  }
+  #toggleBtn {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .sidebar {
+    width: 260px;
+    right: -260px;
+  }
+  .sidebar a {
+    font-size: 0.9rem;
+  }
+  .sidebar a span {
+    font-size: 1.1em;
+    width: 1.8em;
+    height: 1.8em;
+  }
+  #toggleBtn {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+}
+
 @media (max-width: 1300px) {
   .items {
     justify-content: space-between;
