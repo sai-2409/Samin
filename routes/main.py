@@ -20,7 +20,10 @@ def admin_login():
 
 @main_bp.route("/logout")
 def logout():
+    # Clear both admin and user sessions
     session.pop("logged_in", None)
+    session.pop("user", None)
+    session.pop("just_logged_in", None)
     return redirect("/")
 
 @main_bp.route("/")

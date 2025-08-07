@@ -231,7 +231,6 @@ Usage:
 
 .card__cart:hover {
   transform: scale(1.05);
-  background: #45a049;
 }
 
 .card__cart:active {

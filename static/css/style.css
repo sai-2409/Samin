@@ -3270,7 +3270,7 @@ section.pros {
 }
 
 .cta-text {
-  font-size: 20px;
+  font-size: 35px;
   color: var(--text-color);
   margin-bottom: 25px;
   font-weight: 600;
@@ -3286,6 +3286,7 @@ section.pros {
   z-index: 2;
   transform: translateY(0);
   transition: all 0.3s ease;
+  padding-top: 10px;
 }
 
 .cta-button:hover {
