@@ -74,21 +74,6 @@ class OrderTracker {
     });
   }
 
-  // simulateProgress() {
-  //   // Simulate order progress over time
-  //   const progressIntervals = [
-  //     { step: 3, delay: 5000 }, // Packing after 5 seconds
-  //     { step: 4, delay: 10000 }, // Shipped after 10 seconds
-  //     { step: 5, delay: 15000 }, // Delivered after 15 seconds
-  //   ];
-
-  //   progressIntervals.forEach(({ step, delay }) => {
-  //     setTimeout(() => {
-  //       this.advanceToStep(step);
-  //     }, delay);
-  //   });
-  // }
-
   advanceToStep(stepId) {
     if (stepId > this.currentStep) {
       // Mark current step as completed
@@ -156,41 +141,15 @@ class OrderTracker {
     const refreshBtn = document.querySelector(".btn-primary");
     if (refreshBtn) {
       refreshBtn.addEventListener("click", () => {
-        this.refreshTracking();
+        // Hard reload to fetch latest status from server
+        window.location.reload();
       });
     }
   }
 
   refreshTracking() {
-    const btn = document.querySelector(".btn-primary");
-    const originalText = btn.textContent;
-
-    // Show loading state
-    btn.textContent = "Обновление...";
-    btn.disabled = true;
-
-    // Simulate API call
-    setTimeout(() => {
-      // Check for new status updates
-      this.checkForUpdates();
-
-      // Restore button
-      btn.textContent = originalText;
-      btn.disabled = false;
-
-      // Show success message
-      this.showNotification("Статус заказа обновлен");
-    }, 2000);
-  }
-
-  checkForUpdates() {
-    // This would normally make an API call to check for status updates
-    // For now, disabled automatic updates - will be controlled by admin dashboard
-    console.log("Checking for updates... (disabled for admin control)");
-    // const random = Math.random();
-    // if (random > 0.7 && this.currentStep < 5) {
-    //   this.advanceToStep(this.currentStep + 1);
-    // }
+    // Fallback if called elsewhere: perform a hard reload
+    window.location.reload();
   }
 
   // Method to manually set order status (for testing)
@@ -244,9 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Global function for refreshing tracking
 function refreshTracking() {
-  if (window.orderTracker) {
-    window.orderTracker.refreshTracking();
-  }
+  // Ensure button and any external calls trigger a reload
+  window.location.reload();
 }
 
 // Add some CSS for the fade-in animation

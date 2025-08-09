@@ -3,8 +3,9 @@
 from flask import Blueprint, request, jsonify, render_template, session
 import uuid, requests, json
 from datetime import datetime
-from config import YANDEX_MERCHANT_ID, YANDEX_API_URL
+from config import YANDEX_MERCHANT_ID, YANDEX_API_URL, DATA_DIR
 from services.email_service import email_service
+import os
 
 pay_bp = Blueprint("pay", __name__)
 

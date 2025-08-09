@@ -113,7 +113,7 @@
         <div class="bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 text-center">
           <h2 class="text-2xl font-bold text-orange-800 mb-2">Общие продажи</h2>
           <div class="text-5xl font-bold gradient-text-orange mb-2">
-            ₽ {{ (active_orders + delivered_orders) | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+            ₽ {{ ('%.2f' % ((active_orders + delivered_orders) | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0))) }}
           </div>
           <p class="text-orange-600 font-medium">{{ (active_orders + delivered_orders)|length }} заказов всего</p>
         </div>
@@ -139,7 +139,7 @@
               </div>
               
               <div class="text-4xl font-bold gradient-text animated-total mb-2">
-                ₽ {{ active_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+                ₽ {{ ('%.2f' % (active_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0))) }}
               </div>
               
               <div class="flex items-center justify-between text-sm">
@@ -168,7 +168,7 @@
               </div>
               
               <div class="text-4xl font-bold gradient-text-green animated-total-green mb-2">
-                ₽ {{ delivered_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0) | round(2) }}
+                ₽ {{ ('%.2f' % (delivered_orders | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0))) }}
               </div>
               
               <div class="flex items-center justify-between text-sm">

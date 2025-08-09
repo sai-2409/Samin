@@ -1610,3 +1610,49 @@ function hideLoginModal() {
 window.showLoginModal = showLoginModal;
 window.hideLoginModal = hideLoginModal;
 window.isUserLoggedIn = isUserLoggedIn;
+
+// --- Phone auto-prefix and masking (+7) for cart inputs ---
+(function setupPhoneInputs() {
+  function formatRussianPhone(raw) {
+    const digits = String(raw).replace(/\D/g, "").replace(/^8/, "7");
+    let rest = digits;
+    if (rest.startsWith("7")) rest = rest.slice(1);
+    let out = "+7";
+    if (rest.length > 0) out += " (" + rest.substring(0, 3);
+    if (rest.length >= 3) out += ") " + rest.substring(3, 6);
+    if (rest.length >= 6) out += "-" + rest.substring(6, 8);
+    if (rest.length >= 8) out += "-" + rest.substring(8, 10);
+    return out;
+  }
+
+  function ensurePrefixOnFocus(e) {
+    const v = e.target.value.trim();
+    if (!v || !/^\+7/.test(v)) {
+      e.target.value = "+7 ";
+    }
+  }
+
+  function onInputMask(e) {
+    const formatted = formatRussianPhone(e.target.value);
+    e.target.value = formatted;
+  }
+
+  function onPasteSanitize(e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData("text");
+    e.target.value = formatRussianPhone(text);
+  }
+
+  function attach(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("focus", ensurePrefixOnFocus);
+    el.addEventListener("input", onInputMask);
+    el.addEventListener("paste", onPasteSanitize);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    attach("phone");
+    attach("payment-recipient-phone");
+  });
+})();
