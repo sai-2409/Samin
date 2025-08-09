@@ -1,76 +1,81 @@
-// Connecting GSAP Plugin "SplitText"
-gsap.registerPlugin(SplitText);
+// GSAP + SplitText (Club) global usage
+// Ensure DOM is ready and required globals are present
+(function () {
+  function runSplit(selector, optsChars, fromVars) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const split = new SplitText(selector, optsChars);
+    const parts =
+      (optsChars.type.includes("chars") ? split.chars : split.words) || [];
+    if (parts.length) {
+      gsap.from(parts, fromVars);
+    }
+  }
 
-function logoJumping() {
-  const logotypeSamin = document.querySelector(".header__logo");
+  function initAnimations() {
+    if (!(window.gsap && window.SplitText)) {
+      console.warn(
+        "GSAP or SplitText is not available. Ensure /static/js/vendor/gsap/gsap.min.js and SplitText.min.js are loaded before animationGSAP.js"
+      );
+      return;
+    }
 
-  gsap.to(logotypeSamin, {
-    y: 20,
-    duration: 1,
-    repeat: -1,
-    yoyo: true,
-    ease: "power1.inOut",
-  });
-}
-logoJumping();
+    // Register plugin
+    try {
+      gsap.registerPlugin(SplitText);
+    } catch (e) {}
 
-// function addingItemToCartAnimation() {
-//   document.querySelectorAll(".card__cart").forEach((cartButton) => {
-//     const cartButtonAnimation = cartButton.closest(".cardM");
-//   });
-// }
+    // Logo jumping animation
+    const logotypeSamin = document.querySelector(".header__logo");
+    if (logotypeSamin) {
+      gsap.to(logotypeSamin, {
+        y: 20,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
+    }
 
-// Writing animational for the main page
+    // Support .hero-title (user snippet) and existing selectors
+    runSplit(
+      ".hero-title",
+      { type: "chars,words" },
+      { opacity: 0, y: 20, stagger: 0.03, duration: 0.6 }
+    );
 
-// Connecting GSAP Plugin "SplitText"
-gsap.registerPlugin(SplitText);
+    // Title split animation
+    runSplit(
+      ".mright__header",
+      { type: "chars" },
+      { x: -100, autoAlpha: 0, stagger: { amount: 0.5, from: "end" } }
+    );
 
-let splitHeaderTitle = SplitText.create(".mright__header", {
-  type: "chars",
-});
-gsap.from(splitHeaderTitle.chars, {
-  x: -100,
-  autoAlpha: 0,
-  stagger: {
-    amount: 0.5,
-    from: "end",
-  },
-});
+    // Statement split animation
+    runSplit(
+      ".mright__statement",
+      { type: "chars" },
+      { y: 100, autoAlpha: 0, stagger: { amount: 0.5, from: "start" } }
+    );
 
-let splitHeaderStatement = SplitText.create(".mright__statement", {
-  type: "chars",
-});
+    // Commitment header
+    runSplit(
+      ".commitment__header",
+      { type: "words" },
+      { y: 100, autoAlpha: 0, stagger: { amount: 0.5, from: "end" } }
+    );
 
-gsap.from(splitHeaderStatement.chars, {
-  y: 100,
-  autoAlpha: 0,
-  stagger: {
-    amount: 0.5,
-    from: "start",
-  },
-});
+    // Commitment text
+    runSplit(
+      ".commitment__text",
+      { type: "words" },
+      { y: 100, autoAlpha: 0, stagger: { amount: 0.9, from: "start" } }
+    );
+  }
 
-// Writing animation for the commitment section
-let splitCommitmentText = SplitText.create(".commitment__header", {
-  type: "words",
-});
-gsap.from(splitCommitmentText.words, {
-  y: 100,
-  autoAlpha: 0,
-  stagger: {
-    amount: 0.5,
-    from: "end",
-  },
-});
-
-let splitCommitmentStatement = SplitText.create(".commitment__text", {
-  type: "words",
-});
-gsap.from(splitCommitmentStatement.words, {
-  y: 100,
-  autoAlpha: 0,
-  stagger: {
-    amount: 0.9,
-    from: "start",
-  },
-});
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAnimations);
+  } else {
+    initAnimations();
+  }
+})();
