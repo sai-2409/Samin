@@ -13,7 +13,7 @@ __pycache__/
 .env
 
 # Ignore the config.py file
-config.py
+# config.py
 
 # Ignore the orders.json file
 static/data/orders.json
