@@ -218,33 +218,33 @@
         .notification-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #FF6B6B, #FF5252);
+            background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 4px 15px var(--shadow-pink-40);
             position: relative;
             transition: all 0.3s ease;
         }
 
         .notification-icon:hover {
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            box-shadow: 0 6px 20px var(--shadow-pink-40);
             transform: translateY(-2px);
         }
 
         .notification-icon svg {
             width: 24px;
             height: 24px;
-            fill: white;
+            fill: var(--white);
         }
 
         .notification-badge {
             position: absolute;
             top: -5px;
             right: -5px;
-            background: linear-gradient(135deg, #FF9800, #FF5722);
-            color: white;
+            background: linear-gradient(135deg, var(--orange-500), var(--deep-orange-500));
+            color: var(--white);
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -253,7 +253,7 @@
             justify-content: center;
             font-size: 12px;
             font-weight: bold;
-            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 2px 8px var(--shadow-orange-30);
             animation: pulse 2s infinite;
         }
 
@@ -270,25 +270,23 @@
             position: fixed;
             bottom: 90px;
             left: 20px;
-            background: white;
+            width: 320px;
+            max-height: 60vh;
+            background: var(--white);
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 999;
+            box-shadow: 0 10px 30px var(--shadow-black-15);
+            overflow: hidden;
+            transform: translateY(20px);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(20px);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--ligherGray);
         }
 
         .notification-panel.show {
+            transform: translateY(0);
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
         }
 
         .notification-header {
@@ -443,9 +441,9 @@
       </div>
     </div>
 
-    <div class="main__bg-almond">
+    <!-- <div class="main__bg-almond">
       <img src="{{ url_for('static', filename='images/main__bg-almond3.png') }}" alt="AlmondBackground" />
-    </div>
+    </div> -->
 
     <!-- Coding for the header of the website -->
     <header class="header">
@@ -494,7 +492,7 @@
               <li><a href="#section__2"><span>🌟</span> Достоинства</a></li>
               <li><a href="#section__3"><span>🥜</span> Меню</a></li>
               <li><a href="#section__4"><span>💬</span> Отзывы</a></li>
-              <li><a href="/cart"><span>🛒</span> Корзина</a></li>
+              <!-- cart link removed -->
             </ul>
           </div>
           <div class="header__list">
@@ -513,9 +511,7 @@
               <li class="header__list-item">
                 <a href="#section__4" class="nav__link nav__btn4">Отзывы</a>
               </li>
-              <li class="header__list-item">
-                <a href="/cart" class="nav__link">Корзина</a>
-              </li>
+              <!-- cart link removed -->
             </ul>
           </div>
           <div class="header__order">
@@ -1451,6 +1447,9 @@
 
     <!-- Start building the smart calculator -->
     <section class="section__calc section">
+      <div class="main__bg-almond">
+        <img src="{{ url_for('static', filename='images/main__bg-almond3.png') }}" alt="AlmondBackground" />
+      </div>
       <h1 class="common__header calc__header">Ореховый Калькулятор</h1>
       <div id="calc__wrapper">
         <div class="calc" id="section__calc">

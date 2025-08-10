@@ -48,6 +48,39 @@ body {
   --ligherGray: #f5f3f1;
   --font-family: "Roboto", sans-serif;
   --greenMain: #1dbf73;
+  --floating-bottom: 20px;
+  --floating-left: 20px;
+  --floating-right: 20px;
+  /* Extended palette */
+  --red-500: #f44336;
+  --red-600: #e53935;
+  --orange-500: #ff9800;
+  --deep-orange-500: #ff5722;
+  --blue-500: #2196f3;
+  --pink-500: #ff6b6b;
+  --pink-600: #ff5252;
+  --orange-600: #ff6b35;
+  --orange-550: #ff8c42;
+  --cyan-500: #0095b6;
+  --gray-100: #f7f7f7;
+  --gray-150: #fafafa;
+  --gray-200: #e5e5e5;
+  --gray-400: #999999;
+  --gray-500: #888888;
+  --gray-600: #666666;
+  --text-strong: #222222;
+  --green-50: #e8f5e8;
+  --green-100: #f0f8f0;
+  /* Shadows (RGBA) */
+  --shadow-black-04: rgba(0, 0, 0, 0.04);
+  --shadow-black-07: rgba(0, 0, 0, 0.07);
+  --shadow-black-10: rgba(0, 0, 0, 0.1);
+  --shadow-black-15: rgba(0, 0, 0, 0.15);
+  --shadow-black-40: rgba(0, 0, 0, 0.4);
+  --shadow-pink-40: rgba(255, 107, 107, 0.4);
+  --shadow-orange-40: rgba(255, 107, 53, 0.4);
+  --shadow-orange-30: rgba(255, 152, 0, 0.3);
+  --shadow-green-15: rgba(29, 191, 115, 0.15);
 }
 
 /* Setting up common colors */
@@ -113,19 +146,24 @@ p {
 /* Here is the styles for the main cart */
 .floating-cart {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--floating-bottom);
+  right: var(--floating-right);
   background-color: var(--primary-color);
-  padding: 15px;
+  width: 60px; /* match notification-icon */
+  height: 60px; /* match notification-icon */
+  padding: 0; /* center by flex, not padding */
   border-radius: 50%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: flex; /* center icon */
+  align-items: center;
+  justify-content: center;
 }
 
 .floating-cart img {
-  width: 35px;
-  height: 35px;
+  width: 24px; /* match notification-icon svg size */
+  height: 24px;
   filter: brightness(0) invert(1);
 }
 
@@ -507,13 +545,13 @@ p {
 /* Coding styles for the header */
 
 /* Coding styles for the main page */
-body {
+/* body {
   position: relative;
   background-image: url("../images/main__bg-almond1\ 1.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-}
+} */
 
 /* body::before {
   content: "";
@@ -531,7 +569,7 @@ body {
   pointer-events: none;
   background-size: 100% auto;
 } */
-.main__bg-almond {
+/* .main__bg-almond {
   position: fixed;
   top: 0;
   left: 0;
@@ -540,7 +578,7 @@ body {
   z-index: -1;
   pointer-events: none;
   opacity: 0.5;
-}
+} */
 .main {
   margin-top: 5%;
   /* background-image: url('../images/main__bg-almond1\ 1.png'); */
@@ -567,7 +605,6 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 30px;
-  margin-bottom: 20vh;
   width: 100%;
   max-width: 1400px;
   margin-left: auto;
@@ -675,7 +712,6 @@ body {
   height: 25rem;
   background-color: var(--main-orange);
   border-radius: 240px 0;
-  margin-top: 10%;
 }
 .commitment__content {
   display: flex;
@@ -1068,6 +1104,32 @@ section.pros {
   border: 2px solid var(--white);
   color: var(--white);
   /* transform: scale(1.01); */
+}
+/* Subtle almond background for calculator section */
+.section__calc {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+.section__calc .main__bg-almond {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.3; /* subtle */
+  filter: blur(1px); /* soften edges */
+}
+.section__calc .main__bg-almond img {
+  width: 120%;
+  max-width: none;
+  object-fit: cover;
+}
+.section__calc > *:not(.main__bg-almond) {
+  position: relative;
+  z-index: 1;
 }
 .common__container-gender {
   display: flex;
@@ -3131,7 +3193,9 @@ section.pros {
     transform: translateY(-5px) rotate(5deg);
   }
 }
-
+.user-reviews-grid {
+  margin: 0 20px;
+}
 .user-review-header {
   display: flex;
   align-items: center;
@@ -3242,7 +3306,7 @@ section.pros {
 
 .user-reviews-cta {
   text-align: center;
-  margin-top: 50px;
+  margin: 50px 20px 0 20px;
   padding: 40px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -3290,7 +3354,7 @@ section.pros {
   z-index: 2;
   transform: translateY(0);
   transition: all 0.3s ease;
-  padding-top: 10px;
+  /* padding-top: 10px; */
 }
 
 .cta-button:hover {
@@ -3793,5 +3857,50 @@ section.pros {
 
   .login-modal__logo-img {
     height: 50px;
+  }
+}
+
+/* Notification button (left-bottom) to match across pages */
+.floating-notifications {
+  position: fixed;
+  bottom: var(--floating-bottom);
+  left: var(--floating-left);
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Ensure consistent size */
+.notification-icon {
+  width: 60px;
+  height: 60px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  :root {
+    --floating-bottom: 15px;
+    --floating-left: 15px;
+    --floating-right: 15px;
+  }
+  .notification-panel {
+    left: var(--floating-left);
+    bottom: calc(var(--floating-bottom) + 70px);
+  }
+}
+
+/* Align Yandex ID login and menu button on small screens */
+@media (max-width: 768px) {
+  .header__button-yandexID-small-screens,
+  #toggleBtn {
+    height: 44px;
+    line-height: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+  }
+  #toggleBtn {
+    font-size: 16px;
   }
 }

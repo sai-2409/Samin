@@ -109,11 +109,11 @@ class OrderTracker {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            color: white;
+            background: linear-gradient(135deg, var(--orange-600), var(--orange-550));
+            color: var(--white);
             padding: 1rem 1.5rem;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 4px 15px var(--shadow-orange-40);
             z-index: 1000;
             transform: translateX(100%);
             transition: transform 0.3s ease;

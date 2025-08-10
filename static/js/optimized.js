@@ -4,6 +4,14 @@
 let notifications = [];
 let notificationPanelVisible = false;
 
+// Helper to read CSS variables
+function cssVar(name) {
+  return (
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() ||
+    name
+  );
+}
+
 // ===== UTILITY FUNCTIONS =====
 function showNotification(message, type = "info") {
   const notification = document.createElement("div");
@@ -17,7 +25,7 @@ function showNotification(message, type = "info") {
     right: 20px;
     padding: 15px 20px;
     border-radius: 8px;
-    color: white;
+    color: var(--white);
     font-weight: 500;
     z-index: 10000;
     transform: translateX(100%);
@@ -26,12 +34,12 @@ function showNotification(message, type = "info") {
     word-wrap: break-word;
   `;
 
-  // Set background color based on type
+  // Set background color based on type using CSS vars
   const colors = {
-    success: "#4caf50",
-    error: "#f44336",
-    warning: "#ff9800",
-    info: "#2196f3",
+    success: cssVar("--green"),
+    error: cssVar("--red-500"),
+    warning: cssVar("--orange-500"),
+    info: cssVar("--blue-500"),
   };
   notification.style.backgroundColor = colors[type] || colors.info;
 

@@ -22,11 +22,24 @@ def admin_login():
 
 @main_bp.route("/logout")
 def logout():
+    # Determine if an admin is logged in
+    is_admin = bool(session.get("logged_in"))
     # Clear both admin and user sessions
     session.pop("logged_in", None)
     session.pop("user", None)
     session.pop("just_logged_in", None)
+    # Redirect accordingly
+    if is_admin:
+        return redirect("/admin-login")
     return redirect("/")
+
+@main_bp.route("/admin-logout")
+def admin_logout():
+    # Explicit admin logout route
+    session.pop("logged_in", None)
+    session.pop("user", None)
+    session.pop("just_logged_in", None)
+    return redirect("/admin-login")
 
 @main_bp.route("/")
 def index():
