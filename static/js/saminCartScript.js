@@ -840,6 +840,33 @@ if (typeof ymaps !== "undefined") {
   });
 }
 
+// Mobile device detection
+function isMobileDevice() {
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth <= 768
+  );
+}
+
+// Mobile-friendly positioning for address suggestions
+function positionSuggestBoxMobile(addressInput, suggestBox) {
+  const rect = addressInput.getBoundingClientRect();
+
+  if (isMobileDevice()) {
+    suggestBox.style.position = "fixed";
+    suggestBox.style.top = `${rect.bottom}px`;
+    suggestBox.style.left = `${rect.left}px`;
+    suggestBox.style.width = `${rect.width}px`;
+
+    // Prevent viewport cutoff
+    const viewportHeight = window.innerHeight;
+    if (rect.bottom + 150 > viewportHeight) {
+      suggestBox.style.top = `${rect.top - 150}px`;
+    }
+  }
+}
+
 // Connecting daData API for the address suggestion
 const addressInput = document.getElementById("yamap-address");
 if (addressInput) {
@@ -917,10 +944,15 @@ if (addressInput) {
         suggestBox.appendChild(div);
       });
 
-      const rect = addressInput.getBoundingClientRect();
-      suggestBox.style.top = `${rect.bottom + window.scrollY}px`;
-      suggestBox.style.left = `${rect.left + window.scrollX}px`;
-      suggestBox.style.width = `${rect.width}px`;
+      // Use mobile-friendly positioning
+      if (isMobileDevice()) {
+        positionSuggestBoxMobile(addressInput, suggestBox);
+      } else {
+        const rect = addressInput.getBoundingClientRect();
+        suggestBox.style.top = `${rect.bottom + window.scrollY}px`;
+        suggestBox.style.left = `${rect.left + window.scrollX}px`;
+        suggestBox.style.width = `${rect.width}px`;
+      }
       suggestBox.style.display = "block";
     } catch (error) {
       console.warn("Error fetching address suggestions:", error);
@@ -936,6 +968,28 @@ if (addressInput) {
       suggestBox.style.display = "none";
     }
   });
+
+  // Mobile touch support
+  if (isMobileDevice()) {
+    // Handle touch events for mobile
+    addressInput.addEventListener("touchstart", () => {
+      // Ensure proper positioning on mobile touch
+      if (suggestBox.style.display === "block") {
+        positionSuggestBoxMobile(addressInput, suggestBox);
+      }
+    });
+
+    // Handle viewport changes on mobile
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (suggestBox.style.display === "block") {
+          positionSuggestBoxMobile(addressInput, suggestBox);
+        }
+      }, 250);
+    });
+  }
 }
 
 // Writing JS for the add card modal

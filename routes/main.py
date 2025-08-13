@@ -6,8 +6,8 @@ import json
 import os
 from datetime import datetime, timedelta
 from services.email_service import EmailService
-
 main_bp = Blueprint("main", __name__)
+
 
 def is_admin_logged_in():
     """Helper function to check if admin is logged in"""
@@ -240,7 +240,8 @@ def order_tracking():
 
 @main_bp.route('/api/update-order-status', methods=['POST'])
 def update_order_status():
-    if not session.get("logged_in"):
+    # Allow both admin and regular user access
+    if not (session.get("logged_in") or session.get("admin_logged_in")):
         return jsonify({"success": False, "error": "Unauthorized"}), 401
     
     try:

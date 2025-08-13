@@ -336,6 +336,20 @@
     gap: 20px;
     padding: 0;
   }
+
+  /* Mobile address suggestions fix */
+  .dadata-suggest-box {
+    position: fixed !important;
+    z-index: 10000 !important;
+    max-height: 150px !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #yamap-address {
+    font-size: 16px; /* Prevent iOS zoom */
+    min-height: 44px; /* Touch target size */
+  }
   .yamap__right {
     width: 100%;
   }
