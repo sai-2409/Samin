@@ -3886,6 +3886,7 @@ section.pros {
   .notification-panel {
     left: var(--floating-left);
     bottom: calc(var(--floating-bottom) + 70px);
+    z-index: 1000;
   }
 }
 

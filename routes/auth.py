@@ -45,8 +45,9 @@ def callback():
 
 @auth_bp.route("/logout")
 def logout():
-    # Clear both admin and user sessions
-    session.pop("logged_in", None)
+    """User logout - only clears user session, preserves admin session"""
+    # Only clear user-related session variables
     session.pop("user", None)
     session.pop("just_logged_in", None)
+    # Do NOT clear admin session
     return redirect(url_for("main.index"))

@@ -9,36 +9,56 @@ from services.email_service import EmailService
 
 main_bp = Blueprint("main", __name__)
 
+def is_admin_logged_in():
+    """Helper function to check if admin is logged in"""
+    return bool(session.get("admin_logged_in") or session.get("logged_in"))
+
+def is_user_logged_in():
+    """Helper function to check if user is logged in"""
+    return bool(session.get("user"))
+
+@main_bp.route('/session-status')
+def session_status():
+    """Debug route to check current session status"""
+    if not is_admin_logged_in():
+        return "Access Denied", 403
+    
+    return {
+        "admin_logged_in": session.get("admin_logged_in"),
+        "logged_in": session.get("logged_in"),
+        "user": session.get("user"),
+        "just_logged_in": session.get("just_logged_in"),
+        "session_id": session.sid if hasattr(session, 'sid') else None
+    }
+
 @main_bp.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
         password = request.form.get("password")
         
         if password == adminPassword:  # Use environment variable
-            session["logged_in"] = True
+            session["admin_logged_in"] = True  # More specific admin session variable
+            session["logged_in"] = True  # Keep for backward compatibility
             return redirect("/admin")
         return "Access Denied", 403
     return render_template("admin_login.html")
 
 @main_bp.route("/logout")
 def logout():
-    # Determine if an admin is logged in
-    is_admin = bool(session.get("logged_in"))
-    # Clear both admin and user sessions
-    session.pop("logged_in", None)
+    """User logout - only clears user session, preserves admin session"""
+    # Only clear user-related session variables
     session.pop("user", None)
     session.pop("just_logged_in", None)
-    # Redirect accordingly
-    if is_admin:
-        return redirect("/admin-login")
+    # Do NOT clear admin session
     return redirect("/")
 
 @main_bp.route("/admin-logout")
 def admin_logout():
-    # Explicit admin logout route
+    """Admin logout - only clears admin session, preserves user session"""
+    # Only clear admin-related session variables
+    session.pop("admin_logged_in", None)
     session.pop("logged_in", None)
-    session.pop("user", None)
-    session.pop("just_logged_in", None)
+    # Do NOT clear user session
     return redirect("/admin-login")
 
 @main_bp.route("/")
@@ -63,7 +83,7 @@ def welcome():
 
 @main_bp.route('/admin')
 def admin():
-    if not session.get("logged_in"):
+    if not is_admin_logged_in():
         return redirect("/admin-login")
         
     try:

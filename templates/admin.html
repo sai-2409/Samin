@@ -88,8 +88,8 @@
   <body class="bg-gray-100 font-['Roboto'] min-h-screen">
     <div class="min-h-screen flex flex-col">
       <!-- Header -->
-      <header class="bg-white shadow p-6 flex items-center justify-between">
-        <div class="flex items-center gap-4">
+      <header class="bg-white shadow p-6 flex items-center">
+        <div class="flex items-center gap-4 flex-1">
           <img
             src="/static/images/logoWalnuts-welcome-page.svg"
             alt="Samin Logo"
@@ -103,6 +103,11 @@
           <div class="text-gray-600 font-medium">Добро пожаловать, Самиджонов!</div>
           <a href="/admin/email-notifications" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
             📧 Уведомления о заказах
+          </a>
+        </div>
+        <div class="flex items-center ml-2">
+          <a href="/admin-logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium">
+            Выйти
           </a>
         </div>
       </header>

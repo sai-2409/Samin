@@ -1087,8 +1087,38 @@ function updatePaymentSummaryAndDelivery() {
   // Update discount display
   const discountSpan = document.querySelector(".payment__summary-discount");
   if (discountSpan) {
-    discountSpan.textContent = discount ? `-${discount}₽` : "0₽";
-    discountSpan.style.color = discount ? "#e53935" : "#888";
+    // Calculate delivery savings when delivery is free
+    const originalDelivery = Math.ceil(total * 0.15);
+    const deliverySavings =
+      delivery === 0 && total > 5000 ? originalDelivery : 0;
+
+    // Show promocode discount + delivery savings
+    const totalSavings = discount + deliverySavings;
+
+    if (totalSavings > 0) {
+      discountSpan.style.color = "#e53935";
+
+      // Add tooltip or additional info about savings breakdown
+      if (deliverySavings > 0) {
+        discountSpan.title = `Промокод: -${discount}₽ | Доставка: -${deliverySavings}₽`;
+
+        // Show detailed breakdown when both types of savings exist
+        if (discount > 0 && deliverySavings > 0) {
+          discountSpan.innerHTML = `-${totalSavings}₽ <span style="font-size: 12px; color: #1dbf73;">(промокод + доставка)</span>`;
+        } else if (deliverySavings > 0 && discount === 0) {
+          discountSpan.innerHTML = `-${totalSavings}₽ <span style="font-size: 12px; color: #1dbf73;">(доставка бесплатно)</span>`;
+        } else {
+          discountSpan.textContent = `-${totalSavings}₽`;
+        }
+      } else if (discount > 0) {
+        discountSpan.title = `Промокод: -${discount}₽`;
+        discountSpan.textContent = `-${totalSavings}₽`;
+      }
+    } else {
+      discountSpan.textContent = "0₽";
+      discountSpan.style.color = "#888";
+      discountSpan.title = "";
+    }
   }
   // Calculate final total
   let finalTotal = total - discount + delivery;
