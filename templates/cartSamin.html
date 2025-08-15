@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Connecting the Yandex Maps API Key -->
-    <!-- <script
+    <script
       src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{ config.YANDEX_MAPS_API_KEY }}"
       type="text/javascript"
-    ></script> -->
+    ></script>
+    
+    <!-- Fallback API key for JavaScript -->
+    <script>
+      // Ensure API key is available for JavaScript
+      window.YANDEX_MAPS_API_KEY = "{{ config.YANDEX_MAPS_API_KEY }}";
+    </script>
 
     <!-- Google fonts and icons-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

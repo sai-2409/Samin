@@ -1,7 +1,7 @@
 # Main routes for the project
 
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for, session
-from config import adminPassword, DATA_DIR, PRIVATE_DIR
+from config import adminPassword, DATA_DIR, PRIVATE_DIR, YANDEX_MAPS_API_KEY, DADATA_API_TOKEN, YANDEX_MERCHANT_ID
 import json
 import os
 from datetime import datetime, timedelta
@@ -331,6 +331,13 @@ def update_order_status():
 def get_api_keys():
     """Safely provide API keys to frontend"""
     from config import DADATA_API_TOKEN, YANDEX_MAPS_API_KEY, YANDEX_MERCHANT_ID
+    
+    # Debug logging
+    print(f"DEBUG: get_api_keys called")
+    print(f"DEBUG: YANDEX_MAPS_API_KEY: {'YES' if YANDEX_MAPS_API_KEY else 'NO'}")
+    print(f"DEBUG: DADATA_API_TOKEN: {'YES' if DADATA_API_TOKEN else 'NO'}")
+    print(f"DEBUG: YANDEX_MERCHANT_ID: {'YES' if YANDEX_MERCHANT_ID else 'NO'}")
+    
     return jsonify({
         'dadata_token': DADATA_API_TOKEN,
         'yandex_maps_key': YANDEX_MAPS_API_KEY,
@@ -340,8 +347,18 @@ def get_api_keys():
 @main_bp.context_processor
 def inject_config():
     """Make config variables available in templates"""
-    from config import YANDEX_MAPS_API_KEY
-    return dict(config={'YANDEX_MAPS_API_KEY': YANDEX_MAPS_API_KEY})
+    # Debug logging for API key
+    print(f"DEBUG: inject_config called - YANDEX_MAPS_API_KEY: {'YES' if YANDEX_MAPS_API_KEY else 'NO'}")
+    if YANDEX_MAPS_API_KEY:
+        print(f"DEBUG: API key starts with: {YANDEX_MAPS_API_KEY[:10]}...")
+    
+    return dict(
+        config={
+            'YANDEX_MAPS_API_KEY': YANDEX_MAPS_API_KEY,
+            'DADATA_API_TOKEN': DADATA_API_TOKEN,
+            'YANDEX_MERCHANT_ID': YANDEX_MERCHANT_ID
+        }
+    )
 
 @main_bp.route('/user_orders')
 def user_orders():

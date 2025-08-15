@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, render_template, session
 import json
 import os
 from datetime import datetime
-from config import SECRET_KEY, UPLOADS_DIR, ALLOWED_EXTENSIONS, MAX_FILE_SIZE
+from config import SECRET_KEY, UPLOADS_DIR, ALLOWED_EXTENSIONS, MAX_FILE_SIZE, DATA_DIR
 from werkzeug.utils import secure_filename
 import uuid
 
