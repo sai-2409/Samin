@@ -21,13 +21,14 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/responsiveIndex.css" />
     <link rel="stylesheet" href="/static/css/animation.css" />
 
     <!-- Connecting the logo to the browser tab -->
     <link
-    rel="shortcut icon"
-    href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
-    type="image/x-icon"
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='images/logo__walnuts-print-version.svg') }}"
+      type="image/x-icon"
     />
     <style>
       .star-rating {
@@ -57,46 +58,145 @@
   </head>
   <body class="bg-gray-50 font-['Roboto']">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center space-x-4">
+    <header class="header">
+      <div class="header__container">
+        <nav class="nav">
+          <div class="header__logos">
             <img
-              src="/static/images/logoWalnuts-welcome-page.svg"
-              alt="Samin Logo"
-              class="h-10 w-10"
+              src="{{ url_for('static', filename='images/logoWalnuts-welcome-page.svg') }}"
+              alt="SAMIN логотип"
+              class="header__logo"
             />
-            <h1 class="text-2xl font-bold text-orange-600">Samin</h1>
+            <div class="logo__name">
+              <h2 class="header__samin">SAMIN</h2>
+              <p class="header__statement">
+                Открывайте. Побалуйте. Процветайте.
+              </p>
+            </div>
           </div>
-          <nav class="flex items-center space-x-6">
-            <a
-              href="/"
-              class="text-gray-600 hover:text-orange-600 transition-colors"
-              >Главная</a
-            >
-            <a
-              href="/cart"
-              class="text-gray-600 hover:text-orange-600 transition-colors"
-              >Корзина</a
-            >
-            <div class="flex items-center space-x-2">
+          <nav class="nav__small-screens">
+            <!-- Puting Yandex Market ID avatar -->
+            {% if user %}
+            <div class="header__profile header__profile-small-screens">
               <img
                 src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
-                alt="Avatar"
-                class="w-8 h-8 rounded-full"
-                onerror="this.src='/static/images/avatars/larisa.png'"
+                alt="avatar"
               />
-              <span class="text-gray-700"
-                >{{ user.real_name or user.display_name or user.login }}</span
-              >
-              <a
-                href="/logout"
-                class="text-red-600 hover:text-red-800 transition-colors"
-                >Выйти</a
-              >
+              <span>{{ user.login }}</span>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/user_orders" class="header__profile-logout"
+                  >Мои Заказы</a
+                >
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
             </div>
+            {% else %}
+            <a
+              class="header__button-yandexID header__button-yandexID-small-screens"
+              href="/login"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                text-decoration: none;
+              "
+              ><img
+                src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}"
+                width="30px"
+                height="30px"
+                alt="Yandex ID"
+              />Войти c Яндекс ID</a
+            >
+            {% endif %}
+            <!-- Puting Yandex Market ID avatar -->
+            <button id="toggleBtn">☰</button>
           </nav>
-        </div>
+
+          <!-- Overlay -->
+          <div id="overlay" class="overlay"></div>
+
+          <!-- Sidebar -->
+          <div id="sidebar" class="sidebar">
+            <button id="closeBtn" class="close-btn">✖</button>
+            <ul>
+              <li>
+                <a href="/"><span>🏡</span> Главная</a>
+              </li>
+              <li>
+                <a href="/cart"><span>🛒</span> Корзина</a>
+              </li>
+              <li>
+                <a href="/user_orders"><span>📋</span> Мои заказы</a>
+              </li>
+              <li>
+                <a href="/reviews"><span>⭐</span> Отзывы</a>
+              </li>
+            </ul>
+          </div>
+          <div class="header__list">
+            <ul>
+              <li class="header__list-item">
+                <a href="/" class="nav__link nav__btn1">Главная</a>
+              </li>
+              <li class="header__list-item">
+                <a href="/cart" class="nav__link nav__btn2">Корзина</a>
+              </li>
+              <li class="header__list-item">
+                <a href="/user_orders" class="nav__link nav__btn3"
+                  >Мои заказы</a
+                >
+              </li>
+              <li class="header__list-item">
+                <a href="/reviews" class="nav__link nav__btn4">Отзывы</a>
+              </li>
+            </ul>
+          </div>
+          <div class="header__order">
+            <img
+              src="{{ url_for('static', filename='images/icons/cart__icon.svg') }}"
+              alt="Cart"
+              class="header__cart"
+            />
+            <!-- Puting Yandex Market ID avatar -->
+            {% if user %}
+            <div class="header__profile">
+              <img
+                src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
+                alt="avatar"
+              />
+              <span>{{ user.login }}</span>
+              <div class="header__profile-dropdown">
+                <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
+                <a href="/user_orders" class="header__profile-logout"
+                  >Мои Заказы</a
+                >
+                <a href="/logout" class="header__profile-logout">Выйти</a>
+              </div>
+            </div>
+            {% else %}
+            <a
+              class="header__button-yandexID"
+              href="/login"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                text-decoration: none;
+              "
+              ><img
+                src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}"
+                width="30px"
+                height="30px"
+                alt="Yandex ID"
+              />Войти c Яндекс ID</a
+            >
+            {% endif %}
+            <!-- Puting Yandex Market ID avatar -->
+          </div>
+        </nav>
       </div>
     </header>
 
@@ -533,6 +633,53 @@
         document.getElementById("successModal").classList.add("hidden");
         document.getElementById("successModal").classList.remove("flex");
       }
+
+      // Mobile Menu Functionality
+      function setupMobileMenu() {
+        const toggleBtn = document.getElementById("toggleBtn");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+        const closeBtn = document.getElementById("closeBtn");
+
+        function openMobileMenu() {
+          sidebar.classList.add("open");
+          overlay.classList.add("show");
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeMobileMenu() {
+          sidebar.classList.remove("open");
+          overlay.classList.remove("show");
+          document.body.style.overflow = "";
+        }
+
+        toggleBtn.addEventListener("click", openMobileMenu);
+        closeBtn.addEventListener("click", closeMobileMenu);
+        overlay.addEventListener("click", closeMobileMenu);
+
+        // Close menu on escape key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            closeMobileMenu();
+          }
+        });
+
+        // Close menu on window resize if screen becomes large
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 900) {
+            closeMobileMenu();
+          }
+        });
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        setupStarRating();
+        setupImageUpload();
+        setupReviewForm();
+        setupMobileMenu();
+        loadUserReviews();
+      });
     </script>
   </body>
 </html>

@@ -357,10 +357,31 @@ def user_orders():
         # Filter orders for current user
         user_orders = [order for order in orders if order.get("user_id") == user["login"]]
         
+        # Separate active and delivered orders
+        active_orders = []
+        delivered_orders = []
+        
+        for order in user_orders:
+            if order.get('status') == 'Доставлен':
+                delivered_orders.append(order)
+            else:
+                active_orders.append(order)
+        
+        # Sort orders by timestamp (newest first)
+        def get_sort_key(order):
+            timestamp = order.get('timestamp', '')
+            if not timestamp:
+                return '1970-01-01T00:00:00'  # Default for orders without timestamp
+            return timestamp
+        
+        active_orders.sort(key=get_sort_key, reverse=True)
+        delivered_orders.sort(key=get_sort_key, reverse=True)
+        
     except (FileNotFoundError, json.JSONDecodeError):
-        user_orders = []
+        active_orders = []
+        delivered_orders = []
     
-    return render_template('user_orders.html', orders=user_orders, user=user)
+    return render_template('user_orders.html', active_orders=active_orders, delivered_orders=delivered_orders, user=user)
 
 @main_bp.route('/api/delete-order', methods=['POST'])
 def delete_order():

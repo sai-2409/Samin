@@ -198,7 +198,7 @@
         .content__right {
             border: none !important;
             outline: none !important;
-            margin-bottom: 0 !important;
+            margin-bottom: 100px !important;
         }
         
         /* Floating Notification System */
@@ -415,7 +415,9 @@
 
     <!-- I will put the main cart here for a moment -->
     <div class="floating-cart floating__cart-go">
-      <img src="{{ url_for('static', filename='images/icons/Shopping_Cart_01.svg') }}" alt="Корзина" />
+      <svg viewBox="0 0 24 24" class="cart-icon" fill="currentColor">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
       <span class="floating__cart-counter">0</span>
     </div>
     <!-- I will put the main cart here for a moment -->
@@ -478,7 +480,7 @@
             <a class="header__button-yandexID header__button-yandexID-small-screens" href="/login" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;"><img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">Войти c Яндекс ID</a>
             {% endif %}
             <!-- Puting Yandex Market ID avatar -->
-            <button id="toggleBtn">☰ Меню</button>
+            <button id="toggleBtn">☰</button>
           </nav>
 
           <!-- Overlay -->

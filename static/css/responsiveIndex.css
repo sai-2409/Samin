@@ -443,15 +443,15 @@
   .pros-header p {
     font-size: 14px;
   }
-  .pros-cards {
+  /* .pros-cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-  }
+  } */
   .card {
-    width: 250px;
+    /* width: 250px; */
     margin-bottom: 15px;
   }
   .section__calc {
@@ -564,11 +564,11 @@
     max-width: 320px;
   }
   .mright__header {
-    font-size: 22px;
+    font-size: 25px;
     margin-bottom: 20px;
   }
   .mright__statement {
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 30px;
   }
   .mbutton__container {
@@ -592,12 +592,13 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 0 20px;
   }
   .commitment__header {
-    font-size: 16px;
+    font-size: 20px;
   }
   .commitment__text {
-    font-size: 10px;
+    font-size: 13px;
     max-width: 300px;
   }
 
@@ -612,22 +613,22 @@
     font-size: 11px;
     max-width: 280px;
   }
-  .pros-cards {
+  /* .pros-cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
-  }
+  } */
   .card {
-    width: 100px;
+    width: 70%;
   }
   .card h3 {
-    font-size: 8px;
+    font-size: 12px;
     margin: 10px 0 8px;
   }
   .card p {
-    font-size: 6px;
+    font-size: 10px;
   }
 
   /* Menu section */

@@ -32,88 +32,179 @@
         <h1>Мои Заказы</h1>
       </div>
 
-      {% if orders %}
-      <div class="orders-container">
-        {% for order in orders %}
-        <div class="order-card">
-          <div class="order-header">
-            <div>
-              <h3 class="order-title">
-                Заказ #{{ order.order_id[:8] if order.order_id else 'N/A' }}
-              </h3>
-              <p class="order-date">
-                {% if order.timestamp %} {{ order.timestamp.split('T')[0] if 'T'
-                in order.timestamp else order.timestamp }} {% else %} N/A {%
-                endif %}
-              </p>
+      <div class="floating-cart home__page-back" title="Вернуться на главную">
+        <svg viewBox="0 0 24 24" class="home-icon" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+      </div>
+
+      <!-- Active Orders Section -->
+      {% if active_orders %}
+      <div class="orders-section">
+        <h2 class="section-title active-section-title">Активные заказы</h2>
+        <div class="orders-container">
+          {% for order in active_orders %}
+          <div class="order-card">
+            <div class="order-header">
+              <div>
+                <h3 class="order-title">
+                  Заказ #{{ order.order_id[:8] if order.order_id else 'N/A' }}
+                </h3>
+                <p class="order-date">
+                  {% if order.timestamp %} {{ order.timestamp.split('T')[0] if
+                  'T' in order.timestamp else order.timestamp }} {% else %} N/A
+                  {% endif %}
+                </p>
+              </div>
+              <div
+                class="order-status-badge {% if order.status == 'Оформлен' %}order-status-ordered{% elif order.status == 'Собран' %}order-status-collected{% elif order.status == 'Отправлен' %}order-status-shipped{% else %}order-status-default{% endif %}"
+              >
+                {{ order.status if order.status else 'Оформлен' }}
+              </div>
             </div>
-            <div
-              class="order-status-badge {% if order.status == 'Оформлен' %}order-status-ordered{% elif order.status == 'Собран' %}order-status-collected{% elif order.status == 'Отправлен' %}order-status-shipped{% elif order.status == 'Доставлен' %}order-status-delivered{% else %}order-status-default{% endif %}"
-            >
-              {{ order.status if order.status else 'Оформлен' }}
+
+            <div class="order-details">
+              <div class="order-info-grid">
+                <div class="order-info-item">
+                  <span class="order-info-label">Сумма:</span>
+                  <span class="order-info-value"
+                    >₽{{ order.total if order.total else '0' }}</span
+                  >
+                </div>
+                <div class="order-info-item">
+                  <span class="order-info-label">Доставка:</span>
+                  <span class="order-info-value"
+                    >{{ order.delivery_date if order.delivery_date else 'Не
+                    выбрана' }}</span
+                  >
+                </div>
+              </div>
+
+              {% if order.customer_info and order.customer_info.address %}
+              <div class="order-address">
+                <span class="order-info-label">Адрес:</span>
+                <span class="order-info-value"
+                  >{{ order.customer_info.address }}</span
+                >
+              </div>
+              {% endif %}
+            </div>
+
+            {% if order.cart_items %}
+            <div class="order-items">
+              <h4 class="order-items-title">Товары:</h4>
+              <div class="order-items-list">
+                {% for item in order.cart_items %}
+                <div class="order-item">
+                  <span class="order-item-name">
+                    {{ item.productName if item.productName else (item.name if
+                    item.name else 'Товар') }} x{{ item.quantity if
+                    item.quantity else 1 }}
+                  </span>
+                  <span class="order-item-price">
+                    ₽{{ (item.price * item.quantity) if item.price and
+                    item.quantity else (item.price if item.price else 0) }}
+                  </span>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="order-actions">
+              <a
+                href="/order-tracking?order_id={{ order.order_id }}"
+                class="track-order-btn"
+              >
+                Отследить заказ
+              </a>
             </div>
           </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
 
-          <div class="order-details">
-            <div class="order-info-grid">
-              <div class="order-info-item">
-                <span class="order-info-label">Сумма:</span>
-                <span class="order-info-value"
-                  >₽{{ order.total if order.total else '0' }}</span
-                >
+      <!-- Delivered Orders Section -->
+      {% if delivered_orders %}
+      <div class="orders-section">
+        <h2 class="section-title delivered-section-title">
+          Доставленные заказы
+        </h2>
+        <div class="orders-container">
+          {% for order in delivered_orders %}
+          <div class="order-card delivered-order">
+            <div class="order-header">
+              <div>
+                <h3 class="order-title">
+                  Заказ #{{ order.order_id[:8] if order.order_id else 'N/A' }}
+                </h3>
+                <p class="order-date">
+                  {% if order.timestamp %} {{ order.timestamp.split('T')[0] if
+                  'T' in order.timestamp else order.timestamp }} {% else %} N/A
+                  {% endif %}
+                </p>
               </div>
-              <div class="order-info-item">
-                <span class="order-info-label">Доставка:</span>
-                <span class="order-info-value"
-                  >{{ order.delivery_date if order.delivery_date else 'Не
-                  выбрана' }}</span
-                >
+              <div class="order-status-badge order-status-delivered">
+                {{ order.status if order.status else 'Доставлен' }}
               </div>
             </div>
 
-            {% if order.customer_info and order.customer_info.address %}
-            <div class="order-address">
-              <span class="order-info-label">Адрес:</span>
-              <span class="order-info-value"
-                >{{ order.customer_info.address }}</span
-              >
+            <div class="order-details">
+              <div class="order-info-grid">
+                <div class="order-info-item">
+                  <span class="order-info-label">Сумма:</span>
+                  <span class="order-info-value"
+                    >₽{{ order.total if order.total else '0' }}</span
+                  >
+                </div>
+                <div class="order-info-item">
+                  <span class="order-info-label">Дата доставки:</span>
+                  <span class="order-info-value"
+                    >{{ order.delivery_date if order.delivery_date else 'Не
+                    указана' }}</span
+                  >
+                </div>
+              </div>
+
+              {% if order.customer_info and order.customer_info.address %}
+              <div class="order-address">
+                <span class="order-info-label">Адрес:</span>
+                <span class="order-info-value"
+                  >{{ order.customer_info.address }}</span
+                >
+              </div>
+              {% endif %}
+            </div>
+
+            {% if order.cart_items %}
+            <div class="order-items">
+              <h4 class="order-items-title">Товары:</h4>
+              <div class="order-items-list">
+                {% for item in order.cart_items %}
+                <div class="order-item">
+                  <span class="order-item-name">
+                    {{ item.productName if item.productName else (item.name if
+                    item.name else 'Товар') }} x{{ item.quantity if
+                    item.quantity else 1 }}
+                  </span>
+                  <span class="order-item-price">
+                    ₽{{ (item.price * item.quantity) if item.price and
+                    item.quantity else (item.price if item.price else 0) }}
+                  </span>
+                </div>
+                {% endfor %}
+              </div>
             </div>
             {% endif %}
           </div>
-
-          {% if order.cart_items %}
-          <div class="order-items">
-            <h4 class="order-items-title">Товары:</h4>
-            <div class="order-items-list">
-              {% for item in order.cart_items %}
-              <div class="order-item">
-                <span class="order-item-name">
-                  {{ item.productName if item.productName else (item.name if
-                  item.name else 'Товар') }} x{{ item.quantity if item.quantity
-                  else 1 }}
-                </span>
-                <span class="order-item-price">
-                  ₽{{ (item.price * item.quantity) if item.price and
-                  item.quantity else (item.price if item.price else 0) }}
-                </span>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-
-          <div class="order-actions">
-            <a
-              href="/order-tracking?order_id={{ order.order_id }}"
-              class="track-order-btn"
-            >
-              Отследить заказ
-            </a>
-          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
-      {% else %}
+      {% endif %}
+
+      <!-- Empty State -->
+      {% if not active_orders and not delivered_orders %}
       <div class="empty-orders">
         <h3>У вас пока нет заказов</h3>
         <p>Сделайте свой первый заказ и он появится здесь</p>
@@ -125,5 +216,34 @@
         <a href="/" class="back-home-btn"> ← Вернуться на главную </a>
       </div>
     </div>
+
+    <script>
+      // Add click functionality to the floating home button
+      document.addEventListener("DOMContentLoaded", function () {
+        const floatingHomeButton = document.querySelector(
+          ".floating-cart.home__page-back"
+        );
+
+        if (floatingHomeButton) {
+          floatingHomeButton.addEventListener("click", function () {
+            // Navigate to home page
+            window.location.href = "/";
+          });
+
+          // Add hover effect and cursor pointer
+          floatingHomeButton.style.cursor = "pointer";
+
+          // Add hover animation
+          floatingHomeButton.addEventListener("mouseenter", function () {
+            this.style.transform = "scale(1.1)";
+            this.style.transition = "transform 0.2s ease";
+          });
+
+          floatingHomeButton.addEventListener("mouseleave", function () {
+            this.style.transform = "scale(1)";
+          });
+        }
+      });
+    </script>
   </body>
 </html>

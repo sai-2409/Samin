@@ -392,9 +392,9 @@
   }
   .wall__card {
     /* width: calc(100% - 30px); */
-    width: 90%;
+    width: 100%;
     margin: 5px auto;
-    padding: 6px 8px;
+    /* padding: 6px 8px; */
     gap: 6px;
     min-height: 48px;
     border-radius: 10px;
@@ -404,19 +404,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 8rem;
   }
   .wall__card-image {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 6px;
   }
   .wall__text {
-    font-size: 0.5em;
-    max-width: 200px;
+    font-size: 0.7em;
+    /* min-width: 150px; */
+    max-width: 250px;
     flex: 1;
   }
   .wall__title {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
+    /* min-width: 150px; */
     max-width: 250px;
     margin-bottom: 2px;
   }
@@ -438,28 +441,28 @@
   }
   .quantity {
     gap: 1px;
-    padding: 5px 5px;
+    padding: 5px 15px;
     font-size: 0.65em;
     border-radius: 6px;
   }
   .quantity__minus,
   .quantity__plus {
-    width: 15px;
-    height: 15px;
-    font-size: 0.65em;
+    width: 20px;
+    height: 20px;
+    font-size: 1.2rem;
   }
   .quantity__amount {
     min-width: 8px;
     font-size: 0.8rem;
   }
   .remove__item {
-    font-size: 1rem;
-    padding: 0 1px;
+    font-size: 1.5rem;
     margin-left: 4px;
-    align-self: flex-start;
+    padding: 5px 10px;
+    /* align-self: flex-start; */
   }
   .remove__item:hover {
-    border-radius: 50%;
+    border-radius: 100%;
     cursor: pointer;
   }
   .samin-checkbox .checkmark {
@@ -513,7 +516,7 @@
     overflow: hidden;
   }
   .address__form-form-container {
-    width: 95vw;
+    width: 80%;
     max-width: 400px;
     margin: 0 auto;
     padding: 1.2rem;

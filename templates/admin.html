@@ -83,39 +83,379 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
+
+      /* Responsive styles for small screens */
+      @media (max-width: 1024px) {
+        .header-container {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+        
+        .header-main {
+          width: 100%;
+          justify-content: space-between;
+        }
+        
+        .header-welcome {
+          width: 100%;
+          justify-content: space-between;
+          margin-top: 1rem;
+        }
+        
+        .main-content {
+          padding: 1rem;
+          gap: 1rem;
+        }
+        
+        .total-sales {
+          padding: 1.5rem;
+        }
+        
+        .total-sales h2 {
+          font-size: 1.5rem;
+        }
+        
+        .total-sales .text-5xl {
+          font-size: 2.5rem;
+        }
+        
+        .sales-overview {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        
+        .sales-card {
+          padding: 1.5rem;
+        }
+        
+        .sales-card h2 {
+          font-size: 1.25rem;
+        }
+        
+        .sales-card .text-4xl {
+          font-size: 2rem;
+        }
+        
+        .chart-section {
+          padding: 1.5rem;
+        }
+        
+        .chart-section h2 {
+          font-size: 1.25rem;
+        }
+        
+        .stats-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        
+        .orders-section {
+          padding: 1.5rem;
+        }
+        
+        .orders-section h2 {
+          font-size: 1.25rem;
+        }
+        
+        .table-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        .order-table {
+          min-width: 800px;
+        }
+        
+        .order-table th,
+        .order-table td {
+          padding: 0.75rem 0.5rem;
+          font-size: 0.875rem;
+        }
+        
+        .status-select {
+          min-width: 120px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          padding: 1rem;
+        }
+        
+        .logo {
+          height: 2.5rem;
+          width: 2.5rem;
+        }
+        
+        .dashboard-title {
+          font-size: 1.5rem;
+        }
+        
+        .logout-timer {
+          font-size: 0.875rem;
+        }
+        
+        .welcome-text {
+          font-size: 0.875rem;
+        }
+        
+        .notifications-btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
+        
+        .logout-btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
+        
+        .main-content {
+          padding: 0.75rem;
+          gap: 0.75rem;
+        }
+        
+        .total-sales {
+          padding: 1rem;
+          border-radius: 1rem;
+        }
+        
+        .total-sales h2 {
+          font-size: 1.25rem;
+        }
+        
+        .total-sales .text-5xl {
+          font-size: 2rem;
+        }
+        
+        .sales-card {
+          padding: 1rem;
+          border-radius: 1rem;
+        }
+        
+        .sales-card h2 {
+          font-size: 1.125rem;
+        }
+        
+        .sales-card .text-4xl {
+          font-size: 1.75rem;
+        }
+        
+        .chart-section {
+          padding: 1rem;
+          border-radius: 1rem;
+        }
+        
+        .chart-section h2 {
+          font-size: 1.125rem;
+        }
+        
+        .stats-grid {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+        
+        .stats-item {
+          padding: 0.75rem;
+          border-radius: 0.75rem;
+        }
+        
+        .stats-item .text-2xl {
+          font-size: 1.5rem;
+        }
+        
+        .orders-section {
+          padding: 1rem;
+          border-radius: 1rem;
+        }
+        
+        .orders-section h2 {
+          font-size: 1.125rem;
+        }
+        
+        .order-table {
+          min-width: 600px;
+        }
+        
+        .order-table th,
+        .order-table td {
+          padding: 0.5rem 0.25rem;
+          font-size: 0.75rem;
+        }
+        
+        .status-select {
+          min-width: 100px;
+          font-size: 0.75rem;
+          padding: 0.25rem 0.5rem;
+        }
+        
+        .delivery-notes {
+          max-width: 120px;
+        }
+        
+        .delivery-notes .note-tag {
+          font-size: 0.625rem;
+          padding: 0.125rem 0.375rem;
+          margin: 0.125rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          padding: 0.75rem;
+        }
+        
+        .dashboard-title {
+          font-size: 1.25rem;
+        }
+        
+        .logout-timer {
+          font-size: 0.75rem;
+        }
+        
+        .welcome-text {
+          font-size: 0.75rem;
+        }
+        
+        .notifications-btn {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.75rem;
+        }
+        
+        .logout-btn {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.75rem;
+        }
+        
+        .main-content {
+          padding: 0.5rem;
+          gap: 0.5rem;
+        }
+        
+        .total-sales {
+          padding: 0.75rem;
+          border-radius: 0.75rem;
+        }
+        
+        .total-sales h2 {
+          font-size: 1.125rem;
+        }
+        
+        .total-sales .text-5xl {
+          font-size: 1.75rem;
+        }
+        
+        .sales-card {
+          padding: 0.75rem;
+          border-radius: 0.75rem;
+        }
+        
+        .sales-card h2 {
+          font-size: 1rem;
+        }
+        
+        .sales-card .text-4xl {
+          font-size: 1.5rem;
+        }
+        
+        .chart-section {
+          padding: 0.75rem;
+          border-radius: 0.75rem;
+        }
+        
+        .chart-section h2 {
+          font-size: 1rem;
+        }
+        
+        .stats-grid {
+          gap: 0.5rem;
+        }
+        
+        .stats-item {
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+        }
+        
+        .stats-item .text-2xl {
+          font-size: 1.25rem;
+        }
+        
+        .orders-section {
+          padding: 0.75rem;
+          border-radius: 0.75rem;
+        }
+        
+        .orders-section h2 {
+          font-size: 1rem;
+        }
+        
+        .order-table {
+          min-width: 500px;
+        }
+        
+        .order-table th,
+        .order-table td {
+          padding: 0.375rem 0.125rem;
+          font-size: 0.625rem;
+        }
+        
+        .status-select {
+          min-width: 80px;
+          font-size: 0.625rem;
+          padding: 0.125rem 0.25rem;
+        }
+        
+        .delivery-notes {
+          max-width: 100px;
+        }
+        
+        .delivery-notes .note-tag {
+          font-size: 0.5rem;
+          padding: 0.125rem 0.25rem;
+          margin: 0.125rem;
+        }
+      }
     </style>
   </head>
   <body class="bg-gray-100 font-['Roboto'] min-h-screen">
     <div class="min-h-screen flex flex-col">
       <!-- Header -->
-      <header class="bg-white shadow p-6 flex items-center">
-        <div class="flex items-center gap-4 flex-1">
-          <img
-            src="/static/images/logoWalnuts-welcome-page.svg"
-            alt="Samin Logo"
-            class="h-12 w-12 rounded-full bg-gray-200"
-          />
-          <h1 class="text-3xl font-bold text-orange-700 tracking-wide">
-            Samin Admin Dashboard
-          </h1>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="text-gray-600 font-medium">Добро пожаловать, Самиджонов!</div>
-          <a href="/admin/email-notifications" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
-            📧 Уведомления о заказах
-          </a>
-        </div>
-        <div class="flex items-center ml-2">
-          <a href="/admin-logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium">
-            Выйти
-          </a>
+      <header class="header bg-white shadow p-6 flex items-center">
+        <div class="header-container flex items-center gap-4 flex-1">
+          <div class="header-main flex items-center gap-4 flex-1">
+            <img
+              src="/static/images/logoWalnuts-welcome-page.svg"
+              alt="Samin Logo"
+              class="logo h-12 w-12 rounded-full bg-gray-200"
+            />
+            <h1 class="dashboard-title text-3xl font-bold text-orange-700 tracking-wide">
+              Samin Admin Dashboard
+            </h1>
+            <div class="logout-timer ml-auto flex items-center gap-4">
+              <div class="text-sm text-gray-600">
+                <span>Авто-выход через:</span>
+                <span id="logoutCountdown" class="font-bold text-orange-600 ml-1" style="margin-right: 20px;">30:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="header-welcome flex items-center gap-4">
+            <div class="welcome-text text-gray-600 font-medium">Добро пожаловать, Самиджонов!</div>
+            <a href="/admin/email-notifications" class="notifications-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
+              📧 Уведомления о заказах
+            </a>
+          </div>
+          <div class="flex items-center ml-2">
+            <a href="/admin-logout" class="logout-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium">
+              Выйти
+            </a>
+          </div>
         </div>
       </header>
 
       <!-- Main Content -->
-      <main class="flex-1 p-8 flex flex-col gap-8 max-w-7xl mx-auto w-full">
+      <main class="main-content flex-1 p-8 flex flex-col gap-8 max-w-7xl mx-auto w-full">
         <!-- Total Sales Summary -->
-        <div class="bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 text-center">
+        <div class="total-sales bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 text-center">
           <h2 class="text-2xl font-bold text-orange-800 mb-2">Общие продажи</h2>
           <div class="text-5xl font-bold gradient-text-orange mb-2">
             ₽ {{ ('%.2f' % ((active_orders + delivered_orders) | selectattr('order_id') | map(attribute='total') | map('float') | sum | default(0))) }}
@@ -124,9 +464,9 @@
         </div>
 
         <!-- Sales Overview -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section class="sales-overview grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Active Orders Sales -->
-          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
+          <div class="sales-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
             <!-- Animated background elements -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
             <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-300 rounded-full opacity-30 animate-bounce"></div>
@@ -155,7 +495,7 @@
           </div>
 
           <!-- Delivered Orders Sales -->
-          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
+          <div class="sales-card bg-gradient-to-br from-green-50 to-green-100 rounded-2xl shadow-lg p-6 relative overflow-hidden">
             <!-- Animated background elements -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full opacity-20 animate-pulse"></div>
             <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce"></div>
@@ -185,7 +525,7 @@
         </section>
 
         <!-- Daily Orders Chart -->
-        <section class="bg-white rounded-2xl shadow p-6">
+        <section class="chart-section bg-white rounded-2xl shadow p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-semibold text-gray-800">
               📊 Заказы по дням
@@ -200,16 +540,16 @@
             <canvas id="dailyOrdersChart" width="400" height="200"></canvas>
           </div>
           
-          <div class="mt-4 grid grid-cols-3 gap-4 text-center">
-            <div class="bg-blue-50 rounded-lg p-3">
+          <div class="stats-grid mt-4 grid grid-cols-3 gap-4 text-center">
+            <div class="stats-item bg-blue-50 rounded-lg p-3">
               <div class="text-2xl font-bold text-blue-600" id="todayOrders">0</div>
               <div class="text-sm text-blue-500">Сегодня</div>
             </div>
-            <div class="bg-green-50 rounded-lg p-3">
+            <div class="stats-item bg-green-50 rounded-lg p-3">
               <div class="text-2xl font-bold text-green-600" id="weekOrders">0</div>
               <div class="text-sm text-green-500">За неделю</div>
             </div>
-            <div class="bg-orange-50 rounded-lg p-3">
+            <div class="stats-item bg-orange-50 rounded-lg p-3">
               <div class="text-2xl font-bold text-orange-600" id="avgOrders">0</div>
               <div class="text-sm text-orange-500">В среднем</div>
             </div>
@@ -217,13 +557,13 @@
         </section>
 
         <!-- Active Orders Table -->
-        <section class="bg-white rounded-2xl shadow p-6">
+        <section class="orders-section bg-white rounded-2xl shadow p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
             Активные заказы ({{ active_orders|length }}) 
             <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
           </h2>
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+          <div class="table-container overflow-x-auto">
+            <table class="order-table min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
@@ -285,7 +625,7 @@
                             {% else %}bg-gray-100 text-gray-800{% endif %}">
                             {{ order.status if order.status else 'Оформлен' }}
                           </span>
-                          <select class="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-orange-500"
+                          <select class="status-select text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-orange-500"
                                   onchange="updateOrderStatus('{{ order.order_id }}', this.value)">
                             <option value="Оформлен" {% if order.status == 'Оформлен' %}selected{% endif %}>Оформлен</option>
                             <option value="Собран" {% if order.status == 'Собран' %}selected{% endif %}>Собран</option>
@@ -318,13 +658,13 @@
         </section>
 
         <!-- Delivered Orders Table -->
-        <section class="bg-white rounded-2xl shadow p-6">
+        <section class="orders-section bg-white rounded-2xl shadow p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
             Доставленные заказы ({{ delivered_orders|length }})
             <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
           </h2>
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+          <div class="table-container overflow-x-auto">
+            <table class="order-table min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
@@ -909,6 +1249,197 @@
 
       // Auto-refresh chart every 5 minutes
       setInterval(initializeDailyOrdersChart, 300000);
+
+      // Auto-logout timer for admin (30 minutes)
+      let logoutTimer;
+      let logoutWarningTimer;
+      let countdownInterval;
+      const LOGOUT_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+      const WARNING_TIMEOUT = 25 * 60 * 1000; // 25 minutes (5 minutes before logout)
+
+      // Reset logout timer on user activity
+      function resetLogoutTimer() {
+        clearTimeout(logoutTimer);
+        clearTimeout(logoutWarningTimer);
+        clearInterval(countdownInterval);
+        
+        // Set warning timer (5 minutes before logout)
+        logoutWarningTimer = setTimeout(() => {
+          showLogoutWarning();
+        }, WARNING_TIMEOUT);
+        
+        // Set logout timer
+        logoutTimer = setTimeout(() => {
+          performAutoLogout();
+        }, LOGOUT_TIMEOUT);
+        
+        // Start countdown
+        startCountdown();
+      }
+
+      // Start countdown timer
+      function startCountdown() {
+        const countdownElement = document.getElementById('logoutCountdown');
+        if (!countdownElement) return;
+        
+        let timeLeft = LOGOUT_TIMEOUT;
+        
+        countdownInterval = setInterval(() => {
+          const minutes = Math.floor(timeLeft / 60000);
+          const seconds = Math.floor((timeLeft % 60000) / 1000);
+          
+          countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          
+          // Change color based on time remaining
+          if (timeLeft <= 5 * 60 * 1000) { // 5 minutes or less
+            countdownElement.className = 'font-bold text-red-600 ml-1';
+          } else if (timeLeft <= 10 * 60 * 1000) { // 10 minutes or less
+            countdownElement.className = 'font-bold text-orange-600 ml-1';
+          } else {
+            countdownElement.className = 'font-bold text-orange-600 ml-1';
+          }
+          
+          timeLeft -= 1000;
+          
+          if (timeLeft < 0) {
+            clearInterval(countdownInterval);
+          }
+        }, 1000);
+      }
+
+      // Show warning before auto-logout
+      function showLogoutWarning() {
+        // Create warning modal
+        const warningModal = document.createElement('div');
+        warningModal.id = 'logoutWarningModal';
+        warningModal.innerHTML = `
+          <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
+              <div class="text-red-500 text-6xl mb-4">⚠️</div>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Внимание!</h3>
+              <p class="text-gray-600 mb-6">
+                Ваша сессия истечет через 5 минут. 
+                Нажмите "Продолжить" чтобы остаться в системе.
+              </p>
+              <div class="flex gap-3 justify-center">
+                <button onclick="extendSession()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">
+                  Продолжить
+                </button>
+                <button onclick="performAutoLogout()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors">
+                  Выйти сейчас
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(warningModal);
+        
+        // Auto-remove warning after 4 minutes if user doesn't respond
+        setTimeout(() => {
+          if (document.getElementById('logoutWarningModal')) {
+            document.getElementById('logoutWarningModal').remove();
+          }
+        }, 4 * 60 * 1000);
+      }
+
+      // Extend session when user clicks continue
+      function extendSession() {
+        // Remove warning modal
+        const warningModal = document.getElementById('logoutWarningModal');
+        if (warningModal) {
+          warningModal.remove();
+        }
+        
+        // Reset timers
+        resetLogoutTimer();
+        
+        // Show success message
+        showNotification('Сессия продлена на 30 минут', 'success');
+        
+        // Update countdown display
+        const countdownElement = document.getElementById('logoutCountdown');
+        if (countdownElement) {
+          countdownElement.textContent = '30:00';
+          countdownElement.className = 'font-bold text-orange-600 ml-1';
+        }
+      }
+
+      // Perform auto-logout
+      function performAutoLogout() {
+        // Remove warning modal if it exists
+        const warningModal = document.getElementById('logoutWarningModal');
+        if (warningModal) {
+          warningModal.remove();
+        }
+        
+        // Show logout message
+        showNotification('Сессия истекла. Выполняется выход...', 'info');
+        
+        // Redirect to admin login page after 2 seconds
+        setTimeout(() => {
+          window.location.href = '/admin-login';
+        }, 2000);
+      }
+
+      // Show notification
+      function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${
+          type === 'success' ? 'bg-green-500' : 
+          type === 'error' ? 'bg-red-500' : 
+          'bg-blue-500'
+        }`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 5 seconds
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 5000);
+      }
+
+      // Event listeners for user activity
+      const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+      
+      activityEvents.forEach(event => {
+        document.addEventListener(event, resetLogoutTimer, true);
+      });
+
+      // Initialize logout timer when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        resetLogoutTimer();
+        
+        // Show initial notification
+        showNotification('Автоматический выход через 30 минут неактивности', 'info');
+      });
+
+      // Handle manual logout
+      function handleManualLogout() {
+        // Clear all timers
+        clearTimeout(logoutTimer);
+        clearTimeout(logoutWarningTimer);
+        clearInterval(countdownInterval);
+        
+        // Remove warning modal if it exists
+        const warningModal = document.getElementById('logoutWarningModal');
+        if (warningModal) {
+          warningModal.remove();
+        }
+        
+        // Redirect to logout
+        window.location.href = '/admin-logout';
+      }
+
+      // Reset timer when page becomes visible (user returns to tab)
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          resetLogoutTimer();
+        }
+      });
     </script>
   </body>
 </html>

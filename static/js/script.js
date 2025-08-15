@@ -35,12 +35,14 @@ headerButtonCalc.addEventListener("click", function () {
   sectionCalc.scrollIntoView({ behavior: "smooth" });
 });
 
-// Fixing the header to be sticky
+// Enhanced sticky navigation with smooth transitions
 const stickyObserver = new IntersectionObserver(
   ([entry]) => {
     if (!entry.isIntersecting) {
+      // Add sticky class - CSS handles the smooth transition
       nav.classList.add("sticky");
     } else {
+      // Remove sticky class - CSS handles the smooth transition
       nav.classList.remove("sticky");
     }
   },

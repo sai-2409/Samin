@@ -993,48 +993,48 @@ if (addressInput) {
 }
 
 // Writing JS for the add card modal
-const addCardBtn = document.getElementById("add-card-btn");
-const addCardModal = document.getElementById("add-card-modal");
-const cardNumberInput = document.getElementById("card-number");
-const addCardModalClose = document.getElementById("add-card-modal-close");
-const addCardModalContent = addCardModal
-  ? addCardModal.querySelector(".add-card-modal__content")
-  : null;
+// const addCardBtn = document.getElementById("add-card-btn");
+// const addCardModal = document.getElementById("add-card-modal");
+// const cardNumberInput = document.getElementById("card-number");
+// const addCardModalClose = document.getElementById("add-card-modal-close");
+// const addCardModalContent = addCardModal
+// // ? addCardModal.querySelector(".add-card-modal__content")
+//   : null;
 
-function showAddCardModal() {
-  if (!addCardModal || !addCardModalContent) return;
-  addCardModal.style.display = "flex";
-  addCardModalContent.classList.remove("modal-animate-out");
-  addCardModalContent.classList.add("modal-animate-in");
-  setTimeout(() => cardNumberInput && cardNumberInput.focus(), 100);
-}
+// function showAddCardModal() {
+//   if (!addCardModal || !addCardModalContent) return;
+//   addCardModal.style.display = "flex";
+//   addCardModalContent.classList.remove("modal-animate-out");
+//   addCardModalContent.classList.add("modal-animate-in");
+//   setTimeout(() => cardNumberInput && cardNumberInput.focus(), 100);
+// }
 
-function hideAddCardModal() {
-  if (!addCardModal || !addCardModalContent) return;
-  addCardModalContent.classList.remove("modal-animate-in");
-  addCardModalContent.classList.add("modal-animate-out");
-  // Wait for animation to finish before hiding
-  addCardModalContent.addEventListener("animationend", function handler(e) {
-    if (e.animationName === "modalFadeOut") {
-      addCardModal.style.display = "none";
-      addCardModalContent.classList.remove("modal-animate-out");
-      addCardModalContent.removeEventListener("animationend", handler);
-    }
-  });
-}
+// function hideAddCardModal() {
+//   if (!addCardModal || !addCardModalContent) return;
+//   addCardModalContent.classList.remove("modal-animate-in");
+//   addCardModalContent.classList.add("modal-animate-out");
+//   // Wait for animation to finish before hiding
+//   addCardModalContent.addEventListener("animationend", function handler(e) {
+//     if (e.animationName === "modalFadeOut") {
+//       addCardModal.style.display = "none";
+//       addCardModalContent.classList.remove("modal-animate-out");
+//       addCardModalContent.removeEventListener("animationend", handler);
+//     }
+//   });
+// }
 
-if (addCardBtn && addCardModal) {
-  addCardBtn.addEventListener("click", showAddCardModal);
-}
-if (addCardModalClose && addCardModal) {
-  addCardModalClose.addEventListener("click", hideAddCardModal);
-}
-if (addCardModal) {
-  const overlay = addCardModal.querySelector(".add-card-modal__overlay");
-  if (overlay) {
-    overlay.addEventListener("click", hideAddCardModal);
-  }
-}
+// if (addCardBtn && addCardModal) {
+//   addCardBtn.addEventListener("click", showAddCardModal);
+// }
+// if (addCardModalClose && addCardModal) {
+//   addCardModalClose.addEventListener("click", hideAddCardModal);
+// }
+// if (addCardModal) {
+//   const overlay = addCardModal.querySelector(".add-card-modal__overlay");
+//   if (overlay) {
+//     overlay.addEventListener("click", hideAddCardModal);
+//   }
+// }
 
 // Delivery price calculation and update
 function updateDeliveryPrice(total) {
@@ -1160,7 +1160,7 @@ function updatePaymentSummaryAndDelivery() {
         if (discount > 0 && deliverySavings > 0) {
           discountSpan.innerHTML = `-${totalSavings}₽ <span style="font-size: 12px; color: #1dbf73;">(промокод + доставка)</span>`;
         } else if (deliverySavings > 0 && discount === 0) {
-          discountSpan.innerHTML = `-${totalSavings}₽ <span style="font-size: 12px; color: #1dbf73;">(доставка бесплатно)</span>`;
+          discountSpan.innerHTML = `-${totalSavings}₽ <span style="font-size: 12px; color: #1dbf73;"></span>`;
         } else {
           discountSpan.textContent = `-${totalSavings}₽`;
         }

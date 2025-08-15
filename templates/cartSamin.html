@@ -409,10 +409,9 @@
   <body {% if user %}data-user-login="{{ user.login }}" {% endif %}>
     <!-- I will put the main cart here for a moment --><!-- I will put the main cart here for a moment -->
     <div class="floating-cart home__page-back">
-      <img
-        src="{{ url_for('static', filename='images/icons/House_01.svg') }}"
-        alt="HomePage"
-      />
+      <svg viewBox="0 0 24 24" class="home-icon" fill="currentColor">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
     </div>
     <!-- I will put the main cart here for a moment -->
 
@@ -721,13 +720,13 @@
         </div>
         <div class="payment__address-row">
           <div class="payment__address-info">
-            <span class="payment__address-label">Адрес</span>
+            <span class="payment__address-label">Адрес:</span>
             <span class="payment__address-value" id="payment-address-value"
               >—</span
             >
           </div>
           <div class="payment__recipient-info">
-            <span class="payment__recipient-label">Получатель</span>
+            <span class="payment__recipient-label">Получатель:</span>
             <span class="payment__recipient-value" id="payment-recipient-value"
               >—</span
             >

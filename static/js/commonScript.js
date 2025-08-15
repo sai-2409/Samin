@@ -66,7 +66,8 @@ function showNotificationPanel() {
   const panel = document.createElement("div");
   panel.id = "notification-panel";
   panel.className =
-    "fixed top-16 right-4 bg-white rounded-lg shadow-xl border max-w-sm w-full z-50";
+    "fixed top-16 right-4 bg-white rounded-lg shadow-xl border max-w-sm w-full";
+  panel.style.zIndex = "99999";
 
   let panelHTML = `
     <div class="p-4 border-b">
@@ -191,11 +192,35 @@ function initializeResponsiveHeader() {
   });
 }
 
+// Change Yandex ID button text for small screens
+function updateYandexButtonText() {
+  const yandexButton = document.querySelector(
+    ".header__button-yandexID-small-screens"
+  );
+  if (yandexButton) {
+    if (window.innerWidth <= 900) {
+      // Small screens - show "Войти"
+      yandexButton.innerHTML =
+        '<img src="/static/images/logos/yandex-market-svg-logo-white.svg" width="30px" height="30px" alt="Yandex ID">Войти';
+    } else {
+      // Large screens - show original content
+      yandexButton.innerHTML =
+        '<img src="/static/images/logos/yandex-market-svg-logo-white.svg" width="30px" height="30px" alt="Yandex ID">Войти c Яндекс ID';
+    }
+  }
+}
+
 // Load notifications when page loads
 document.addEventListener("DOMContentLoaded", function () {
   loadNotifications();
   initializeResponsiveHeader();
 
+  // Update Yandex button text on page load
+  updateYandexButtonText();
+
   // Check for new notifications every 30 seconds
   setInterval(loadNotifications, 30000);
 });
+
+// Update button text on window resize
+window.addEventListener("resize", updateYandexButtonText);
