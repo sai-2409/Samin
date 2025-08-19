@@ -43,7 +43,7 @@ body {
 .calc__wrapper {
   display: flex;
   gap: 40px;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   margin: 0 auto;
   padding: 20px;
 }

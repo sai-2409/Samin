@@ -84,6 +84,31 @@
         background-clip: text;
       }
 
+      /* Time column styling */
+      .time-column {
+        min-width: 80px;
+        max-width: 100px;
+      }
+      
+      /* Date filter styling */
+      .date-filter-container {
+        position: relative;
+      }
+      
+      #date-picker-popup {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e5e7eb;
+      }
+      
+      #date-picker-popup input[type="date"] {
+        font-family: inherit;
+      }
+      
+      #date-picker-popup button {
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      
       /* Responsive styles for small screens */
       @media (max-width: 1024px) {
         .header-container {
@@ -176,6 +201,122 @@
         .status-select {
           min-width: 120px;
         }
+        
+        /* Date filter responsive */
+        .date-filter-container {
+          order: -1;
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+        
+        #date-picker-popup {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 90%;
+          max-width: 320px;
+          z-index: 1000;
+        }
+        
+        /* Make header more mobile-friendly */
+        .header-container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        
+        .header-main {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+        
+        .header-welcome {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: center;
+        }
+        
+        .dashboard-title {
+          font-size: 1.5rem;
+        }
+        
+        .logo {
+          height: 3rem;
+          width: 3rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          padding: 0.75rem;
+        }
+        
+        .dashboard-title {
+          font-size: 1.25rem;
+        }
+        
+        .welcome-text {
+          font-size: 0.75rem;
+          text-align: center;
+        }
+        
+        .notifications-btn,
+        .logout-btn {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.75rem;
+        }
+        
+        #date-filter-btn {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.75rem;
+        }
+        
+        #date-picker-popup {
+          width: 98%;
+          padding: 1rem;
+        }
+        
+        #date-picker-popup button {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.75rem;
+        }
+        
+        .main-content {
+          padding: 0.75rem;
+        }
+        
+        .total-sales {
+          padding: 1rem;
+        }
+        
+        .total-sales h2 {
+          font-size: 1.25rem;
+        }
+        
+        .total-sales .text-5xl {
+          font-size: 2rem;
+        }
+        
+        .sales-card {
+          padding: 1rem;
+        }
+        
+        .sales-card h2 {
+          font-size: 1.125rem;
+        }
+        
+        .sales-card .text-4xl {
+          font-size: 1.75rem;
+        }
+        
+        .orders-section {
+          padding: 1rem;
+        }
+        
+        .orders-section h2 {
+          font-size: 1.125rem;
+        }
       }
 
       @media (max-width: 768px) {
@@ -207,6 +348,25 @@
         
         .logout-btn {
           padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
+        
+        /* Date filter mobile styles */
+        #date-filter-btn {
+          width: 100%;
+          justify-content: center;
+          padding: 0.75rem 1rem;
+          font-size: 0.875rem;
+        }
+        
+        #date-picker-popup {
+          width: 95%;
+          max-width: 350px;
+          padding: 1.5rem;
+        }
+        
+        #date-picker-popup button {
+          padding: 0.75rem 1rem;
           font-size: 0.875rem;
         }
         
@@ -440,6 +600,47 @@
           </div>
           <div class="header-welcome flex items-center gap-4">
             <div class="welcome-text text-gray-600 font-medium">Добро пожаловать, Самиджонов!</div>
+            
+            <!-- Date Filter Section -->
+            <div class="date-filter-container relative">
+              <button id="date-filter-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                <span>📅</span>
+                <span id="selected-date-display">Все даты</span>
+                <span>▼</span>
+              </button>
+              
+              <!-- Date Picker Popup -->
+              <div id="date-picker-popup" class="absolute top-full right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-50 hidden min-w-64">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-semibold text-gray-800">Фильтр по дате</h3>
+                  <button id="close-date-picker" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
+                
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Выберите дату:</label>
+                  <input type="date" id="date-picker-input" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                  <button id="filter-by-date" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors">
+                    Применить фильтр
+                  </button>
+                  <button id="clear-date-filter" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors">
+                    Сбросить фильтр
+                  </button>
+                  <button id="today-filter" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
+                    Сегодня
+                  </button>
+                  <button id="yesterday-filter" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md transition-colors">
+                    Вчера
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Backdrop overlay for mobile date picker -->
+            <div id="date-picker-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+            
             <a href="/admin/email-notifications" class="notifications-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
               📧 Уведомления о заказах
             </a>
@@ -563,11 +764,12 @@
             <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
           </h2>
           <div class="table-container overflow-x-auto">
-            <table class="order-table min-w-full divide-y divide-gray-200">
+            <table id="active-orders-table" class="order-table min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Время создания</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Клиент</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес доставки</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата доставки</th>
@@ -581,12 +783,15 @@
                 {% if active_orders %} 
                   {% for order in active_orders %} 
                     {% if order.order_id %}
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50" data-order-date="{{ order.timestamp.split('T')[0] if order.timestamp else '' }}">
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ order.order_id[:8] }}...
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ order.timestamp.split('T')[0] if order.timestamp else 'N/A' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.timestamp.split('T')[1][:5] if order.timestamp and 'T' in order.timestamp else 'N/A' }}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div class="flex flex-col">
@@ -647,7 +852,7 @@
                   {% endfor %} 
                 {% else %}
                 <tr>
-                  <td colspan="9" class="text-center py-6 text-gray-400">
+                  <td colspan="10" class="text-center py-6 text-gray-400">
                     Нет активных заказов
                   </td>
                 </tr>
@@ -664,11 +869,12 @@
             <span class="text-sm font-normal text-gray-500">— Сортировка по дате (новые сверху)</span>
           </h2>
           <div class="table-container overflow-x-auto">
-            <table class="order-table min-w-full divide-y divide-gray-200">
+            <table id="delivered-orders-table" class="order-table min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID заказа</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата заказа</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Время создания</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Клиент</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес доставки</th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата доставки</th>
@@ -682,12 +888,15 @@
                 {% if delivered_orders %} 
                   {% for order in delivered_orders %} 
                     {% if order.order_id %}
-                    <tr class="hover:bg-gray-50 bg-green-50">
+                    <tr class="hover:bg-gray-50 bg-green-50" data-order-date="{{ order.timestamp.split('T')[0] if order.timestamp else '' }}">
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ order.order_id[:8] }}...
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ order.timestamp.split('T')[0] if order.timestamp else 'N/A' }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.timestamp.split('T')[1][:5] if order.timestamp and 'T' in order.timestamp else 'N/A' }}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div class="flex flex-col">
@@ -735,7 +944,7 @@
                   {% endfor %} 
                 {% else %}
                 <tr>
-                  <td colspan="9" class="text-center py-6 text-gray-400">
+                  <td colspan="10" class="text-center py-6 text-gray-400">
                     Нет доставленных заказов
                   </td>
                 </tr>
@@ -1440,6 +1649,341 @@
           resetLogoutTimer();
         }
       });
+
+      // ===== DATE FILTERING FUNCTIONALITY =====
+      
+      // Global variables for date filtering
+      let currentDateFilter = null;
+      let originalOrders = {
+        active: [],
+        delivered: []
+      };
+
+      // Initialize date filtering
+      document.addEventListener('DOMContentLoaded', function() {
+        initializeDateFiltering();
+      });
+
+      function initializeDateFiltering() {
+        // Store original order data
+        storeOriginalOrders();
+        
+        // Set up event listeners
+        setupDateFilterEvents();
+        
+        // Set today's date as default in the date picker
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date-picker-input').value = today;
+      }
+
+      function storeOriginalOrders() {
+        // Store active orders
+        const activeRows = document.querySelectorAll('#active-orders-table tbody tr[data-order-date]');
+        originalOrders.active = Array.from(activeRows).map(row => ({
+          element: row,
+          date: row.getAttribute('data-order-date'),
+          total: parseFloat(row.querySelector('td:nth-child(8)').textContent.replace('₽', '')) || 0
+        }));
+
+        // Store delivered orders
+        const deliveredRows = document.querySelectorAll('#delivered-orders-table tbody tr[data-order-date]');
+        originalOrders.delivered = Array.from(deliveredRows).map(row => ({
+          element: row,
+          date: row.getAttribute('data-order-date'),
+          total: parseFloat(row.querySelector('td:nth-child(8)').textContent.replace('₽', '')) || 0
+        }));
+      }
+
+      function setupDateFilterEvents() {
+        const dateFilterBtn = document.getElementById('date-filter-btn');
+        const datePickerPopup = document.getElementById('date-picker-popup');
+        const datePickerBackdrop = document.getElementById('date-picker-backdrop');
+        const closeDatePicker = document.getElementById('close-date-picker');
+        const filterByDate = document.getElementById('filter-by-date');
+        const clearDateFilter = document.getElementById('clear-date-filter');
+        const todayFilter = document.getElementById('today-filter');
+        const yesterdayFilter = document.getElementById('yesterday-filter');
+
+        // Toggle date picker popup
+        dateFilterBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleDatePicker(true);
+        });
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!datePickerPopup.contains(e.target) && !dateFilterBtn.contains(e.target)) {
+            toggleDatePicker(false);
+          }
+        });
+
+        // Close button
+        closeDatePicker.addEventListener('click', function() {
+          toggleDatePicker(false);
+        });
+
+        // Backdrop click
+        if (datePickerBackdrop) {
+          datePickerBackdrop.addEventListener('click', function() {
+            toggleDatePicker(false);
+          });
+        }
+
+        // Filter by selected date
+        filterByDate.addEventListener('click', function() {
+          const selectedDate = document.getElementById('date-picker-input').value;
+          if (selectedDate) {
+            applyDateFilter(selectedDate);
+            toggleDatePicker(false);
+          }
+        });
+
+        // Clear date filter
+        clearDateFilter.addEventListener('click', function() {
+          clearDateFilter();
+          toggleDatePicker(false);
+        });
+
+        // Today filter
+        todayFilter.addEventListener('click', function() {
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById('date-picker-input').value = today;
+          applyDateFilter(today);
+          toggleDatePicker(false);
+        });
+
+        // Yesterday filter
+        yesterdayFilter.addEventListener('click', function() {
+          const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+          document.getElementById('date-picker-input').value = yesterday;
+          applyDateFilter(yesterday);
+          toggleDatePicker(false);
+        });
+      }
+
+      function toggleDatePicker(show) {
+        const datePickerPopup = document.getElementById('date-picker-popup');
+        const datePickerBackdrop = document.getElementById('date-picker-backdrop');
+        
+        if (show) {
+          datePickerPopup.classList.remove('hidden');
+          if (datePickerBackdrop) {
+            datePickerBackdrop.classList.remove('hidden');
+          }
+        } else {
+          datePickerPopup.classList.add('hidden');
+          if (datePickerBackdrop) {
+            datePickerBackdrop.classList.add('hidden');
+          }
+        }
+      }
+
+      function applyDateFilter(selectedDate) {
+        currentDateFilter = selectedDate;
+        
+        // Filter active orders
+        filterOrdersByDate('active', selectedDate);
+        
+        // Filter delivered orders
+        filterOrdersByDate('delivered', selectedDate);
+        
+        // Update statistics
+        updateFilteredStatistics(selectedDate);
+        
+        // Update display
+        updateDateFilterDisplay(selectedDate);
+      }
+
+      function filterOrdersByDate(orderType, selectedDate) {
+        const orderData = originalOrders[orderType];
+        const tableBody = document.querySelector(`#${orderType}-orders-table tbody`);
+        
+        if (!tableBody) return;
+
+        // Hide all rows first
+        orderData.forEach(order => {
+          order.element.style.display = 'none';
+        });
+
+        // Show only matching rows
+        const matchingOrders = orderData.filter(order => order.date === selectedDate);
+        matchingOrders.forEach(order => {
+          order.element.style.display = '';
+        });
+
+        // Update "no orders" message
+        updateNoOrdersMessage(orderType, matchingOrders.length);
+      }
+
+      function updateNoOrdersMessage(orderType, visibleCount) {
+        const tableBody = document.querySelector(`#${orderType}-orders-table tbody`);
+        const noOrdersRow = tableBody.querySelector('tr:not([data-order-date])');
+        
+        if (noOrdersRow) {
+          if (visibleCount === 0) {
+            noOrdersRow.style.display = '';
+            noOrdersRow.querySelector('td').textContent = `Нет заказов на ${currentDateFilter}`;
+          } else {
+            noOrdersRow.style.display = 'none';
+          }
+        }
+      }
+
+      function updateFilteredStatistics(selectedDate) {
+        // Calculate filtered totals
+        const activeTotal = originalOrders.active
+          .filter(order => order.date === selectedDate)
+          .reduce((sum, order) => sum + order.total, 0);
+        
+        const deliveredTotal = originalOrders.delivered
+          .filter(order => order.date === selectedDate)
+          .reduce((sum, order) => sum + order.total, 0);
+        
+        const totalSales = activeTotal + deliveredTotal;
+        const totalOrders = originalOrders.active.filter(order => order.date === selectedDate).length +
+                           originalOrders.delivered.filter(order => order.date === selectedDate).length;
+
+        // Update total sales display
+        const totalSalesElement = document.querySelector('.total-sales .text-5xl');
+        if (totalSalesElement) {
+          totalSalesElement.textContent = `₽ ${totalSales.toFixed(2)}`;
+        }
+
+        // Update active orders sales
+        const activeSalesElement = document.querySelector('.sales-card:first-child .text-4xl');
+        if (activeSalesElement) {
+          activeSalesElement.textContent = `₽ ${activeTotal.toFixed(2)}`;
+        }
+
+        // Update delivered orders sales
+        const deliveredSalesElement = document.querySelector('.sales-card:last-child .text-4xl');
+        if (deliveredSalesElement) {
+          deliveredSalesElement.textContent = `₽ ${deliveredTotal.toFixed(2)}`;
+        }
+
+        // Update order counts
+        const activeCountElement = document.querySelector('.sales-card:first-child .text-blue-600');
+        if (activeCountElement) {
+          const activeCount = originalOrders.active.filter(order => order.date === selectedDate).length;
+          activeCountElement.textContent = `${activeCount} заказов`;
+        }
+
+        const deliveredCountElement = document.querySelector('.sales-card:last-child .text-green-600');
+        if (deliveredCountElement) {
+          const deliveredCount = originalOrders.delivered.filter(order => order.date === selectedDate).length;
+          deliveredCountElement.textContent = `${deliveredCount} заказов`;
+        }
+
+        // Update total orders count
+        const totalOrdersElement = document.querySelector('.total-sales p');
+        if (totalOrdersElement) {
+          totalOrdersElement.textContent = `${totalOrders} заказов всего`;
+        }
+      }
+
+      function clearDateFilter() {
+        currentDateFilter = null;
+        
+        // Show all orders
+        originalOrders.active.forEach(order => {
+          order.element.style.display = '';
+        });
+        originalOrders.delivered.forEach(order => {
+          order.element.style.display = '';
+        });
+
+        // Reset statistics to original values
+        resetStatisticsToOriginal();
+        
+        // Update display
+        updateDateFilterDisplay('Все даты');
+        
+        // Reset "no orders" messages
+        resetNoOrdersMessages();
+      }
+
+      function resetStatisticsToOriginal() {
+        // Calculate original totals
+        const activeTotal = originalOrders.active.reduce((sum, order) => sum + order.total, 0);
+        const deliveredTotal = originalOrders.delivered.reduce((sum, order) => sum + order.total, 0);
+        const totalSales = activeTotal + deliveredTotal;
+        const totalOrders = originalOrders.active.length + originalOrders.delivered.length;
+
+        // Update displays
+        const totalSalesElement = document.querySelector('.total-sales .text-5xl');
+        if (totalSalesElement) {
+          totalSalesElement.textContent = `₽ ${totalSales.toFixed(2)}`;
+        }
+
+        const activeSalesElement = document.querySelector('.sales-card:first-child .text-4xl');
+        if (activeSalesElement) {
+          activeSalesElement.textContent = `₽ ${activeTotal.toFixed(2)}`;
+        }
+
+        const deliveredSalesElement = document.querySelector('.sales-card:last-child .text-4xl');
+        if (deliveredSalesElement) {
+          deliveredSalesElement.textContent = `₽ ${deliveredTotal.toFixed(2)}`;
+        }
+
+        const activeCountElement = document.querySelector('.sales-card:first-child .text-blue-600');
+        if (activeCountElement) {
+          activeCountElement.textContent = `${originalOrders.active.length} заказов`;
+        }
+
+        const deliveredCountElement = document.querySelector('.sales-card:last-child .text-green-600');
+        if (deliveredCountElement) {
+          deliveredCountElement.textContent = `${originalOrders.delivered.length} заказов`;
+        }
+
+        const totalOrdersElement = document.querySelector('.total-sales p');
+        if (totalOrdersElement) {
+          totalOrdersElement.textContent = `${totalOrders} заказов всего`;
+        }
+      }
+
+      function updateDateFilterDisplay(selectedDate) {
+        const displayElement = document.getElementById('selected-date-display');
+        if (displayElement) {
+          if (selectedDate === 'Все даты') {
+            displayElement.textContent = 'Все даты';
+          } else {
+            // Fix timezone issue by creating date in local timezone
+            const [year, month, day] = selectedDate.split('-').map(Number);
+            const date = new Date(year, month - 1, day); // month is 0-indexed
+            const formattedDate = date.toLocaleDateString('ru-RU', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            });
+            displayElement.textContent = formattedDate;
+          }
+        }
+      }
+
+      function resetNoOrdersMessages() {
+        // Reset active orders message
+        const activeTableBody = document.querySelector('#active-orders-table tbody');
+        if (activeTableBody) {
+          const noActiveOrdersRow = activeTableBody.querySelector('tr:not([data-order-date])');
+          if (noActiveOrdersRow) {
+            noActiveOrdersRow.style.display = '';
+            noActiveOrdersRow.querySelector('td').textContent = 'Нет активных заказов';
+          }
+        }
+
+        // Reset delivered orders message
+        const deliveredTableBody = document.querySelector('#delivered-orders-table tbody');
+        if (deliveredTableBody) {
+          const noDeliveredOrdersRow = deliveredTableBody.querySelector('tr:not([data-order-date])');
+          if (deliveredTableBody) {
+            const noDeliveredOrdersRow = deliveredTableBody.querySelector('tr:not([data-order-date])');
+            if (noDeliveredOrdersRow) {
+              noDeliveredOrdersRow.style.display = '';
+              noDeliveredOrdersRow.querySelector('td').textContent = 'Нет доставленных заказов';
+            }
+          }
+        }
+      }
     </script>
   </body>
 </html>
