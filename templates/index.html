@@ -543,6 +543,49 @@
       </div>
     </header>
 
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}" style="
+            background: {% if category == 'error' %}linear-gradient(135deg, #f44336, #d32f2f){% elif category == 'success' %}linear-gradient(135deg, #4CAF50, #45a049){% else %}linear-gradient(135deg, #2196F3, #1976D2){% endif %};
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+            animation: slideInDown 0.5s ease-out;
+          ">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+              <span style="font-size: 24px;">
+                {% if category == 'error' %}❌{% elif category == 'success' %}✅{% else %}ℹ️{% endif %}
+              </span>
+              <div>
+                <h3 style="margin: 0; font-size: 16px;">{{ message }}</h3>
+              </div>
+            </div>
+            <button onclick="this.parentElement.remove()" style="
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background: rgba(255,255,255,0.2);
+              border: none;
+              color: white;
+              border-radius: 50%;
+              width: 24px;
+              height: 24px;
+              cursor: pointer;
+              font-size: 14px;
+            ">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- Coding for the header of the website -->
 
     <!-- Login Success Message -->
