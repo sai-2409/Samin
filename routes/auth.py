@@ -42,13 +42,34 @@ def callback():
     try:
         print(f"🔐 OAuth Callback received:")
         print(f"   URL: {request.url}")
+        print(f"   Full URL: {request.url}")
         print(f"   Args: {dict(request.args)}")
+        print(f"   Form Data: {dict(request.form)}")
+        print(f"   Headers: {dict(request.headers)}")
         print(f"   Session: {dict(session)}")
         print(f"   Cookies: {dict(request.cookies)}")
+        print(f"   Method: {request.method}")
+        print(f"   Referrer: {request.headers.get('Referer', 'None')}")
+        print(f"   User Agent: {request.headers.get('User-Agent', 'None')}")
+        
+        # Check for error parameters from Yandex
+        error = request.args.get("error")
+        error_description = request.args.get("error_description")
+        
+        if error:
+            print(f"❌ Yandex OAuth Error: {error}")
+            print(f"❌ Error Description: {error_description}")
+            flash(f"Ошибка авторизации: {error_description or error}", "error")
+            return redirect(url_for("main.index"))
         
         # Verify CSRF token
         csrf_token = request.args.get("state")
         stored_token = session.get('oauth_csrf_token')
+        
+        print(f"🔐 CSRF Token Check:")
+        print(f"   Received state: {csrf_token}")
+        print(f"   Stored token: {stored_token}")
+        print(f"   Token match: {csrf_token == stored_token if csrf_token and stored_token else False}")
         
         if not csrf_token or not stored_token or csrf_token != stored_token:
             print(f"❌ CSRF Token Mismatch: received={csrf_token}, stored={stored_token}")
@@ -60,14 +81,21 @@ def callback():
         
         # Get authorization code
         code = request.args.get("code")
+        print(f"🔐 Authorization Code Check:")
+        print(f"   Code received: {code}")
+        print(f"   Code length: {len(code) if code else 0}")
+        print(f"   Code preview: {code[:20] + '...' if code and len(code) > 20 else code}")
+        
         if not code:
             print("❌ No authorization code received")
+            print("   This means Yandex didn't send the code or it was lost")
             flash("Код авторизации не получен", "error")
             return redirect(url_for("main.index"))
 
         print(f"✅ Authorization code received: {code[:10]}...")
         
         # Exchange code for access token
+        print(f"🔐 Exchanging code for access token...")
         token_response = requests.post("https://oauth.yandex.com/token", data={
             "grant_type": "authorization_code",
             "code": code,
@@ -77,6 +105,7 @@ def callback():
         })
         
         print(f"🔐 Token response status: {token_response.status_code}")
+        print(f"🔐 Token response headers: {dict(token_response.headers)}")
         print(f"🔐 Token response: {token_response.text}")
         
         if token_response.status_code != 200:
@@ -95,9 +124,13 @@ def callback():
         print(f"✅ Access token received: {access_token[:10]}...")
         
         # Get user information
+        print(f"🔐 Getting user information...")
         user_response = requests.get("https://login.yandex.ru/info", headers={
             "Authorization": f"OAuth {access_token}"
         })
+        
+        print(f"🔐 User info response status: {user_response.status_code}")
+        print(f"🔐 User info response: {user_response.text}")
         
         if user_response.status_code != 200:
             print(f"❌ User info request failed: {user_response.status_code}")
@@ -121,6 +154,7 @@ def callback():
         session.permanent = True
         
         print(f"✅ User {user_info['login']} successfully logged in")
+        print(f"✅ Session data: {dict(session)}")
         flash(f"Добро пожаловать, {user_info.get('display_name', user_info['login'])}!", "success")
         
         return redirect(url_for("main.index"))
@@ -270,6 +304,53 @@ def simulate_oauth():
                 "message": "No CSRF token found in session"
             }
             
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }
+
+@auth_bp.route("/test/oauth-flow")
+def test_oauth_flow():
+    """Test endpoint to manually test OAuth flow step by step"""
+    try:
+        # Step 1: Generate OAuth URL
+        csrf_token = secrets.token_urlsafe(32)
+        session['oauth_csrf_token'] = csrf_token
+        
+        oauth_url = (
+            f"https://oauth.yandex.com/authorize?"
+            f"response_type=code&"
+            f"client_id={CLIENT_ID}&"
+            f"redirect_uri={REDIRECT_URI}&"
+            f"state={csrf_token}"
+        )
+        
+        # Step 2: Check current session
+        session_info = {
+            "has_oauth_csrf_token": 'oauth_csrf_token' in session,
+            "oauth_csrf_token": session.get('oauth_csrf_token'),
+            "has_user": 'user' in session,
+            "user_data": session.get('user')
+        }
+        
+        # Step 3: Check environment variables
+        env_info = {
+            "CLIENT_ID": CLIENT_ID,
+            "REDIRECT_URI": REDIRECT_URI,
+            "HAS_CLIENT_SECRET": bool(CLIENT_SECRET)
+        }
+        
+        return {
+            "status": "ready",
+            "message": "OAuth flow test ready",
+            "oauth_url": oauth_url,
+            "session_info": session_info,
+            "env_info": env_info,
+            "next_step": "Visit the oauth_url to test the flow"
+        }
+        
     except Exception as e:
         return {
             "status": "error",
