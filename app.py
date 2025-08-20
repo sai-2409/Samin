@@ -25,17 +25,22 @@ if not DEBUG_MODE:
     app.config.update(
         SESSION_COOKIE_SECURE=True,      # Only send cookies over HTTPS
         SESSION_COOKIE_HTTPONLY=True,    # Prevent XSS attacks
-        SESSION_COOKIE_SAMESITE='Lax',   # CSRF protection
+        SESSION_COOKIE_SAMESITE='None',  # Required for OAuth cross-site redirects
         SESSION_COOKIE_MAX_AGE=3600,     # 1 hour session
-        PERMANENT_SESSION_LIFETIME=3600  # 1 hour session
+        PERMANENT_SESSION_LIFETIME=3600, # 1 hour session
+        SESSION_COOKIE_DOMAIN=None,      # Let Flask auto-detect
+        SESSION_COOKIE_PATH='/',         # Available on all paths
+        SESSION_REFRESH_EACH_REQUEST=True # Keep session alive
     )
-    print("🔒 Production HTTPS Session Configuration: SECURE=True")
+    print("🔒 Production HTTPS Session Configuration: SECURE=True, SAMESITE=None")
 else:
     # Local development settings
     app.config.update(
         SESSION_COOKIE_SECURE=False,
         SESSION_COOKIE_HTTPONLY=True,
-        SESSION_COOKIE_SAMESITE='Lax'
+        SESSION_COOKIE_SAMESITE='Lax',
+        SESSION_COOKIE_DOMAIN=None,
+        SESSION_COOKIE_PATH='/'
     )
     print("💻 Local Development Session Configuration: SECURE=False")
 

@@ -357,3 +357,40 @@ def test_oauth_flow():
             "message": str(e),
             "traceback": traceback.format_exc()
         }
+
+@auth_bp.route("/test/session")
+def test_session():
+    """Test endpoint to check session and cookie handling"""
+    try:
+        # Set a test session value
+        session['test_value'] = 'test_session_data'
+        session['test_timestamp'] = str(datetime.datetime.now())
+        
+        # Get response object
+        response = {
+            "status": "success",
+            "message": "Test session set",
+            "session_data": dict(session),
+            "cookies_received": dict(request.cookies),
+            "request_headers": dict(request.headers),
+            "session_secure": current_app.config.get('SESSION_COOKIE_SECURE'),
+            "session_httponly": current_app.config.get('SESSION_COOKIE_HTTPONLY'),
+            "session_samesite": current_app.config.get('SESSION_COOKIE_SAMESITE'),
+            "session_domain": current_app.config.get('SESSION_COOKIE_DOMAIN'),
+            "session_path": current_app.config.get('SESSION_COOKIE_PATH'),
+            "session_max_age": current_app.config.get('SESSION_COOKIE_MAX_AGE'),
+            "secret_key_set": bool(current_app.secret_key)
+        }
+        
+        print(f"🧪 Session Test:")
+        print(f"   Session set: {dict(session)}")
+        print(f"   Response: {response}")
+        
+        return response
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }
