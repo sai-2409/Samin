@@ -23,8 +23,8 @@ def login():
             "client_id": CLIENT_ID,
             "redirect_uri": REDIRECT_URI,   # MUST match console exactly
             "state": csrf_token,
-            # Ask only what you need; these two are typical for /info
-            "scope": "login:info login:email",
+            # Use minimal scope to avoid security warnings
+            "scope": "login:info",
             # Optional, but can reduce weird interstitials
             # "force_confirm": "yes",
         }
@@ -67,6 +67,23 @@ def callback():
         if error:
             print(f"❌ Yandex OAuth Error: {error}")
             print(f"❌ Error Description: {error_description}")
+            print(f"❌ Full callback URL: {request.url}")
+            print(f"❌ Request args: {dict(request.args)}")
+            print(f"❌ Request headers: {dict(request.headers)}")
+            
+            # Log specific error details
+            if error == "unauthorized_client":
+                print("❌ UNAUTHORIZED_CLIENT Error Details:")
+                print(f"   - CLIENT_ID: {CLIENT_ID}")
+                print(f"   - REDIRECT_URI: {REDIRECT_URI}")
+                print(f"   - Request Host: {request.host}")
+                print(f"   - Request Scheme: {request.scheme}")
+                print("   - This usually means:")
+                print("     * Wrong CLIENT_ID in Yandex console")
+                print("     * Wrong REDIRECT_URI (must match exactly)")
+                print("     * App not active in Yandex console")
+                print("     * Scope not allowed for this app")
+            
             flash(f"Ошибка авторизации: {error_description or error}", "error")
             return redirect(url_for("main.index"))
         
