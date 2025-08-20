@@ -20,6 +20,7 @@ app.wsgi_app = ProxyFix(
 app.secret_key = SECRET_KEY
 
 # HTTPS Session Configuration - CRITICAL for production
+# Force secure sessions for production HTTPS deployment
 if not DEBUG_MODE:
     app.config.update(
         SESSION_COOKIE_SECURE=True,      # Only send cookies over HTTPS
@@ -28,6 +29,7 @@ if not DEBUG_MODE:
         SESSION_COOKIE_MAX_AGE=3600,     # 1 hour session
         PERMANENT_SESSION_LIFETIME=3600  # 1 hour session
     )
+    print("🔒 Production HTTPS Session Configuration: SECURE=True")
 else:
     # Local development settings
     app.config.update(
@@ -35,6 +37,7 @@ else:
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE='Lax'
     )
+    print("💻 Local Development Session Configuration: SECURE=False")
 
 # Регистрация маршрутов
 app.register_blueprint(main_bp)
