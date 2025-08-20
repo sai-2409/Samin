@@ -30,6 +30,15 @@ def load_environment_variables():
 # Load environment variables
 load_environment_variables()
 
+# Debug: Show what was loaded
+print("🔍 Environment Loading Debug:")
+print(f"   Platform: {platform.system()}")
+print(f"   .env exists: {os.path.exists('.env')}")
+print(f"   /etc/samin/samin.env exists: {os.path.exists('/etc/samin/samin.env')}")
+print(f"   CLIENT_ID loaded: {'✅' if os.getenv('CLIENT_ID') else '❌'}")
+print(f"   adminPassword loaded: {'✅' if os.getenv('adminPassword') else '❌'}")
+print(f"   SECRET_KEY loaded: {'✅' if os.getenv('SECRET_KEY') else '❌'}")
+
 def is_running_on_render():
     """Detect if the application is running on Render"""
     # Check for Render-specific environment variables
@@ -76,10 +85,19 @@ def get_env_with_fallback(key, default=None, required=False):
     value = os.getenv(key, default)
     
     if required and not value:
+        # Check what environment files exist
+        env_files = []
+        if os.path.exists(".env"):
+            env_files.append(".env")
+        if os.path.exists("/etc/samin/samin.env"):
+            env_files.append("/etc/samin/samin.env")
+        
         if is_running_on_render():
             raise ValueError(f"Required environment variable {key} not set on Render. Please configure it in your Render dashboard.")
+        elif env_files:
+            raise ValueError(f"Required environment variable {key} not set. Found environment files: {', '.join(env_files)}")
         else:
-            raise ValueError(f"Required environment variable {key} not set. Please check your .env file or environment configuration.")
+            raise ValueError(f"Required environment variable {key} not set. No environment files found.")
     
     return value
 
