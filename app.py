@@ -5,6 +5,7 @@ from routes.main import main_bp
 from routes.auth import auth_bp
 from routes.pay import pay_bp
 from routes.review import review_bp
+import platform
 
 app = Flask(__name__)
 
@@ -19,9 +20,16 @@ app.wsgi_app = ProxyFix(
 
 app.secret_key = SECRET_KEY
 
+# Debug: Show what configuration is being loaded
+print(f"🔍 App Configuration Debug:")
+print(f"   DEBUG_MODE from config: {DEBUG_MODE}")
+print(f"   SECRET_KEY set: {bool(SECRET_KEY)}")
+print(f"   Platform: {platform.system() if 'platform' in globals() else 'Unknown'}")
+
 # HTTPS Session Configuration - CRITICAL for production
 # Force secure sessions for production HTTPS deployment
 if not DEBUG_MODE:
+    print("🔒 Setting Production Session Configuration...")
     app.config.update(
         SESSION_COOKIE_SECURE=True,      # Only send cookies over HTTPS
         SESSION_COOKIE_HTTPONLY=True,    # Prevent XSS attacks
@@ -33,7 +41,15 @@ if not DEBUG_MODE:
         SESSION_REFRESH_EACH_REQUEST=True, # Keep session alive
         SESSION_COOKIE_NAME='samin_session' # Custom session name
     )
-    print("🔒 Production HTTPS Session Configuration: SECURE=True, SAMESITE=None")
+    
+    # Force the configuration to take effect
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    
+    print(f"🔒 Production Session Config Applied:")
+    print(f"   SESSION_COOKIE_SECURE: {app.config.get('SESSION_COOKIE_SECURE')}")
+    print(f"   SESSION_COOKIE_SAMESITE: {app.config.get('SESSION_COOKIE_SAMESITE')}")
+    print(f"   SESSION_COOKIE_HTTPONLY: {app.config.get('SESSION_COOKIE_HTTPONLY')}")
     
     # Additional session configuration for OAuth compatibility
     @app.before_request
@@ -43,6 +59,7 @@ if not DEBUG_MODE:
         session.modified = True
         
 else:
+    print("💻 Setting Local Development Session Configuration...")
     # Local development settings
     app.config.update(
         SESSION_COOKIE_SECURE=False,
