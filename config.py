@@ -5,8 +5,30 @@ import os
 import platform
 import socket
 
+# Smart environment loading based on environment
+def load_environment_variables():
+    """Load environment variables from appropriate source"""
+    
+    # Check if we're on a Linux server (production)
+    if platform.system() == "Linux" and os.path.exists("/etc/samin/samin.env"):
+        # Production: Load from system environment file
+        print("🌐 Production environment detected - loading from /etc/samin/samin.env")
+        load_dotenv("/etc/samin/samin.env")
+    elif os.path.exists(".env"):
+        # Local development: Load from local .env file
+        print("💻 Local development detected - loading from .env")
+        load_dotenv(".env")
+    else:
+        # Fallback: Try to load from system environment file if it exists
+        if os.path.exists("/etc/samin/samin.env"):
+            print("🌐 Loading from system environment file")
+            load_dotenv("/etc/samin/samin.env")
+        else:
+            print("⚠️ No .env file found locally and no system environment file")
+            print("   Environment variables must be set manually or via system environment")
+
 # Load environment variables
-load_dotenv()  # Загружает переменные из .env
+load_environment_variables()
 
 def is_running_on_render():
     """Detect if the application is running on Render"""
