@@ -5,6 +5,7 @@ import requests
 import secrets
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 import traceback
+import datetime
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -39,6 +40,12 @@ def login():
 @auth_bp.route("/callback")
 def callback():
     try:
+        print(f"🔐 OAuth Callback received:")
+        print(f"   URL: {request.url}")
+        print(f"   Args: {dict(request.args)}")
+        print(f"   Session: {dict(session)}")
+        print(f"   Cookies: {dict(request.cookies)}")
+        
         # Verify CSRF token
         csrf_token = request.args.get("state")
         stored_token = session.get('oauth_csrf_token')
@@ -146,9 +153,7 @@ def logout():
 @auth_bp.route("/debug/oauth")
 def debug_oauth():
     """Debug endpoint to check OAuth configuration"""
-    if not current_app.debug:
-        return "Debug endpoint disabled in production", 403
-    
+    # Allow debug in production for troubleshooting
     debug_info = {
         "client_id": CLIENT_ID,
         "redirect_uri": REDIRECT_URI,
@@ -161,7 +166,113 @@ def debug_oauth():
         "request_url": request.url,
         "forwarded_proto": request.headers.get('X-Forwarded-Proto'),
         "forwarded_host": request.headers.get('X-Forwarded-Host'),
-        "user_agent": request.headers.get('User-Agent')
+        "user_agent": request.headers.get('User-Agent'),
+        "session_data": dict(session),
+        "cookies": dict(request.cookies)
     }
     
     return debug_info
+
+@auth_bp.route("/test/oauth")
+def test_oauth():
+    """Test endpoint to manually test OAuth flow"""
+    try:
+        # Test 1: Check environment variables
+        env_check = {
+            "CLIENT_ID": CLIENT_ID,
+            "REDIRECT_URI": REDIRECT_URI,
+            "HAS_CLIENT_SECRET": bool(CLIENT_SECRET),
+            "CLIENT_SECRET_LENGTH": len(CLIENT_SECRET) if CLIENT_SECRET else 0
+        }
+        
+        # Test 2: Check current session
+        session_check = {
+            "has_oauth_csrf_token": 'oauth_csrf_token' in session,
+            "oauth_csrf_token": session.get('oauth_csrf_token'),
+            "has_user": 'user' in session,
+            "user_data": session.get('user'),
+            "session_id": session.get('_id', 'No session ID')
+        }
+        
+        # Test 3: Check request headers
+        header_check = {
+            "scheme": request.scheme,
+            "host": request.host,
+            "url": request.url,
+            "x_forwarded_proto": request.headers.get('X-Forwarded-Proto'),
+            "x_forwarded_host": request.headers.get('X-Forwarded-Host'),
+            "user_agent": request.headers.get('User-Agent')
+        }
+        
+        # Test 4: Check app config
+        config_check = {
+            "debug_mode": current_app.debug,
+            "session_secure": current_app.config.get('SESSION_COOKIE_SECURE'),
+            "session_httponly": current_app.config.get('SESSION_COOKIE_HTTPONLY'),
+            "session_samesite": current_app.config.get('SESSION_COOKIE_SAMESITE'),
+            "secret_key_set": bool(current_app.secret_key)
+        }
+        
+        return {
+            "environment": env_check,
+            "session": session_check,
+            "headers": header_check,
+            "config": config_check,
+            "timestamp": str(datetime.datetime.now())
+        }
+        
+    except Exception as e:
+        return {"error": str(e), "traceback": traceback.format_exc()}
+
+@auth_bp.route("/simulate/oauth")
+def simulate_oauth():
+    """Simulate OAuth flow for testing"""
+    try:
+        # Generate a test CSRF token
+        csrf_token = secrets.token_urlsafe(32)
+        session['oauth_csrf_token'] = csrf_token
+        
+        # Simulate the callback with test data
+        test_code = "test_auth_code_12345"
+        
+        print(f"🧪 Simulating OAuth flow:")
+        print(f"   Generated CSRF token: {csrf_token}")
+        print(f"   Test auth code: {test_code}")
+        print(f"   Session before: {dict(session)}")
+        
+        # Simulate the callback process
+        if 'oauth_csrf_token' in session:
+            stored_token = session.pop('oauth_csrf_token')
+            print(f"   CSRF token verified: {stored_token}")
+            
+            # Simulate successful login
+            session["user"] = {
+                "login": "test_user",
+                "avatar": "test_avatar",
+                "real_name": "Test User",
+                "display_name": "Test User",
+                "default_avatar_id": "test_avatar"
+            }
+            session["just_logged_in"] = True
+            session.permanent = True
+            
+            print(f"   Session after: {dict(session)}")
+            
+            return {
+                "status": "success",
+                "message": "OAuth simulation completed",
+                "session_data": dict(session),
+                "csrf_token": stored_token
+            }
+        else:
+            return {
+                "status": "error",
+                "message": "No CSRF token found in session"
+            }
+            
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }

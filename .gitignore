@@ -1,3 +1,4 @@
+cat >> .gitignore <<'EOF'
 # Ignore Python virtual environment
 venv/
 venv
@@ -12,17 +13,19 @@ __pycache__/
 # Environment/config files
 .env
 
-# Ignore the config.py file
-# config.py
-
 # Ignore the orders.json file
 static/data/orders.json
 
 # Ignore notifications file
 static/data/notifications.json
 
+# logs, cashes and other files
+caches/
+*.log
+
 # Node modules
-node_modules
+node_modules/
+EOF
 
 # Private email notifications (contains sensitive order data)
 private/
