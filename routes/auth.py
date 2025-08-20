@@ -407,3 +407,84 @@ def test_session():
             "message": str(e),
             "traceback": traceback.format_exc()
         }
+
+@auth_bp.route("/test/real-oauth-flow")
+def test_real_oauth_flow():
+    """Test the real OAuth flow step by step to identify failures"""
+    try:
+        # Step 1: Test environment variables
+        env_test = {
+            "CLIENT_ID": CLIENT_ID,
+            "REDIRECT_URI": REDIRECT_URI,
+            "HAS_CLIENT_SECRET": bool(CLIENT_SECRET),
+            "CLIENT_SECRET_LENGTH": len(CLIENT_SECRET) if CLIENT_SECRET else 0
+        }
+        
+        # Step 2: Test session configuration
+        session_config = {
+            "session_secure": current_app.config.get('SESSION_COOKIE_SECURE'),
+            "session_httponly": current_app.config.get('SESSION_COOKIE_HTTPONLY'),
+            "session_samesite": current_app.config.get('SESSION_COOKIE_SAMESITE'),
+            "session_domain": current_app.config.get('SESSION_COOKIE_DOMAIN'),
+            "session_path": current_app.config.get('SESSION_COOKIE_PATH'),
+            "secret_key_set": bool(current_app.secret_key)
+        }
+        
+        # Step 3: Test OAuth URL generation
+        csrf_token = secrets.token_urlsafe(32)
+        params = {
+            "response_type": "code",
+            "client_id": CLIENT_ID,
+            "redirect_uri": REDIRECT_URI,
+            "state": csrf_token,
+            "scope": "login:info login:email",
+        }
+        oauth_url = f"https://oauth.yandex.ru/authorize?{urlencode(params)}"
+        
+        # Step 4: Test token endpoint accessibility (without actual request)
+        token_endpoint_test = {
+            "url": "https://oauth.yandex.ru/token",
+            "method": "POST",
+            "required_headers": ["Content-Type: application/x-www-form-urlencoded"],
+            "required_data": ["grant_type", "code", "client_id", "client_secret", "redirect_uri"]
+        }
+        
+        # Step 5: Test user info endpoint accessibility
+        user_info_test = {
+            "url": "https://login.yandex.ru/info",
+            "method": "GET",
+            "required_headers": ["Authorization: OAuth {access_token}"]
+        }
+        
+        # Step 6: Test current session state
+        current_session = {
+            "has_oauth_csrf_token": 'oauth_csrf_token' in session,
+            "has_user": 'user' in session,
+            "session_id": session.get('_id', 'No session ID'),
+            "session_data": dict(session)
+        }
+        
+        return {
+            "status": "ready",
+            "message": "Real OAuth flow test analysis",
+            "environment": env_test,
+            "session_config": session_config,
+            "oauth_url": oauth_url,
+            "token_endpoint": token_endpoint_test,
+            "user_info_endpoint": user_info_test,
+            "current_session": current_session,
+            "recommendations": [
+                "1. Check if CLIENT_ID and CLIENT_SECRET are correct",
+                "2. Verify REDIRECT_URI matches Yandex console exactly",
+                "3. Ensure session cookies are being set properly",
+                "4. Check network connectivity to Yandex APIs",
+                "5. Verify HTTPS session configuration"
+            ]
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "traceback": traceback.format_exc()
+        }
