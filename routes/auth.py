@@ -6,6 +6,7 @@ import secrets
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 import traceback
 import datetime
+from urllib.parse import urlencode
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -16,18 +17,25 @@ def login():
         csrf_token = secrets.token_urlsafe(32)
         session['oauth_csrf_token'] = csrf_token
         
-        # Build OAuth URL with state parameter for CSRF protection
-        oauth_url = (
-            f"https://oauth.yandex.com/authorize?"
-            f"response_type=code&"
-            f"client_id={CLIENT_ID}&"
-            f"redirect_uri={REDIRECT_URI}&"
-            f"state={csrf_token}"
-        )
+        # Build OAuth parameters with proper encoding
+        params = {
+            "response_type": "code",
+            "client_id": CLIENT_ID,
+            "redirect_uri": REDIRECT_URI,   # MUST match console exactly
+            "state": csrf_token,
+            # Ask only what you need; these two are typical for /info
+            "scope": "login:info login:email",
+            # Optional, but can reduce weird interstitials
+            # "force_confirm": "yes",
+        }
+        
+        # Use proper URL encoding to prevent issues
+        oauth_url = f"https://oauth.yandex.ru/authorize?{urlencode(params)}"
         
         print(f"🔐 OAuth Login URL: {oauth_url}")
         print(f"🔐 Redirect URI: {REDIRECT_URI}")
         print(f"🔐 Client ID: {CLIENT_ID}")
+        print(f"🔐 CSRF Token: {csrf_token}")
         
         return redirect(oauth_url)
         
@@ -96,13 +104,18 @@ def callback():
         
         # Exchange code for access token
         print(f"🔐 Exchanging code for access token...")
-        token_response = requests.post("https://oauth.yandex.com/token", data={
-            "grant_type": "authorization_code",
-            "code": code,
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "redirect_uri": REDIRECT_URI  # Must match exactly
-        })
+        token_response = requests.post(
+            "https://oauth.yandex.ru/token",
+            data={
+                "grant_type": "authorization_code",
+                "code": code,
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "redirect_uri": REDIRECT_URI,  # Must match exactly
+            },
+            # Optional but nice to be explicit
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
         
         print(f"🔐 Token response status: {token_response.status_code}")
         print(f"🔐 Token response headers: {dict(token_response.headers)}")
