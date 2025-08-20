@@ -30,9 +30,18 @@ if not DEBUG_MODE:
         PERMANENT_SESSION_LIFETIME=3600, # 1 hour session
         SESSION_COOKIE_DOMAIN=None,      # Let Flask auto-detect
         SESSION_COOKIE_PATH='/',         # Available on all paths
-        SESSION_REFRESH_EACH_REQUEST=True # Keep session alive
+        SESSION_REFRESH_EACH_REQUEST=True, # Keep session alive
+        SESSION_COOKIE_NAME='samin_session' # Custom session name
     )
     print("🔒 Production HTTPS Session Configuration: SECURE=True, SAMESITE=None")
+    
+    # Additional session configuration for OAuth compatibility
+    @app.before_request
+    def before_request():
+        """Set session as permanent for all requests"""
+        session.permanent = True
+        session.modified = True
+        
 else:
     # Local development settings
     app.config.update(
