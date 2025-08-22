@@ -21,6 +21,11 @@ app.wsgi_app = ProxyFix(
 
 app.secret_key = SECRET_KEY
 
+# Health check endpoint - always available
+@app.get("/__ping")
+def ping():
+    return "ok"
+
 # Debug: Show what configuration is being loaded
 print(f"🔍 App Configuration Debug:")
 print(f"   DEBUG_MODE from config: {DEBUG_MODE}")
@@ -69,37 +74,37 @@ if not DEBUG_MODE:
         session.permanent = True
         session.modified = True
 
-# Test endpoint to verify session configuration
-@app.route("/test/session-config")
-def test_session_config():
-    """Test endpoint to verify session configuration is loaded"""
-    config_status = {
-        "DEBUG_MODE": DEBUG_MODE,
-        "SESSION_COOKIE_SECURE": app.config.get('SESSION_COOKIE_SECURE'),
-        "SESSION_COOKIE_HTTPONLY": app.config.get('SESSION_COOKIE_HTTPONLY'),
-        "SESSION_COOKIE_SAMESITE": app.config.get('SESSION_COOKIE_SAMESITE'),
-        "SESSION_COOKIE_DOMAIN": app.config.get('SESSION_COOKIE_DOMAIN'),
-        "SESSION_COOKIE_PATH": app.config.get('SESSION_COOKIE_PATH'),
-        "SESSION_COOKIE_MAX_AGE": app.config.get('SESSION_COOKIE_MAX_AGE'),
-        "PERMANENT_SESSION_LIFETIME": app.config.get('PERMANENT_SESSION_LIFETIME'),
-        "SESSION_REFRESH_EACH_REQUEST": app.config.get('SESSION_REFRESH_EACH_REQUEST'),
-        "SESSION_COOKIE_NAME": app.config.get('SESSION_COOKIE_NAME'),
-        "SECRET_KEY_SET": bool(app.secret_key)
-    }
-    
-    # Check if OAuth will work
-    oauth_compatible = (
-        config_status["SESSION_COOKIE_SECURE"] == True and
-        config_status["SESSION_COOKIE_SAMESITE"] == "None" and
-        config_status["SESSION_COOKIE_HTTPONLY"] == True
-    )
-    
-    return {
-        "session_config": config_status,
-        "oauth_compatible": oauth_compatible,
-        "message": "✅ OAuth will work!" if oauth_compatible else "❌ OAuth will fail!",
-        "timestamp": str(datetime.datetime.now())
-    }
+    # Test endpoint to verify session configuration
+    @app.route("/test/session-config")
+    def test_session_config():
+        """Test endpoint to verify session configuration is loaded"""
+        config_status = {
+            "DEBUG_MODE": DEBUG_MODE,
+            "SESSION_COOKIE_SECURE": app.config.get('SESSION_COOKIE_SECURE'),
+            "SESSION_COOKIE_HTTPONLY": app.config.get('SESSION_COOKIE_HTTPONLY'),
+            "SESSION_COOKIE_SAMESITE": app.config.get('SESSION_COOKIE_SAMESITE'),
+            "SESSION_COOKIE_DOMAIN": app.config.get('SESSION_COOKIE_DOMAIN'),
+            "SESSION_COOKIE_PATH": app.config.get('SESSION_COOKIE_PATH'),
+            "SESSION_COOKIE_MAX_AGE": app.config.get('SESSION_COOKIE_MAX_AGE'),
+            "PERMANENT_SESSION_LIFETIME": app.config.get('PERMANENT_SESSION_LIFETIME'),
+            "SESSION_REFRESH_EACH_REQUEST": app.config.get('SESSION_REFRESH_EACH_REQUEST'),
+            "SESSION_COOKIE_NAME": app.config.get('SESSION_COOKIE_NAME'),
+            "SECRET_KEY_SET": bool(app.secret_key)
+        }
+        
+        # Check if OAuth will work
+        oauth_compatible = (
+            config_status["SESSION_COOKIE_SECURE"] == True and
+            config_status["SESSION_COOKIE_SAMESITE"] == "None" and
+            config_status["SESSION_COOKIE_HTTPONLY"] == True
+        )
+        
+        return {
+            "session_config": config_status,
+            "oauth_compatible": oauth_compatible,
+            "message": "✅ OAuth will work!" if oauth_compatible else "❌ OAuth will fail!",
+            "timestamp": str(datetime.datetime.now())
+        }
 
 else:
     print("💻 Setting Local Development Session Configuration...")
