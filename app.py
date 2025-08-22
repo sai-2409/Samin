@@ -26,6 +26,18 @@ app.secret_key = SECRET_KEY
 def ping():
     return "ok"
 
+# Version check endpoint - always available
+@app.get("/__version")
+def version():
+    try:
+        import subprocess
+        rev = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"]
+        ).decode().strip()
+    except Exception:
+        rev = "unknown"
+    return {"status": "ok", "commit": rev}, 200
+
 # Debug: Show what configuration is being loaded
 print(f"🔍 App Configuration Debug:")
 print(f"   DEBUG_MODE from config: {DEBUG_MODE}")
