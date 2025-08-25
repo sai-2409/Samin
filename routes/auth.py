@@ -179,3 +179,10 @@ def debug_oauth_url():
         
     except Exception as e:
         return {"error": str(e)}
+
+
+        # 1. Go to https://oauth.yandex.ru/client
+        # 2. Find your app with ID: 23cab000000000000000000000000000
+        # 3. Check if status is 'Active'
+        # 4. Verify redirect URI matches exactly: https://samin.ru/callback
+        # 5. Ensure scope 'login:info' is allowed
