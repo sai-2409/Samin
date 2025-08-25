@@ -10,7 +10,12 @@ auth_bp = Blueprint("auth", __name__)
 def login():
     """Simple OAuth login - using the working approach"""
     try:
-        # Simple redirect without complex parameters
+        print(f"🔐 OAuth Login Started:")
+        print(f"   CLIENT_ID: {CLIENT_ID}")
+        print(f"   REDIRECT_URI: {REDIRECT_URI}")
+        print(f"   DEBUG_MODE: {__debug__}")
+        
+        # Simple redirect WITHOUT scope to test if that's the issue
         oauth_url = (
             f"https://oauth.yandex.com/authorize?"
             f"response_type=code&"
@@ -18,14 +23,28 @@ def login():
             f"redirect_uri={REDIRECT_URI}"
         )
         
-        print(f"🔐 Simple OAuth Login URL: {oauth_url}")
-        print(f"🔐 CLIENT_ID: {CLIENT_ID}")
-        print(f"🔐 REDIRECT_URI: {REDIRECT_URI}")
+        print(f"🔐 Generated OAuth URL (NO SCOPE): {oauth_url}")
+        print(f"🔐 URL Length: {len(oauth_url)}")
+        print(f"🔐 Redirecting user to Yandex...")
+        
+        # Alternative URL with scope for comparison
+        oauth_url_with_scope = (
+            f"https://oauth.yandex.com/authorize?"
+            f"response_type=code&"
+            f"client_id={CLIENT_ID}&"
+            f"redirect_uri={REDIRECT_URI}&"
+            f"scope=login:info login:email"
+        )
+        
+        print(f"🔐 Alternative URL (with scope): {oauth_url_with_scope}")
+        print(f"🔐 Using URL WITHOUT scope: {oauth_url}")
         
         return redirect(oauth_url)
         
     except Exception as e:
         print(f"❌ Login Error: {str(e)}")
+        import traceback
+        print(f"❌ Traceback: {traceback.format_exc()}")
         flash("Ошибка инициализации входа", "error")
         return redirect(url_for("main.index"))
 
@@ -122,3 +141,41 @@ def logout():
     except Exception as e:
         print(f"❌ Logout Error: {str(e)}")
         return redirect(url_for("main.index"))
+
+@auth_bp.route("/debug/oauth-url")
+def debug_oauth_url():
+    """Debug endpoint to show exactly what OAuth URL is generated"""
+    try:
+        # Generate the exact same OAuth URL as the login function
+        oauth_url = (
+            f"https://oauth.yandex.com/authorize?"
+            f"response_type=code&"
+            f"client_id={CLIENT_ID}&"
+            f"redirect_uri={REDIRECT_URI}&"
+            f"scope=login:info"
+        )
+        
+        debug_info = {
+            "generated_oauth_url": oauth_url,
+            "client_id": CLIENT_ID,
+            "redirect_uri": REDIRECT_URI,
+            "full_url_components": {
+                "base": "https://oauth.yandex.com/authorize",
+                "response_type": "code",
+                "client_id": CLIENT_ID,
+                "redirect_uri": REDIRECT_URI,
+                "scope": "login:info"
+            },
+            "yandex_console_checklist": [
+                "1. Go to https://oauth.yandex.ru/client",
+                "2. Find your app with ID: " + CLIENT_ID,
+                "3. Check if status is 'Active'",
+                "4. Verify redirect URI matches exactly: " + REDIRECT_URI,
+                "5. Ensure scope 'login:info' is allowed"
+            ]
+        }
+        
+        return debug_info
+        
+    except Exception as e:
+        return {"error": str(e)}
