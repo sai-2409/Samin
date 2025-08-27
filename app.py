@@ -2,7 +2,7 @@ from flask import Flask, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 from config import SECRET_KEY, DEBUG_MODE, HOST, PORT, IS_RENDER
 from routes.main import main_bp
-from routes.auth import auth_bp
+# from routes.auth import auth_bp  # OAuth removed
 from routes.pay import pay_bp
 from routes.review import review_bp
 import platform
@@ -44,14 +44,13 @@ print(f"   DEBUG_MODE from config: {DEBUG_MODE}")
 print(f"   SECRET_KEY set: {bool(SECRET_KEY)}")
 print(f"   Platform: {platform.system() if 'platform' in globals() else 'Unknown'}")
 
-# HTTPS Session Configuration - CRITICAL for production
-# Force secure sessions for production HTTPS deployment
+# Basic Session Configuration (OAuth removed)
 if not DEBUG_MODE:
     print("🔒 Setting Production Session Configuration...")
     app.config.update(
         SESSION_COOKIE_SECURE=True,      # Only send cookies over HTTPS
         SESSION_COOKIE_HTTPONLY=True,    # Prevent XSS attacks
-        SESSION_COOKIE_SAMESITE='None',  # Required for OAuth cross-site redirects
+        SESSION_COOKIE_SAMESITE='Lax',   # Standard security setting
         SESSION_COOKIE_MAX_AGE=3600,     # 1 hour session
         PERMANENT_SESSION_LIFETIME=3600, # 1 hour session
         SESSION_COOKIE_DOMAIN=None,      # Let Flask auto-detect
@@ -60,63 +59,19 @@ if not DEBUG_MODE:
         SESSION_COOKIE_NAME='samin_session' # Custom session name
     )
     
-    # CRITICAL: Force these values explicitly
-    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-    app.config['SESSION_COOKIE_SECURE'] = True
-    app.config['SESSION_COOKIE_HTTPONLY'] = True
-    
     print(f"🔒 Production Session Config Applied:")
     print(f"   SESSION_COOKIE_SECURE: {app.config.get('SESSION_COOKIE_SECURE')}")
-    print(f"   SESSION_COOKIE_SAMESITE: {app.config.get('SESSION_COOKIE_SAMESITE')}")
     print(f"   SESSION_COOKIE_HTTPONLY: {app.config.get('SESSION_COOKIE_HTTPONLY')}")
+    print(f"   SESSION_COOKIE_SAMESITE: {app.config.get('SESSION_COOKIE_SAMESITE')}")
     print(f"   SESSION_COOKIE_DOMAIN: {app.config.get('SESSION_COOKIE_DOMAIN')}")
     print(f"   SESSION_COOKIE_PATH: {app.config.get('SESSION_COOKIE_PATH')}")
     
-    # Verify the configuration was set correctly
-    if app.config.get('SESSION_COOKIE_SAMESITE') != 'None':
-        print("❌ CRITICAL ERROR: SESSION_COOKIE_SAMESITE not set to 'None'!")
-        print("   This will break OAuth login!")
-    else:
-        print("✅ SESSION_COOKIE_SAMESITE successfully set to 'None'")
-    
-    # Additional session configuration for OAuth compatibility
+    # Basic session configuration
     @app.before_request
     def before_request():
         """Set session as permanent for all requests"""
         session.permanent = True
         session.modified = True
-
-    # Test endpoint to verify session configuration
-    @app.route("/test/session-config")
-    def test_session_config():
-        """Test endpoint to verify session configuration is loaded"""
-        config_status = {
-            "DEBUG_MODE": DEBUG_MODE,
-            "SESSION_COOKIE_SECURE": app.config.get('SESSION_COOKIE_SECURE'),
-            "SESSION_COOKIE_HTTPONLY": app.config.get('SESSION_COOKIE_HTTPONLY'),
-            "SESSION_COOKIE_SAMESITE": app.config.get('SESSION_COOKIE_SAMESITE'),
-            "SESSION_COOKIE_DOMAIN": app.config.get('SESSION_COOKIE_DOMAIN'),
-            "SESSION_COOKIE_PATH": app.config.get('SESSION_COOKIE_PATH'),
-            "SESSION_COOKIE_MAX_AGE": app.config.get('SESSION_COOKIE_MAX_AGE'),
-            "PERMANENT_SESSION_LIFETIME": app.config.get('PERMANENT_SESSION_LIFETIME'),
-            "SESSION_REFRESH_EACH_REQUEST": app.config.get('SESSION_REFRESH_EACH_REQUEST'),
-            "SESSION_COOKIE_NAME": app.config.get('SESSION_COOKIE_NAME'),
-            "SECRET_KEY_SET": bool(app.secret_key)
-        }
-        
-        # Check if OAuth will work
-        oauth_compatible = (
-            config_status["SESSION_COOKIE_SECURE"] == True and
-            config_status["SESSION_COOKIE_SAMESITE"] == "None" and
-            config_status["SESSION_COOKIE_HTTPONLY"] == True
-        )
-        
-        return {
-            "session_config": config_status,
-            "oauth_compatible": oauth_compatible,
-            "message": "✅ OAuth will work!" if oauth_compatible else "❌ OAuth will fail!",
-            "timestamp": str(datetime.datetime.now())
-        }
 
 else:
     print("💻 Setting Local Development Session Configuration...")
@@ -132,7 +87,7 @@ else:
 
 # Регистрация маршрутов
 app.register_blueprint(main_bp)
-app.register_blueprint(auth_bp)
+# app.register_blueprint(auth_bp)  # OAuth removed
 app.register_blueprint(pay_bp)
 app.register_blueprint(review_bp)
 

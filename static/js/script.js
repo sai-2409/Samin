@@ -287,7 +287,7 @@ cartCardButton.addEventListener("click", function () {
   cartCardAmount.style.opacity = 1;
 });
 
-// I don't know what am I doing
+// I don't know what I'm doing
 function setupItemAdding() {
   document.querySelectorAll(".card__cart").forEach((button) => {
     button.addEventListener("click", () => {
