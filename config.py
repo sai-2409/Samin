@@ -122,10 +122,22 @@ IS_RENDER = is_running_on_render()
 
 # Load environment variables with validation
 try:
-    # OAuth Configuration
-    CLIENT_ID = get_env_with_fallback("CLIENT_ID", required=True)
-    CLIENT_SECRET = get_env_with_fallback("CLIENT_SECRET", required=True)
-    REDIRECT_URI = get_env_with_fallback("REDIRECT_URI", required=True)
+    # Yandex OAuth Configuration
+    YANDEX_CLIENT_ID = get_env_with_fallback("YANDEX_CLIENT_ID", "f9d87c4baa2f45f985cf6936b32cb9ea", required=True)
+    YANDEX_CLIENT_SECRET = get_env_with_fallback("YANDEX_CLIENT_SECRET", "your-client-secret-here", required=True)
+    YANDEX_REDIRECT_URI = get_env_with_fallback("YANDEX_REDIRECT_URI", required=True)
+    
+    # OAuth Endpoints
+    YANDEX_TOKEN_URL = 'https://oauth.yandex.ru/token'
+    YANDEX_USER_INFO_URL = 'https://login.yandex.ru/info'
+    
+    # Scopes for Yandex OAuth
+    YANDEX_SCOPES = ['login:info', 'login:email']
+    
+    # Backward compatibility aliases
+    CLIENT_ID = YANDEX_CLIENT_ID
+    CLIENT_SECRET = YANDEX_CLIENT_SECRET
+    REDIRECT_URI = YANDEX_REDIRECT_URI
 
     # Yandex Payment Configuration
     YANDEX_MERCHANT_ID = get_env_with_fallback("YANDEX_MERCHANT_ID", required=True)

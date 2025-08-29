@@ -43,14 +43,7 @@ def admin_login():
         return "Access Denied", 403
     return render_template("admin_login.html")
 
-@main_bp.route("/logout")
-def logout():
-    """User logout - only clears user session, preserves admin session"""
-    # Only clear user-related session variables
-    session.pop("user", None)
-    session.pop("just_logged_in", None)
-    # Do NOT clear admin session
-    return redirect("/")
+# User logout route moved to auth blueprint to avoid conflicts
 
 @main_bp.route("/admin-logout")
 def admin_logout():

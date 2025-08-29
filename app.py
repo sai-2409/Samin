@@ -2,7 +2,7 @@ from flask import Flask, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 from config import SECRET_KEY, DEBUG_MODE, HOST, PORT, IS_RENDER
 from routes.main import main_bp
-# from routes.auth import auth_bp  # OAuth removed
+from routes.auth import auth_bp  # OAuth re-enabled
 from routes.pay import pay_bp
 from routes.review import review_bp
 import platform
@@ -87,7 +87,7 @@ else:
 
 # Регистрация маршрутов
 app.register_blueprint(main_bp)
-# app.register_blueprint(auth_bp)  # OAuth removed
+app.register_blueprint(auth_bp)  # OAuth re-enabled
 app.register_blueprint(pay_bp)
 app.register_blueprint(review_bp)
 
