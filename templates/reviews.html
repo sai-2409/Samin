@@ -78,10 +78,20 @@
             <!-- Puting Yandex Market ID avatar -->
             {% if user %}
             <div class="header__profile header__profile-small-screens">
+              <!-- Debug: Avatar value = {{ user.avatar }} -->
+              {% if user.avatar and user.avatar != 'None' and user.avatar != ''
+              %}
               <img
                 src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
                 alt="avatar"
+                class="user-avatar"
               />
+              {% else %}
+              <div class="avatar-fallback">
+                {{ (user.real_name or user.display_name or
+                user.login)[0].upper() }}
+              </div>
+              {% endif %}
               <span>{{ user.login }}</span>
               <div class="header__profile-dropdown">
                 <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
@@ -146,10 +156,20 @@
             <!-- Puting Yandex Market ID avatar -->
             {% if user %}
             <div class="header__profile">
+              <!-- Debug: Avatar value = {{ user.avatar }} -->
+              {% if user.avatar and user.avatar != 'None' and user.avatar != ''
+              %}
               <img
                 src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50"
                 alt="avatar"
+                class="user-avatar"
               />
+              {% else %}
+              <div class="avatar-fallback">
+                {{ (user.real_name or user.display_name or
+                user.login)[0].upper() }}
+              </div>
+              {% endif %}
               <span>{{ user.login }}</span>
               <div class="header__profile-dropdown">
                 <a href="/reviews" class="header__profile-logout">Мои отзывы</a>

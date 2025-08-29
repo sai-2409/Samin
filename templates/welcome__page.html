@@ -94,9 +94,16 @@
                 <div class="form-container">
                     <h2>Добро пожаловать!</h2>
                     <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" 
-                             alt="avatar" 
-                             style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px;">
+                        <!-- Debug: Avatar value = {{ user.avatar }} -->
+                        {% if user.avatar and user.avatar != 'None' and user.avatar != '' %}
+                          <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" 
+                               alt="avatar" 
+                               style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px; border: 3px solid #4CAF50; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                        {% else %}
+                          <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4CAF50, #45a049); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 32px; margin: 0 auto 15px; border: 3px solid #4CAF50; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                            {{ (user.real_name or user.display_name or user.login)[0].upper() }}
+                          </div>
+                        {% endif %}
                         <h3>{{ user.real_name or user.display_name or user.login }}</h3>
                         {% if just_logged_in %}
                             <p style="color: #4CAF50; margin: 10px 0;">✅ Успешный вход в систему!</p>

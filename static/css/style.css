@@ -440,17 +440,156 @@ p {
   /* text-decoration: underline; */
 }
 .header__button-yandexID {
-  background-color: var(--dark-bg);
-  padding: 5px 10px;
-  border-radius: 10px;
-  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #8b3000, #8b3000);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 8px rgba(139, 48, 0, 0.3);
+}
+
+.header__button-yandexID:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 48, 0, 0.4);
+  background: linear-gradient(135deg, #a04000, #8b3000);
+}
+
+.header__button-yandexID img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.header__button-yandexID:hover img {
+  transform: scale(1.1);
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 768px) {
+  .header__button-yandexID {
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+    margin-right: 8px;
+  }
+
+  .header__button-yandexID img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .header__button-yandexID span {
+    display: none; /* Hide text on very small screens */
+  }
+
+  /* Ensure header order layout works on small screens */
+  .header__order {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__button-yandexID {
+    padding: 6px 10px;
+    min-width: 40px;
+    justify-content: center;
+    margin-right: 5px;
+  }
+
+  .header__button-yandexID img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Stack elements vertically on very small screens */
+  .header__order {
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__order .header__button-yandexID {
+    order: 1; /* Put Yandex button first */
+  }
+
+  .header__order .header__button {
+    order: 2; /* Put Заказать button second */
+  }
+}
+
+/* Header order layout adjustments */
+.header__order {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header__order .header__button-yandexID {
   margin-right: 10px;
 }
-.header__button-yandexID:hover {
-  background-color: var(--main-orange);
-  transition: 0.3s ease-in-out;
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+/* Small screens Yandex button specific styles */
+.header__button-yandexID-small-screens {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #8b3000, #8b3000);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 8px rgba(139, 48, 0, 0.3);
+  margin-right: 10px;
+}
+
+.header__button-yandexID-small-screens:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 48, 0, 0.4);
+  background: linear-gradient(135deg, #a04000, #8b3000);
+}
+
+.header__button-yandexID-small-screens img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.header__button-yandexID-small-screens:hover img {
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments for small screens button */
+@media (max-width: 480px) {
+  .header__button-yandexID-small-screens {
+    padding: 6px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .header__button-yandexID-small-screens img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header__button-yandexID-small-screens span {
+    display: none; /* Hide text on very small screens */
+  }
 }
 
 .header__profile {
@@ -4242,4 +4381,34 @@ section.pros {
   #toggleBtn {
     font-size: 16px;
   }
+}
+
+/* Avatar Fallback Styles */
+.avatar-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* User Avatar Styles */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #4caf50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
 }

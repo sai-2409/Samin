@@ -471,7 +471,14 @@
             <!-- Puting Yandex Market ID avatar -->
             {% if user %}
             <div class="header__profile header__profile-small-screens">
-              <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar">
+              <!-- Debug: Avatar value = {{ user.avatar }} -->
+              {% if user.avatar and user.avatar != 'None' and user.avatar != '' %}
+                <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar" class="user-avatar">
+              {% else %}
+                <div class="avatar-fallback">
+                  {{ (user.real_name or user.display_name or user.login)[0].upper() }}
+                </div>
+              {% endif %}
               <span>{{ user.login }}</span>
               <div class="header__profile-dropdown">
                 <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
@@ -480,8 +487,8 @@
               </div>
             </div>
             {% else %}
-            <div id="yandex-oauth-main" class="header__button-yandexID" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; margin-right: 15px;">
-              <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">
+            <div id="yandex-oauth-small" class="header__button-yandexID header__button-yandexID-small-screens">
+              <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="24px" height="24px" alt="Yandex ID">
               <span>Войти c Яндекс ID</span>
             </div>
             {% endif %}
@@ -531,7 +538,14 @@
             <!-- Puting Yandex Market ID avatar -->
             {% if user %}
             <div class="header__profile">
-              <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar">
+              <!-- Debug: Avatar value = {{ user.avatar }} -->
+              {% if user.avatar and user.avatar != 'None' and user.avatar != '' %}
+                <img src="https://avatars.yandex.net/get-yapic/{{ user.avatar }}/islands-retina-50" alt="avatar" class="user-avatar">
+              {% else %}
+                <div class="avatar-fallback">
+                  {{ (user.real_name or user.display_name or user.login)[0].upper() }}
+                </div>
+              {% endif %}
               <span>{{ user.login }}</span>
               <div class="header__profile-dropdown">
                 <a href="/reviews" class="header__profile-logout">Мои отзывы</a>
@@ -540,7 +554,7 @@
               </div>
             </div>
             {% else %}
-            <div id="yandex-oauth-small" class="header__button-yandexID header__button-yandexID-small-screens" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; margin-right: 15px;">
+            <div id="yandex-oauth-main" class="header__button-yandexID header__button-yandexID-main">
               <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">
               <span>Войти c Яндекс ID</span>
             </div>

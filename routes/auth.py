@@ -84,6 +84,15 @@ def auth_callback():
             return render_template('oauth_error.html', error="Failed to get user information")
         
         # Store user info in session
+        avatar_id = user_info.get('default_avatar_id')
+        print(f"🖼️ Avatar ID received: {avatar_id}")
+        print(f"🔍 All available user fields: {list(user_info.keys())}")
+        
+        # Try alternative avatar fields if default_avatar_id is not available
+        if not avatar_id:
+            avatar_id = user_info.get('avatar_id') or user_info.get('avatar') or user_info.get('default_avatar')
+            print(f"🔄 Alternative avatar ID: {avatar_id}")
+        
         session['user'] = {
             'id': user_info.get('id'),
             'login': user_info.get('login'),
@@ -92,8 +101,10 @@ def auth_callback():
             'first_name': user_info.get('first_name'),
             'last_name': user_info.get('last_name'),
             'email': user_info.get('default_email'),
-            'avatar': user_info.get('default_avatar_id')
+            'avatar': avatar_id
         }
+        
+        print(f"👤 Session user data: {session['user']}")
         
         session['just_logged_in'] = True
         session.permanent = True
@@ -182,11 +193,23 @@ def oauth_status():
     try:
         has_token = 'access_token' in session
         has_user = 'user' in session
+        user_data = session.get('user')
+        
+        # Debug avatar information
+        avatar_info = None
+        if user_data and 'avatar' in user_data:
+            avatar_id = user_data['avatar']
+            avatar_info = {
+                'avatar_id': avatar_id,
+                'avatar_url': f"https://avatars.yandex.net/get-yapic/{avatar_id}/islands-retina-50" if avatar_id else None,
+                'avatar_url_large': f"https://avatars.yandex.net/get-yapic/{avatar_id}/islands-retina-100" if avatar_id else None
+            }
         
         return jsonify({
             'has_token': has_token,
             'has_user': has_user,
-            'user': session.get('user'),
+            'user': user_data,
+            'avatar_info': avatar_info,
             'client_id': YANDEX_CLIENT_ID,
             'redirect_uri': YANDEX_REDIRECT_URI
         })

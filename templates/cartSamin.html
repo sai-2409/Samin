@@ -287,8 +287,8 @@
               </div>
             </div>
             {% else %}
-            <!-- Yandex ID login removed -->
-            {% endif %}
+            Yandex ID login removed -->
+            <!-- {% endif %}
             <button id="toggleBtn">☰ Меню</button>
           </nav> -->
 
@@ -366,7 +366,10 @@
               </div>
             </div>
             {% else %}
-            <!-- Yandex ID login removed -->
+            <div id="yandex-oauth-cart" class="header__button-yandexID" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; margin-right: 15px;">
+              <img src="{{ url_for('static', filename='images/logos/yandex-market-svg-logo-white.svg') }}" width="30px" height="30px" alt="Yandex ID">
+              <span>Войти c Яндекс ID</span>
+            </div>
             {% endif %}
             <!-- Puting Yandex Market ID avatar -->
             <!-- <button class="header__button common__button">Заказать</button> -->
@@ -1211,6 +1214,51 @@
 
         // Check for new notifications every 30 seconds
         setInterval(loadNotifications, 30000);
+      });
+
+      // Yandex OAuth Login Function
+      function loginWithYandex() {
+        const statusDiv = document.createElement("div");
+        statusDiv.id = "status";
+        statusDiv.className = "status info";
+        statusDiv.textContent = "Перенаправление на Yandex для авторизации...";
+        statusDiv.style.cssText = "position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 8px rgba(0,0,0,0.2);";
+        document.body.appendChild(statusDiv);
+
+        // Get configuration from Flask backend
+        fetch("/api/config")
+          .then((response) => response.json())
+          .then((config) => {
+            // Construct the OAuth authorization URL
+            const clientId = config.client_id;
+            const redirectUri = encodeURIComponent(config.redirect_uri);
+            const responseType = "code";
+            const scope = config.scopes.join(" ");
+            const authUrl = `https://oauth.yandex.ru/authorize?client_id=${clientId}&response_type=${responseType}&redirect_uri=${redirectUri}&scope=${scope}`;
+
+            // Redirect to Yandex OAuth
+            window.location.href = authUrl;
+          })
+          .catch((error) => {
+            statusDiv.className = "status error";
+            statusDiv.textContent = "Ошибка получения конфигурации: " + error.message;
+            console.error("Config error:", error);
+            
+            // Remove status after 5 seconds
+            setTimeout(() => {
+              if (statusDiv.parentNode) {
+                statusDiv.parentNode.removeChild(statusDiv);
+              }
+            }, 5000);
+          });
+      }
+
+      // Add click event listener to Yandex login button
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginButton = document.getElementById("yandex-oauth-cart");
+        if (loginButton) {
+          loginButton.addEventListener("click", loginWithYandex);
+        }
       });
     </script>
   </body>
