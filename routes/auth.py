@@ -161,11 +161,18 @@ def logout():
 def get_config():
     """API endpoint to get OAuth configuration for frontend"""
     try:
-        return jsonify({
+        print(f"🔍 /api/config called - YANDEX_CLIENT_ID: {YANDEX_CLIENT_ID}")
+        print(f"🔍 /api/config called - YANDEX_REDIRECT_URI: {YANDEX_REDIRECT_URI}")
+        print(f"🔍 /api/config called - YANDEX_SCOPES: {YANDEX_SCOPES}")
+        
+        config_data = {
             'client_id': YANDEX_CLIENT_ID,
             'redirect_uri': YANDEX_REDIRECT_URI,
             'scopes': YANDEX_SCOPES
-        })
+        }
+        
+        print(f"✅ /api/config returning: {config_data}")
+        return jsonify(config_data)
         
     except Exception as e:
         print(f"❌ OAuth Config Error: {str(e)}")
