@@ -53,7 +53,7 @@ def is_running_on_render():
     # Check if any Render environment variables are set
     if any(os.getenv(var) for var in render_env_vars):
         return True
-    
+    # New comment 
     # Check hostname for Render patterns
     try:
         hostname = socket.gethostname()
